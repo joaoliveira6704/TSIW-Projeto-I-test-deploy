@@ -110,15 +110,3 @@ function formatDateToLabel(dateString) {
     return `${day}/${month}/${year}`;
   }
 }
-
-const testBtn = document.getElementById("testBtn");
-
-testBtn.addEventListener("click", () => {
-  return fetch("https://restcountries.com/v3.1/all")
-    .then((response) => response.json())
-    .then((data) => {
-      data.forEach((datas) => {
-        console.log(`${datas.cca2.toLowerCase()}.svg`);
-      });
-    });
-});
