@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     renderOriginList(filteredOrigins);
   });
 });
+
 const tourismText = document.getElementById("tourismText");
 tourismFormSection.addEventListener("click", (event) => {
   const setBtn = event.target.closest("button");

@@ -19,6 +19,11 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
     />
+    <!-- Choices.js CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
+    />
   </head>
   <body
     class="h-screen bg-slate-50 text-white dark:bg-blue-950 dark:text-white"
@@ -225,19 +230,28 @@
         class="h-screen snap-start flex flex-col justify-center items-center"
       >
         <h2 class="text-4xl mb-10 font-title">Packs e Ofertas</h2>
-        <div class="block sm:hidden swiper mySwiper">
+
+        <!-- Mobile Swiper -->
+        <div class="block sm:hidden swiper mySwiper swiper-mobile">
           <div id="swiperPacks" class="swiper-wrapper"></div>
         </div>
 
-        <!-- Swiper -->
+        <!-- Desktop Swiper -->
         <div
-          class="swiper-container hidden sm:block swiper packsDesktop w-full max-w-[1000px] h-fit z-20 relative"
+          class="hidden sm:block swiper-outer-container relative w-full max-w-[1500px] mx-auto"
         >
-          <div id="swiperDesktopWrapper" class="swiper-wrapper">
-            <!-- your slides here -->
+          <!-- Swiper -->
+          <div class="swiper packsDesktop w-full h-fit z-20">
+            <div id="swiperDesktopWrapper" class="swiper-wrapper"></div>
           </div>
-          <div class="swiper-button-prev px-10 lg:px-0 cursor-pointer"></div>
-          <div class="swiper-button-next px-10 lg:px-0 cursor-pointer"></div>
+
+          <!-- Navigation buttons -->
+          <div
+            class="swiper-button-prev absolute left-0 top-1/2 -translate-y-1/2 z-30"
+          ></div>
+          <div
+            class="swiper-button-next absolute right-0 top-1/2 -translate-y-1/2 z-30"
+          ></div>
         </div>
       </section>
 
@@ -544,12 +558,12 @@
         </button>
       </div>
     </footer>
+    <!-- Choices.js -->
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <!-- Flowbite -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
     <!-- Your initialization script -->
     <script src="./js/init.js"></script>
 

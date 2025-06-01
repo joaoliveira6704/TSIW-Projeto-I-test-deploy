@@ -37,7 +37,7 @@ window.addEventListener("load", () => {
         );
         swiperDesktop.insertAdjacentHTML(
           "beforeend",
-          `<div class="swiper-slide rounded-lg w-[320px] h-[420px] flex flex-col overflow-hidden cursor-drag">
+          `<div class="swiper-slide rounded-lg w-[400px]! h-[420px] flex flex-col overflow-hidden cursor-drag">
             <img src="${image}" alt="${
             pack.name
           }" class="w-full h-[220px] object-cover rounded-t-lg" />
@@ -78,23 +78,29 @@ window.addEventListener("load", () => {
       effect: "cards",
       grabCursor: true,
     });
+
+    // Desktop Swiper
     new Swiper(".packsDesktop", {
-      effect: "coverflow",
-      centeredSlides: true,
       slidesPerView: "auto",
-      coverflowEffect: {
-        rotate: 50,
-        stretch: 0,
-        depth: 100,
-        modifier: 1,
-        slideShadows: true,
-      },
-      pagination: {
-        el: ".swiper-pagination",
-      },
+      centeredSlides: true,
+      spaceBetween: 55,
+      initialSlide: 1,
+      resistanceRatio: 0,
+      slideToClickedSlide: true,
       navigation: {
         nextEl: ".swiper-button-next",
         prevEl: ".swiper-button-prev",
+        disabledClass: "swiper-button-disabled",
+      },
+      breakpoints: {
+        800: {
+          spaceBetween: 55,
+          slidesPerView: 2,
+        },
+        1024: {
+          spaceBetween: 55,
+          slidesPerView: 3,
+        },
       },
     });
   });

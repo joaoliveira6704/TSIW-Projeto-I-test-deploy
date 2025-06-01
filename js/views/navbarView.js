@@ -1,4 +1,9 @@
 import * as User from "../models/UserModel.js";
+import * as TourismTypes from "../models/TourismtypeModel.js";
+import * as Flights from "../models/flightModel.js";
+
+TourismTypes.init();
+Flights.init();
 
 const openLoginModalBtn = document.getElementById("openLoginModalBtn");
 
@@ -24,7 +29,29 @@ const today = new Date().toLocaleDateString("pt-PT");
 
 console.log(today);
 
-/* Login */
+/* --- Shared Logic --- */
+
+function setupLogoutButton(selector) {
+  const logoutBtn = document.getElementById(selector);
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      User.logout();
+      closeSidebar();
+      loggedModal?.classList?.add("hidden");
+    });
+  }
+}
+
+function setupAdminButton(selector) {
+  const adminBtn = document.getElementById(selector);
+  if (adminBtn) {
+    adminBtn.addEventListener("click", () => {
+      location.href = "./html/admin.html";
+    });
+  }
+}
+
+/* --- Login Modal --- */
 
 openLoginModalBtn.addEventListener("click", () => {
   if (User.isLogged()) {
@@ -42,19 +69,13 @@ openLoginModalBtn.addEventListener("click", () => {
             </button>
           </li>`
         );
-
-        const adminBtn = document.getElementById("adminBtn");
-
-        adminBtn.addEventListener("click", () => {
-          location.href = "./html/admin.html";
-        });
+        setupAdminButton("adminBtn");
       }
     } else if (adminModalSection) {
       adminModalSection.remove();
       logoutListSection.classList.add("last:rounded-b-xl");
     }
 
-    // Toggle modal visibility
     loggedModal.classList.toggle("hidden");
   } else {
     loginModal.classList.remove("hidden");
@@ -74,7 +95,7 @@ logoutBtn.addEventListener("click", () => {
   loggedModal.classList.add("hidden");
 });
 
-/* Register */
+/* --- Register Modal --- */
 
 reopenRegisterBtn.addEventListener("click", () => {
   loginModal.classList.add("hidden");
@@ -98,7 +119,7 @@ reopenLoginBtn.addEventListener("click", () => {
   }, 10);
 });
 
-/* Both */
+/* --- Close Modals --- */
 
 closeModalBtn.addEventListener("click", closeLoginModal);
 closeRegisterModalBtn.addEventListener("click", closeRegisterModal);
@@ -127,7 +148,7 @@ function closeRegisterModal() {
   }, 300);
 }
 
-/* Sidebar */
+/* --- Sidebar --- */
 
 const sideBar = document.getElementById("sidebar");
 const navButtons = document.getElementById("navButtons");
@@ -166,8 +187,28 @@ function populateProfileContent() {
             <img src="./img/icons/blue/profile.svg" alt="Perfil" class="w-4 h-4" />
           </button>
         </li>
+        <li>
+          <button
+            id="packsOffersBtn"
+            class="flex hover:bg-gray-300 color-primary cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
+            onclick="location.href='#packsOffers'"
+          >
+            <span>Packs e Ofertas</span>
+            <img src="./img/icons/blue/coins.svg" alt="Log Out" class="w-4 h-4" />
+          </button>
+        </li>
+        <li>
+          <button
+            id="contactsBtn"
+            class="flex hover:bg-gray-300 color-primary cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
+            onclick="location.href='#contactsSect'"
+          >
+            <span>Contactos</span>
+            <img src="./img/icons/blue/phone.svg" alt="Log Out" class="w-4 h-4" />
+          </button>
+        </li>
         <li id="logoutListSection" class="hover:bg-gray-300">
-          <button id="logoutBtn" class="flex w-full items-center justify-between px-4 py-2 cursor-pointer">
+          <button id="logoutBtnMobile" class="flex w-full items-center justify-between px-4 py-2 cursor-pointer">
             <span class="color-primary">Terminar Sessão</span>
             <img src="./img/icons/blue/log-out.svg" alt="Perfil" class="w-4 h-4" />
           </button>
@@ -175,6 +216,24 @@ function populateProfileContent() {
       </ul>
     </div>
   `;
+
+  if (User.isAdmin(User.getUserLogged())) {
+    if (!document.getElementById("adminBtnMobile")) {
+      sideBar.insertAdjacentHTML(
+        "beforeend",
+        `<li id="adminModalSection" class="color-primary list-none hover:bg-gray-300">
+          <button id="adminBtnMobile" class="flex w-full items-center gap-3 justify-between px-4 py-2 cursor-pointer">
+            <span>Admin</span>
+            <img src="./img/icons/blue/users.svg" alt="Admin" class="w-4 h-4"/>
+          </button>
+        </li>`
+      );
+    }
+    setupAdminButton("adminBtnMobile");
+  }
+
+  setupLogoutButton("logoutBtnMobile");
+
   openProfileDropdownBtn.classList.add("activeSideBar");
   openFormDropdownBtn.classList.remove("activeSideBar");
 }
@@ -184,58 +243,53 @@ function populateFormContent() {
     <div class="flex justify-center bg-blue-900 w-full h-fit p-2 text-white">Procurar Viagens</div>
     <ul class="flex flex-col gap-1">
       <li class="flex flex-col p-3 gap-2 border-b-1 border-blue-900 text-blue-900 w-[95%] mx-auto">
-      <div class="flex gap-3">
-        <p>Selecionar Data</p>
-        <img src="./img/icons/blue/calendar.svg" alt="calendarIcon" class="w-4" />
-      </div>
-        <input
-        datepicker
-        id="navbar-datepicker"
-        type="text"
-        datepicker-orientation="left"
-        class="cursor-pointer"
-        value = ${today}
-        />
+        <div class="flex gap-3">
+          <p>Selecionar Data</p>
+          <img src="./img/icons/blue/calendar.svg" alt="calendarIcon" class="w-4" />
+        </div>
+        <input datepicker id="navbar-datepicker" type="text" datepicker-orientation="left" class="cursor-pointer" value="${today}" />
       </li>
       <li class="flex flex-col p-3 gap-2 border-b-1 border-blue-900 text-blue-900 w-[95%] mx-auto">
-      <div class="flex gap-3">
-        <p>Ponto de Partida</p>
-        <img src="./img/icons/blue/pin.svg" alt="pinIcon" class="w-4" />
-      </div>
+        <div class="flex gap-3">
+          <p>Ponto de Partida</p>
+          <img src="./img/icons/blue/pin.svg" alt="pinIcon" class="w-4" />
+        </div>
         <input
-        id="aiportInput"
-        placeholder="Selecione aeroporto"
-        />
+    id="inputOriginSearchMobile"
+    type="text"
+    placeholder="Ex:'OPO'"
+    class="border p-2"
+    autocomplete = "off"
+  />
       </li>
       <li class="flex flex-col p-3 gap-2 border-b-1 border-blue-900 text-blue-900 w-[95%] mx-auto">
-      <div class="flex gap-3">
-        <p>Turismo</p>
-        <img src="./img/icons/blue/turism.svg" alt="turismIcon" class="w-4" />
-      </div>
-      <select
-      id="turismInput">
-      <option>option1</option>
-      </select>
-      <li/>
+        <div class="flex gap-3">
+          <p>Turismo</p>
+          <img src="./img/icons/blue/turism.svg" alt="turismIcon" class="w-4" />
+        </div>
+        <select id="turismInput">
+        </select>
+      </li>
       <li class="flex flex-col p-3 gap-4 border-b-1 border-blue-900 text-blue-900 w-[95%] mx-auto">
-      <div class="flex gap-3">
-        <p>Nº Passageiros</p>
-        <img src="./img/icons/blue/users.svg" alt="passengersIcon" class="w-4" />
+        <div class="flex gap-3">
+          <p>Nº Passageiros</p>
+          <img src="./img/icons/blue/users.svg" alt="passengersIcon" class="w-4" />
         </div>
         <div class="flex items-center justify-center">
-         <button type="button" id="decrementBtn" data-input-counter-decrement="counter-input" class="bg-gray-100 dark:bg-gray-100 dark:hover:shadow-lg  hover:bg-gray-200 inline-flex items-center justify-center border  rounded-md h-fit w-fit p-1">
-         <img src="./img/icons/blue/minus.svg" alt="minuesIcon" class="w-4" />
-         </button>
-         <input type="text" id="counter-input" data-input-counter class="shrink-0 text-blue-900 border-0 bg-transparent max-w-[2.5rem] text-center" placeholder="" value="1" required />
-         <button type="button" id="decrementBtn" data-input-counter-decrement="counter-input" class="bg-gray-100 dark:bg-gray-100 dark:hover:shadow-lg  hover:bg-gray-200 inline-flex items-center justify-center border  rounded-md h-fit w-fit p-1">
-         <img src="./img/icons/blue/plus.svg" alt="plusIcon" class="w-4" />
+          <button type="button" id="decrementBtn" data-input-counter-decrement="counter-input" class="bg-gray-100 hover:bg-gray-200 inline-flex items-center justify-center border rounded-md h-fit w-fit p-1">
+            <img src="./img/icons/blue/minus.svg" alt="minuesIcon" class="w-4" />
+          </button>
+          <input type="text" id="counter-input" data-input-counter class="shrink-0 text-blue-900 border-0 bg-transparent max-w-[2.5rem] text-center" value="1" required />
+          <button type="button" id="incrementBtn" data-input-counter-increment="counter-input" class="bg-gray-100 hover:bg-gray-200 inline-flex items-center justify-center border rounded-md h-fit w-fit p-1">
+            <img src="./img/icons/blue/plus.svg" alt="plusIcon" class="w-4" />
           </button>
         </div>
-      <li/>
-      <li class="flex w-full justify-content">
-        <button type="submit" class="mx-auto bg-blue-500 px-4 py-2      rounded-sm hover:bg-blue-700">Procurar</button>
       </li>
-    </ul>`;
+      <li class="flex w-full justify-content">
+        <button type="submit" class="mx-auto bg-blue-500 px-4 py-2 rounded-sm hover:bg-blue-700">Procurar</button>
+      </li>
+    </ul>
+  `;
 
   openProfileDropdownBtn.classList.remove("activeSideBar");
   openFormDropdownBtn.classList.add("activeSideBar");
@@ -247,10 +301,20 @@ function populateFormContent() {
     format: "dd-mm-yyyy",
     minDate: today,
   });
-  console.log(document.getElementById("navbar-datepicker").value);
 }
 
+/* --- Sidebar Triggers --- */
+
 openProfileDropdownBtn.addEventListener("click", () => {
+  if (!User.isLogged()) {
+    loginModal.classList.remove("hidden");
+    setTimeout(() => {
+      modalContent.classList.remove("opacity-0", "scale-95");
+      modalContent.classList.add("opacity-100", "scale-100");
+    }, 10);
+    return;
+  }
+
   if (currentSidebarContent === "profile") {
     closeSidebar();
   } else {
@@ -260,16 +324,137 @@ openProfileDropdownBtn.addEventListener("click", () => {
 });
 
 openFormDropdownBtn.addEventListener("click", () => {
+  if (!User.isLogged()) {
+    loginModal.classList.remove("hidden");
+    setTimeout(() => {
+      modalContent.classList.remove("opacity-0", "scale-95");
+      modalContent.classList.add("opacity-100", "scale-100");
+    }, 10);
+    return;
+  }
+
   if (currentSidebarContent === "form") {
     closeSidebar();
   } else {
     populateFormContent();
     openSidebar("form");
+    populateData();
   }
 });
+const airportNameCache = {};
+
+document.addEventListener("click", function (e) {
+  const input = document.getElementById("inputOriginSearchMobile");
+  const list = document.getElementById("mobileAirportsList");
+
+  if (list && !list.contains(e.target) && e.target !== input) {
+    list.remove();
+  }
+});
+
+function populateData() {
+  // === 2. Populate Tourism Types for Mobile ===
+  const tourismSelect = document.getElementById("turismInput");
+  const tourismTypes = TourismTypes.getAll();
+
+  tourismSelect.innerHTML = `<option disabled selected>Selecionar</option>`;
+  tourismTypes.forEach((type) => {
+    tourismSelect.insertAdjacentHTML(
+      "beforeend",
+      `<option value="${type.name}">${type.name}</option>`
+    );
+  });
+
+  const inputOriginSearchMobile = document.getElementById(
+    "inputOriginSearchMobile"
+  );
+  inputOriginSearchMobile.addEventListener("input", () => {
+    const filterText = inputOriginSearchMobile.value;
+    const filteredOrigins = Flights.getFilteredOrigins(filterText);
+    renderMobileAirportList(filteredOrigins);
+  });
+
+  function renderMobileAirportList(origins) {
+    const existingList = document.getElementById("mobileAirportsList");
+    if (existingList) existingList.remove();
+
+    const ul = document.createElement("ul");
+    ul.id = "mobileAirportsList";
+    ul.className =
+      "absolute bg-white shadow-md w-full right-5 max-h-48 overflow-y-auto z-10 mt-20";
+
+    const uniqueOrigins = [...new Set(origins)];
+    const fetchPromises = uniqueOrigins.map((iata) => {
+      if (airportNameCache[iata]) {
+        return Promise.resolve({ iata, name: airportNameCache[iata] });
+      }
+
+      return fetchAirportName(iata).then((name) => {
+        const safeName = name || "Unknown Airport";
+        airportNameCache[iata] = safeName;
+        return { iata, name: safeName };
+      });
+    });
+
+    Promise.all(fetchPromises).then((airports) => {
+      airports.forEach(({ iata, name }) => {
+        const li = document.createElement("li");
+        li.className =
+          "hover:bg-gray-200 cursor-pointer px-4 py-2 text-blue-900";
+        li.textContent = `${iata} - ${name}`;
+        li.addEventListener("click", () => {
+          inputOriginSearchMobile.value = iata;
+          ul.remove();
+        });
+        ul.appendChild(li);
+      });
+
+      inputOriginSearchMobile.parentElement.appendChild(ul);
+    });
+  }
+  const decrementBtn = document.getElementById("decrementBtn");
+  const incrementBtn = document.getElementById("incrementBtn");
+  const counterInput = document.getElementById("counter-input");
+
+  decrementBtn.addEventListener("click", () => {
+    let value = parseInt(counterInput.value) || 1;
+    if (value > 1) counterInput.value = value - 1;
+  });
+
+  incrementBtn.addEventListener("click", () => {
+    let value = parseInt(counterInput.value) || 1;
+    counterInput.value = value + 1;
+  });
+}
 
 sidebarBackdrop.addEventListener("click", () => {
   if (currentSidebarContent === "form" || currentSidebarContent === "profile") {
     closeSidebar();
   }
 });
+
+function fetchAirportName(iataCode) {
+  const url = `https://airport-info.p.rapidapi.com/airport?iata=${iataCode}`;
+
+  const options = {
+    method: "GET",
+    headers: {
+      "X-RapidAPI-Key": "5a7f871babmsh993b19d7060d6f6p1efa56jsncee69110043c",
+      "X-RapidAPI-Host": "airport-info.p.rapidapi.com",
+    },
+  };
+
+  return fetch(url, options)
+    .then((response) => {
+      if (!response.ok)
+        throw new Error("Network response was not ok: " + response.status);
+      return response.json();
+    })
+    .then((data) => {
+      return data.name;
+    })
+    .catch((error) => {
+      console.error("Error fetching airport info:", error);
+      return null;
+    });
+}

@@ -5,6 +5,19 @@ export function init() {
   flights = localStorage.flights ? JSON.parse(localStorage.flights) : [];
 }
 
+export function addFlight(flight) {
+  flights.push(flight);
+  localStorage.setItem("flights", JSON.stringify(flights));
+}
+
+export function updateFlight(updatedFlight) {
+  const index = flights.findIndex((f) => f.id === updatedFlight.id);
+  if (index > -1) {
+    flights[index] = updatedFlight;
+    localStorage.setItem("flights", JSON.stringify(flights));
+  }
+}
+
 export function getAllFlights() {
   return flights;
 }

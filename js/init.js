@@ -170,6 +170,21 @@ function initdata() {
         isPack: true,
         flights: [2],
       },
+      {
+        id: 3,
+        name: "Visita ao Iceberg",
+        typesOfTourism: [1, 4],
+        origin: "OPO",
+        destination: "ICE",
+        price: 3200,
+        company: "Icelandair",
+        duration: "10 dias",
+        startDate: "2025-07-01",
+        endDate: "2025-07-11",
+        description: "Descubra a Islândia.",
+        isPack: true,
+        flights: [1],
+      },
     ];
     localStorage.setItem("trips", JSON.stringify(trips));
     console.log("Trips initialized");

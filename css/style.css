@@ -105,7 +105,7 @@ datepicker {
 }
 
 .datepicker-cell {
-  background-color: #f3f4f6 !important;
+  background-color: transparent !important;
   color: #39578a !important;
 }
 
