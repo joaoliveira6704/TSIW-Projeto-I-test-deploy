@@ -52,6 +52,8 @@
         <div class="hidden lg:flex gap-4 items-center">
           <!-- Passport -->
           <button
+            data-modal-target="passport-modal"
+            data-modal-toggle="passport-modal"
             id="passportBtn"
             class="group cursor-pointer rounded-full border border-white hover:border-blue-500 px-4 py-2 flex items-center gap-2 backdrop-blur transition"
           >
@@ -141,7 +143,6 @@
                   <button
                     id="packsOffersBtn"
                     class="flex hover:bg-gray-300 cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
-                    onclick="location.href='#packsOffers'"
                   >
                     <span>Packs e Ofertas</span>
                     <img
@@ -155,7 +156,6 @@
                   <button
                     id="contactsBtn"
                     class="flex hover:bg-gray-300 cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
-                    onclick="location.href='#contactsSect'"
                   >
                     <span>Contactos</span>
                     <img
@@ -196,13 +196,13 @@
       >
         <button
           id="profileSidebar"
-          class="bg-white p-3 rounded-l-xl cursor-pointer"
+          class="bg-white p-3 rounded-l-xl cursor-pointer drop-shadow-sm"
         >
           <img src="./img/icons/blue/profile.svg" alt="profileIcon" />
         </button>
         <button
           id="formSidebar"
-          class="bg-white p-3 rounded-l-xl cursor-pointer"
+          class="bg-white p-3 rounded-l-xl cursor-pointer drop-shadow-sm"
         >
           <img src="./img/icons/blue/plane.svg" alt="formIcon" />
         </button>
@@ -539,6 +539,58 @@
         </div>
       </section>
     </main>
+
+    <!-- Modal Passport -->
+
+    <!-- Main modal -->
+    <div
+      id="passport-modal"
+      tabindex="-1"
+      aria-hidden="true"
+      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    >
+      <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+          <!-- Modal header -->
+          <div
+            class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200"
+          >
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+              Passaporte
+            </h3>
+            <button
+              type="button"
+              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              data-modal-hide="passport-modal"
+            >
+              <svg
+                class="w-3 h-3"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 14"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                />
+              </svg>
+              <span class="sr-only">Close modal</span>
+            </button>
+          </div>
+          <!-- Modal body -->
+          <div
+            id="passportModalGrid"
+            class="p-4 md:p-5 grid grid-cols-12 col-span-fit gap-2"
+          ></div>
+        </div>
+      </div>
+    </div>
+
     <footer class="w-screen h-fit py-20 bottom-0 fixed">
       <!-- Flight search Form -->
       <div
@@ -570,7 +622,7 @@
         >
           <ul
             id="airportsUl"
-            class="rounded-md"
+            class="rounded-md max-h-[180px] overflow-y-auto"
             aria-labelledby="dropdownTopButton"
           ></ul>
         </div>
@@ -647,6 +699,8 @@
           </div>
         </div>
         <button
+          type="submit"
+          id="searchFlightBtn"
           class="group bg-blue-500 h-[48px] hover:outline-white hover:outline-2 flex justify-center px-5 min-w-fit py-3 rounded-r-full hover:shadow-lg cursor-pointer transition"
         >
           <img src="./img/icons/white/plane.svg" alt="planeIcon" class="w-4" />
@@ -669,5 +723,6 @@
     <script type="module" src="./js/views/FormView.js"></script>
     <script type="module" src="./js/views/NavbarView.js"></script>
     <script type="module" src="./js/views/mainView.js"></script>
+    <script type="module" src="./js/models/ModelHelper.js"></script>
   </body>
 </html>

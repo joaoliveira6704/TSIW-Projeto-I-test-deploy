@@ -206,3 +206,12 @@ body,
 .hide-text button > p {
   display: none;
 }
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+  transform: translateY(60px);
+}
+.has-tooltip:hover .tooltip {
+  visibility: visible;
+  z-index: 100;
+}

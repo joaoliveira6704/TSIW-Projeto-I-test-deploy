@@ -25,9 +25,10 @@ const logoutBtn = document.getElementById("logoutBtn");
 const logoutListSection = document.getElementById("logoutListSection");
 const loggedModalList = document.getElementById("loggedModalList");
 
-const today = new Date().toLocaleDateString("pt-PT");
+const packsOffersBtn = document.getElementById("packsOffersBtn");
+const contactsBtn = document.getElementById("contactsBtn");
 
-console.log(today);
+const today = new Date().toLocaleDateString("pt-PT");
 
 /* --- Shared Logic --- */
 
@@ -77,6 +78,30 @@ openLoginModalBtn.addEventListener("click", () => {
     }
 
     loggedModal.classList.toggle("hidden");
+
+    document.addEventListener("click", (e) => {
+      if (
+        !loggedModal.contains(e.target) &&
+        !profileBtn.contains(e.target) &&
+        !loginModal.contains(e.target) &&
+        !openLoginModalBtn.contains(e.target)
+      ) {
+        loggedModal.classList.add("hidden");
+      }
+    });
+
+    packsOffersBtn.addEventListener("click", () => {
+      closeAndRedirect("desktop", "#packsOffers");
+    });
+    contactsBtn.addEventListener("click", () => {
+      closeAndRedirect("desktop", "#contactsSect");
+    });
+
+    if (!loggedModal.classList.contains("hidden")) {
+      onClickOutside(loggedModal, () => {
+        loggedModal.classList.add("hidden");
+      });
+    }
   } else {
     loginModal.classList.remove("hidden");
     setTimeout(() => {
@@ -189,9 +214,8 @@ function populateProfileContent() {
         </li>
         <li>
           <button
-            id="packsOffersBtn"
+            id="packsOffersBtnMobile"
             class="flex hover:bg-gray-300 color-primary cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
-            onclick="location.href='#packsOffers'"
           >
             <span>Packs e Ofertas</span>
             <img src="./img/icons/blue/coins.svg" alt="Log Out" class="w-4 h-4" />
@@ -199,9 +223,8 @@ function populateProfileContent() {
         </li>
         <li>
           <button
-            id="contactsBtn"
+            id="contactsBtnMobile"
             class="flex hover:bg-gray-300 color-primary cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
-            onclick="location.href='#contactsSect'"
           >
             <span>Contactos</span>
             <img src="./img/icons/blue/phone.svg" alt="Log Out" class="w-4 h-4" />
@@ -216,6 +239,13 @@ function populateProfileContent() {
       </ul>
     </div>
   `;
+
+  packsOffersBtnMobile.addEventListener("click", () => {
+    closeAndRedirect("mobile", "#packsOffers");
+  });
+  contactsBtnMobile.addEventListener("click", () => {
+    closeAndRedirect("mobile", "#contactsSect");
+  });
 
   if (User.isAdmin(User.getUserLogged())) {
     if (!document.getElementById("adminBtnMobile")) {
@@ -301,6 +331,15 @@ function populateFormContent() {
     format: "dd-mm-yyyy",
     minDate: today,
   });
+}
+
+function closeAndRedirect(type, section) {
+  if (type == "mobile") {
+    closeSidebar();
+  } else {
+    loggedModal.classList.add("hidden");
+  }
+  location.href = section;
 }
 
 /* --- Sidebar Triggers --- */
@@ -445,15 +484,9 @@ function fetchAirportName(iataCode) {
 
   return fetch(url, options)
     .then((response) => {
-      if (!response.ok)
-        throw new Error("Network response was not ok: " + response.status);
       return response.json();
     })
     .then((data) => {
       return data.name;
-    })
-    .catch((error) => {
-      console.error("Error fetching airport info:", error);
-      return null;
     });
 }

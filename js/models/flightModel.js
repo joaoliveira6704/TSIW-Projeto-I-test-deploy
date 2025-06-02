@@ -22,9 +22,14 @@ export function getAllFlights() {
   return flights;
 }
 
-export function getFlightById(ids) {
+export function getFlightByTripId(ids) {
   let flights = getAllFlights();
   return flights.filter((trip) => ids.includes(trip.id));
+}
+
+export function getFlightById(id) {
+  const flights = getAllFlights();
+  return flights.find((flight) => flight.id === id);
 }
 
 // Delete Flight type by ID
@@ -56,36 +61,66 @@ export function getFilteredOrigins(filterText) {
   );
 }
 
+export function getFlightsByOrigin(originGet) {
+  const flights = getAllFlights();
+
+  const filteredFlights = flights.filter(
+    (flight) => flight.origin === originGet
+  );
+
+  return filteredFlights;
+}
+
 class Flight {
   id = null;
   origin = "";
   destination = "";
+  destinationName = "";
   departureTime = "";
   arrivalTime = "";
   price = 0;
   duration = "";
   company = "";
   distance = 0;
+  poi = [];
+  destinLat = 0;
+  destinLong = 0;
 
   constructor(
     id,
     origin,
     destination,
+    destinationName,
     departureTime,
     arrivalTime,
     price = 0,
     duration = "",
     company = "",
-    distance = 0
+    distance = 0,
+    poi = [],
+    destinLat,
+    destinLong
   ) {
     this.id = id;
     this.origin = origin;
     this.destination = destination;
+    this.destinationName = destinationName;
     this.departureTime = departureTime;
     this.arrivalTime = arrivalTime;
     this.price = price;
     this.duration = duration;
     this.company = company;
     this.distance = distance;
+    this.poi = poi;
+    this.destinLat = destinLat;
+    this.destinLong = destinLong;
+  }
+  addPoi(name, lat, long, tourismTypes = []) {
+    this.poi.push({
+      name,
+      lat,
+      long,
+      tourismTypes,
+    });
   }
 }

@@ -46,7 +46,6 @@ class Trip {
   description = "";
   isPack = true;
   flights = [];
-  poi = [];
 
   constructor(
     id,
@@ -62,7 +61,6 @@ class Trip {
     description = "",
     isPack = false,
     flights = [],
-    poi = []
   ) {
     this.id = id;
     this.name = name;
@@ -77,15 +75,5 @@ class Trip {
     this.description = description;
     this.isPack = isPack;
     this.flights = flights;
-    this.poi = poi;
-  }
-
-  addPoi(name, lat, long, tourismTypes = []) {
-    this.poi.push({
-      name,
-      lat,
-      long,
-      tourismTypes,
-    });
   }
 }

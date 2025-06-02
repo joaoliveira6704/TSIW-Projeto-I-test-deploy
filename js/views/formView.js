@@ -1,5 +1,6 @@
 import * as TourismTypes from "../models/TourismtypeModel.js";
 import * as Flights from "../models/flightModel.js";
+import * as User from "../models/UserModel.js";
 
 TourismTypes.init();
 Flights.init();
@@ -246,3 +247,22 @@ function fetchAirportName(iataCode) {
       return null;
     });
 }
+
+const searchFlightBtn = document.getElementById("searchFlightBtn");
+
+searchFlightBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+  const datePicker = document.getElementById("form-datepicker");
+  const selectedDate = datePicker.value;
+  const origin = inputOriginSearch.value;
+
+  if (!selectedDate || !origin) {
+    alert("Por favor, preencha todos os campos.");
+    return;
+  }
+
+  const typeOfTourism = tourismText.innerHTML;
+
+  User.setUserQuery(selectedDate, origin, typeOfTourism, 1);
+  location.href = "./html/tripBuilder.html";
+});
