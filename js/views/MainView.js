@@ -16,7 +16,7 @@ window.addEventListener("load", () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const image = data.photos[0]?.src.medium || "fallback.jpg";
+        const image = data.photos[0]?.src.medium || "../img/images/fallback.jpg";
 
         swiperPacks.insertAdjacentHTML(
           "beforeend",

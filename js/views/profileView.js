@@ -67,7 +67,7 @@ window.addEventListener("load", (event) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const image = data.photos[1]?.src.medium || "fallback.jpg";
+        const image = data.photos[1]?.src.medium || "../img/images/fallback.jpg";
 
         favoritesWrapper.insertAdjacentHTML(
           "beforeend",
@@ -109,7 +109,7 @@ window.addEventListener("load", (event) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          const image = data.photos[1]?.src.medium || "fallback.jpg";
+          const image = data.photos[1]?.src.medium || "../img/images/fallback.jpg";
 
           tripsWrapper.insertAdjacentHTML(
             "beforeend",

@@ -276,11 +276,11 @@ function populateFormContent() {
           <img src="./img/icons/blue/users.svg" alt="passengersIcon" class="w-4" />
         </div>
         <div class="flex items-center justify-center">
-          <button type="button" id="decrementBtn" data-input-counter-decrement="counter-input" class="bg-gray-100 hover:bg-gray-200 inline-flex items-center justify-center border rounded-md h-fit w-fit p-1">
+          <button type="button" id="mobileDecrementBtn" data-input-counter-decrement="counter-input" class="bg-gray-100 hover:bg-gray-200 inline-flex items-center justify-center border rounded-md h-fit w-fit p-1">
             <img src="./img/icons/blue/minus.svg" alt="minuesIcon" class="w-4" />
           </button>
           <input type="text" id="counter-input" data-input-counter class="shrink-0 text-blue-900 border-0 bg-transparent max-w-[2.5rem] text-center" value="1" required />
-          <button type="button" id="incrementBtn" data-input-counter-increment="counter-input" class="bg-gray-100 hover:bg-gray-200 inline-flex items-center justify-center border rounded-md h-fit w-fit p-1">
+          <button type="button" id="mobileIncrementBtn" data-input-counter-increment="counter-input" class="bg-gray-100 hover:bg-gray-200 inline-flex items-center justify-center border rounded-md h-fit w-fit p-1">
             <img src="./img/icons/blue/plus.svg" alt="plusIcon" class="w-4" />
           </button>
         </div>
@@ -353,7 +353,6 @@ document.addEventListener("click", function (e) {
 });
 
 function populateData() {
-  // === 2. Populate Tourism Types for Mobile ===
   const tourismSelect = document.getElementById("turismInput");
   const tourismTypes = TourismTypes.getAll();
 
@@ -412,8 +411,8 @@ function populateData() {
       inputOriginSearchMobile.parentElement.appendChild(ul);
     });
   }
-  const decrementBtn = document.getElementById("decrementBtn");
-  const incrementBtn = document.getElementById("incrementBtn");
+  const decrementBtn = document.getElementById("mobileDecrementBtn");
+  const incrementBtn = document.getElementById("mobileIncrementBtn");
   const counterInput = document.getElementById("counter-input");
 
   decrementBtn.addEventListener("click", () => {
