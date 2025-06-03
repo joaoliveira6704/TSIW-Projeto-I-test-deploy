@@ -108,8 +108,13 @@ window.addEventListener("load", () => {
       },
     });
   });
+});
 
+const passportBtn = document.getElementById("passportBtn");
+
+passportBtn.addEventListener("click", () => {
   const user = User.getUserLogged();
+
   const passportModalGrid = document.getElementById("passportModalGrid");
   const userCountries = user.badges;
   let regionNames = new Intl.DisplayNames(["pt"], { type: "region" });
@@ -154,6 +159,8 @@ window.addEventListener("load", () => {
     });
   });
 });
+
+passportBtn;
 
 function formatDateToLabel(dateString) {
   const [year, month, day] = dateString.split("-");

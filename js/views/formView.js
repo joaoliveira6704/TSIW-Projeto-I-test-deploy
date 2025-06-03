@@ -106,7 +106,6 @@ function renderOriginList(origins) {
   });
 
   Promise.all(fetchPromises).then((airports) => {
-    // After all fetches are done, update the DOM
     airports.forEach(({ iata, name }) => {
       airportList.insertAdjacentHTML(
         "beforeend",
@@ -250,19 +249,18 @@ function fetchAirportName(iataCode) {
 
 const searchFlightBtn = document.getElementById("searchFlightBtn");
 
-searchFlightBtn.addEventListener("click", (event) => {
-  event.preventDefault();
+searchFlightBtn.addEventListener("click", () => {
+  User.isLogged() ? sendFormQuery() : false;
+});
+
+function sendFormQuery(platform) {
   const datePicker = document.getElementById("form-datepicker");
   const selectedDate = datePicker.value;
   const origin = inputOriginSearch.value;
-
-  if (!selectedDate || !origin) {
-    alert("Por favor, preencha todos os campos.");
-    return;
-  }
+  const passengerCounter = document.getElementById("counter-input");
+  const passengersCount = passengerCounter.value;
 
   const typeOfTourism = tourismText.innerHTML;
-
-  User.setUserQuery(selectedDate, origin, typeOfTourism, 1);
+  User.setUserQuery(selectedDate, origin, typeOfTourism, passengersCount);
   location.href = "./html/tripBuilder.html";
-});
+}

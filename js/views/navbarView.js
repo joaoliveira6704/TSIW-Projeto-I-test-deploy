@@ -297,7 +297,7 @@ function populateFormContent() {
           <p>Turismo</p>
           <img src="./img/icons/blue/turism.svg" alt="turismIcon" class="w-4" />
         </div>
-        <select id="turismInput">
+        <select id="tourismInput">
         </select>
       </li>
       <li class="flex flex-col p-3 gap-4 border-b-1 border-blue-900 text-blue-900 w-[95%] mx-auto">
@@ -306,17 +306,17 @@ function populateFormContent() {
           <img src="./img/icons/blue/users.svg" alt="passengersIcon" class="w-4" />
         </div>
         <div class="flex items-center justify-center">
-          <button type="button" id="mobileDecrementBtn" data-input-counter-decrement="counter-input" class="bg-gray-100 hover:bg-gray-200 inline-flex items-center justify-center border rounded-md h-fit w-fit p-1">
+          <button type="button" id="mobileDecrementBtn" data-input-counter-decrement="mobile-counter-input" class="bg-gray-100 hover:bg-gray-200 inline-flex items-center justify-center border rounded-md h-fit w-fit p-1">
             <img src="./img/icons/blue/minus.svg" alt="minuesIcon" class="w-4" />
           </button>
-          <input type="text" id="counter-input" data-input-counter class="shrink-0 text-blue-900 border-0 bg-transparent max-w-[2.5rem] text-center" value="1" required />
-          <button type="button" id="mobileIncrementBtn" data-input-counter-increment="counter-input" class="bg-gray-100 hover:bg-gray-200 inline-flex items-center justify-center border rounded-md h-fit w-fit p-1">
+          <input type="text" id="mobile-counter-input" data-input-counter class="shrink-0 text-blue-900 border-0 bg-transparent max-w-[2.5rem] text-center" value="1" required />
+          <button type="button" id="mobileIncrementBtn" data-input-counter-increment="mobile-counter-input" class="bg-gray-100 hover:bg-gray-200 inline-flex items-center justify-center border rounded-md h-fit w-fit p-1">
             <img src="./img/icons/blue/plus.svg" alt="plusIcon" class="w-4" />
           </button>
         </div>
       </li>
       <li class="flex w-full justify-content">
-        <button type="submit" class="mx-auto bg-blue-500 px-4 py-2 rounded-sm hover:bg-blue-700">Procurar</button>
+        <button id="searchMobileBtn" class="mx-auto bg-blue-500 px-4 py-2 rounded-sm hover:bg-blue-700">Procurar</button>
       </li>
     </ul>
   `;
@@ -331,6 +331,21 @@ function populateFormContent() {
     format: "dd-mm-yyyy",
     minDate: today,
   });
+
+  const searchMobileBtn = document.getElementById("searchMobileBtn");
+  searchMobileBtn.addEventListener("click", () => {
+    sendFormQuery();
+  });
+}
+
+function sendFormQuery() {
+  const selectedDate = document.getElementById("navbar-datepicker").value;
+  const origin = document.getElementById("inputOriginSearchMobile").value;
+  const passengersCount = document.getElementById("mobile-counter-input").value;
+
+  const typeOfTourism = document.getElementById("tourismInput").value;
+  User.setUserQuery(selectedDate, origin, typeOfTourism, passengersCount);
+  location.href = "./html/tripBuilder.html";
 }
 
 function closeAndRedirect(type, section) {
@@ -392,7 +407,7 @@ document.addEventListener("click", function (e) {
 });
 
 function populateData() {
-  const tourismSelect = document.getElementById("turismInput");
+  const tourismSelect = document.getElementById("tourismInput");
   const tourismTypes = TourismTypes.getAll();
 
   tourismSelect.innerHTML = `<option disabled selected>Selecionar</option>`;
@@ -452,7 +467,7 @@ function populateData() {
   }
   const decrementBtn = document.getElementById("mobileDecrementBtn");
   const incrementBtn = document.getElementById("mobileIncrementBtn");
-  const counterInput = document.getElementById("counter-input");
+  const counterInput = document.getElementById("mobile-counter-input");
 
   decrementBtn.addEventListener("click", () => {
     let value = parseInt(counterInput.value) || 1;
