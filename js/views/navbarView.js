@@ -218,7 +218,16 @@ function populateProfileContent() {
             class="flex hover:bg-gray-300 color-primary cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
           >
             <span>Packs e Ofertas</span>
-            <img src="./img/icons/blue/coins.svg" alt="Log Out" class="w-4 h-4" />
+            <img src="./img/icons/blue/coins.svg" alt="Packs Offers" class="w-4 h-4" />
+          </button>
+        </li>
+        <li>
+          <button
+            id="aboutBtnMobile"
+            class="flex hover:bg-gray-300 color-primary cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
+          >
+            <span>Sobre Nós</span>
+            <img src="./img/icons/blue/globe.svg" alt="About Us" class="w-4 h-4" />
           </button>
         </li>
         <li>
@@ -227,7 +236,7 @@ function populateProfileContent() {
             class="flex hover:bg-gray-300 color-primary cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
           >
             <span>Contactos</span>
-            <img src="./img/icons/blue/phone.svg" alt="Log Out" class="w-4 h-4" />
+            <img src="./img/icons/blue/phone.svg" alt="Contact Us" class="w-4 h-4" />
           </button>
         </li>
         <li id="logoutListSection" class="hover:bg-gray-300">
@@ -245,6 +254,9 @@ function populateProfileContent() {
   });
   contactsBtnMobile.addEventListener("click", () => {
     closeAndRedirect("mobile", "#contactsSect");
+  });
+  document.getElementById("aboutBtnMobile").addEventListener("click", () => {
+    closeAndRedirect("mobile", "#aboutSect");
   });
 
   if (User.isAdmin(User.getUserLogged())) {
@@ -347,6 +359,10 @@ function sendFormQuery() {
   User.setUserQuery(selectedDate, origin, typeOfTourism, passengersCount);
   location.href = "./html/tripBuilder.html";
 }
+
+document.getElementById("aboutBtn").addEventListener("click", () => {
+  closeAndRedirect("desktop", "#aboutSect");
+});
 
 function closeAndRedirect(type, section) {
   if (type == "mobile") {

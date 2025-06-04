@@ -123,22 +123,6 @@
                     />
                   </button>
                 </li>
-                <li
-                  id="logoutListSection"
-                  class="hover:bg-gray-300 first:rounded-t-xl last:rounded-b-xl"
-                >
-                  <button
-                    id="logoutBtn"
-                    class="flex cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
-                  >
-                    <span>Terminar Sessão</span>
-                    <img
-                      src="./img/icons/blue/log-out.svg"
-                      alt="Log Out"
-                      class="w-4 h-4"
-                    />
-                  </button>
-                </li>
                 <li>
                   <button
                     id="packsOffersBtn"
@@ -154,12 +138,41 @@
                 </li>
                 <li>
                   <button
+                    id="aboutBtn"
+                    class="flex hover:bg-gray-300 cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
+                  >
+                    <span>Sobre Nós</span>
+                    <img
+                      src="./img/icons/blue/globe.svg"
+                      alt="Log Out"
+                      class="w-4 h-4"
+                    />
+                  </button>
+                </li>
+                <li>
+                  <button
                     id="contactsBtn"
                     class="flex hover:bg-gray-300 cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
                   >
                     <span>Contactos</span>
                     <img
                       src="./img/icons/blue/phone.svg"
+                      alt="Log Out"
+                      class="w-4 h-4"
+                    />
+                  </button>
+                </li>
+                <li
+                  id="logoutListSection"
+                  class="hover:bg-gray-300 first:rounded-t-xl last:rounded-b-xl"
+                >
+                  <button
+                    id="logoutBtn"
+                    class="flex cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
+                  >
+                    <span>Terminar Sessão</span>
+                    <img
+                      src="./img/icons/blue/log-out.svg"
                       alt="Log Out"
                       class="w-4 h-4"
                     />
@@ -345,7 +358,9 @@
         id="packsOffers"
         class="h-screen snap-start flex flex-col justify-center items-center"
       >
-        <h2 class="text-4xl mb-10 font-title">Packs e Ofertas</h2>
+        <h2 class="text-4xl mb-10 font-bold font-title leading-snug">
+          PACKS E OFERTAS
+        </h2>
 
         <!-- Mobile Swiper -->
         <div class="block sm:hidden swiper mySwiper swiper-mobile">
@@ -375,7 +390,9 @@
         class="h-screen bg-none bg-blue-950 snap-start flex flex-col justify-center items-center"
       >
         <div class="max-w-[1200px] max-h-full text-center">
-          <h2 class="text-4xl mb-10 mt-5 font-title">Sobre Nós</h2>
+          <h2 class="text-4xl mb-10 mt-5 font-bold font-title leading-snug">
+            SOBRE NÓS
+          </h2>
           <div class="flex gap-10 text-center md:text-left px-0 md:px-4">
             <!-- Left Content -->
             <div class="flex-1">
@@ -525,7 +542,9 @@
         id="contactsSect"
         class="h-screen snap-start flex flex-col justify-center items-center"
       >
-        <h2 class="text-4xl mb-10 font-title">Contactos</h2>
+        <h2 class="text-4xl mb-10 font-bold font-title leading-snug">
+          CONTACTOS
+        </h2>
         <div class="swiper mySwiper">
           <div id="swiperPacks" class="swiper-wrapper"></div>
         </div>

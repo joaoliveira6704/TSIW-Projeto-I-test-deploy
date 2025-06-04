@@ -1,6 +1,7 @@
 import * as Trips from "../models/TripModel.js";
 import * as Helper from "../models/modelHelper.js";
 import * as User from "../models/UserModel.js";
+import * as Flights from "../models/flightModel.js";
 
 Trips.init();
 User.init();
@@ -28,12 +29,12 @@ window.addEventListener("load", () => {
             <img src="${image}" alt="${
             pack.name
           }" class="w-full h-auto rounded-t-lg" />
-            <div class="absolute backdrop-blur-sm bottom-0 left-0 p-5 w-full h-30 bg-white bg-opacity-80 text-black p-2">
+            <div class="absolute backdrop-blur-sm bottom-0 left-0 p-5 w-full h-30 bg-white text-black p-2">
                 <div class="flex gap-6 items-center font-space font-light mb-3">
                     <p class="text-lg">${pack.name}</p>
-                    <p class="text-sm">${formatDateToLabel(
+                    <p class="text-sm">${Helper.formatDateToLabel(
                       pack.startDate
-                    )} - ${formatDateToLabel(pack.endDate)}</p>
+                    )} - ${Helper.formatDateToLabel(pack.endDate)}</p>
                 </div>
                 <div class="color-primary font-light">${pack.price}€</div>
             </div>
@@ -46,34 +47,41 @@ window.addEventListener("load", () => {
             pack.name
           }" class="w-full h-[220px] object-cover rounded-t-lg" />
             <div class="bg-white bg-opacity-90 p-4 color-primary flex flex-col justify-between h-full w-full backdrop-blur-md">
-
               <div>
                 <div class="flex gap-4 mb-5 items-center justify-between">
                   <div>
                     <p class="font-space font-light text-lg">${pack.name}</p>
-                    <p class="font-space font-light text-sm">${formatDateToLabel(
+                    <p class="font-space font-light text-sm">${Helper.formatDateToLabel(
                       pack.startDate
-                    )} - ${formatDateToLabel(pack.endDate)}</p>
+                    )} - ${Helper.formatDateToLabel(pack.endDate)}</p>
                   </div>
                   <div class="text-sm font-light">
-                    <ul>
-                      <li>location</li>
-                      <li>location</li>
-                      <li>location</li>
-                      <li>location</li>
+                    <ul id="locationCardText-${pack.id}">
                     </ul>
                   </div>
                 </div>
               </div>
-
               <div class="flex justify-between items-center text-primary font-light">
                 <span>${pack.price}€</span>
                 <button class="btn-std cursor-pointer">Ver Pack</button>
               </div>
-
             </div>
           </div>`
         );
+
+        let locations = [];
+        pack.flights.forEach((flight) => {
+          const flightObj = Flights.getFlightById(flight);
+          if (!flightObj) return;
+          locations.push(flightObj.origin, flightObj.destination);
+        });
+        locations = [...new Set(locations)];
+
+        locations.forEach((location) => {
+          document
+            .getElementById(`locationCardText-${pack.id}`)
+            .insertAdjacentHTML("beforeend", `<li>${location}</li>`);
+        });
       });
   });
 
@@ -163,13 +171,6 @@ passportBtn.addEventListener("click", () => {
   });
 });
 
-function formatDateToLabel(dateString) {
-  const [year, month, day] = dateString.split("-");
-  const currentYear = new Date().getFullYear().toString();
-
-  if (year === currentYear) {
-    return `${day}/${month}`;
-  } else {
-    return `${day}/${month}/${year}`;
-  }
-}
+document.getElementById("logo").addEventListener("click", () => {
+  location.href = "#landingSect";
+});
