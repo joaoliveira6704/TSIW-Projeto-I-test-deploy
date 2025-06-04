@@ -793,7 +793,7 @@ function initdata() {
         flights: [3],
       },
       {
-        id: 2,
+        id: 3,
         name: "Semana na Suíça",
         typesOfTourism: [1, 4],
         origin: "OPO",
@@ -808,7 +808,7 @@ function initdata() {
         flights: [2],
       },
       {
-        id: 3,
+        id: 4,
         name: "Visita ao Iceberg",
         typesOfTourism: [1, 4],
         origin: "OPO",

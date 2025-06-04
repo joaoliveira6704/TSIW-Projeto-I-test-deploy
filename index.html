@@ -370,7 +370,157 @@
           ></div>
         </div>
       </section>
+      <section
+        id="aboutSect"
+        class="h-screen bg-none bg-blue-950 snap-start flex flex-col justify-center items-center"
+      >
+        <div class="max-w-[1200px] max-h-full text-center">
+          <h2 class="text-4xl mb-10 mt-5 font-title">Sobre Nós</h2>
+          <div class="flex gap-10 text-center md:text-left px-0 md:px-4">
+            <!-- Left Content -->
+            <div class="flex-1">
+              <h2
+                class="text-md xs:text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white font-bold leading-snug mb-5"
+              >
+                A REVOLUCIONAR A TUA <br class="hidden lg:block" /><span
+                  class="underline"
+                  >FORMA DE VIAJAR</span
+                >
+              </h2>
+              <div
+                class="items-center md:items-left justify-between w-full block px-5 md:px-0"
+              >
+                <p
+                  class="text-white text-center md:text-justify text-base leading-relaxed mb-6 max-w-full"
+                >
+                  A Compass simplifica as tuas viagens, combinando tecnologia e
+                  paixão por explorar. Descobre destinos incríveis com total
+                  confiança e praticidade.
+                </p>
+                <!-- Stats -->
+                <div
+                  class="flex justify-around mb-6 md:text-center md:justify-between max-w-full md:max-w-xl"
+                >
+                  <div class="px-3">
+                    <p class="text-blue-500 font-bold text-lg">200+</p>
+                    <p class="text-gray-400 text-sm">Viagens Compradas</p>
+                  </div>
+                  <div class="px-3">
+                    <p class="text-blue-500 font-bold text-lg">10+</p>
+                    <p class="text-gray-400 text-sm">Utilizadores Ativos</p>
+                  </div>
+                  <div class="px-3">
+                    <p class="text-blue-500 font-bold text-lg">4.9</p>
+                    <p class="text-gray-400 text-sm">Rating</p>
+                  </div>
+                  <div class="px-3">
+                    <p class="text-blue-500 font-bold text-lg">10+</p>
+                    <p class="text-gray-400 text-sm">Packs</p>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="btn-std bg-white hover:outline hover:outline-red-500 hover:bg-gray-200 border-blue-500 text-blue-500"
+                onclick="location.href='#contactsSect'"
+              >
+                Contacta-nos
+              </button>
+            </div>
+            <!-- Right Image -->
+            <div class="flex-1 hidden md:block">
+              <img
+                src="https://images.unsplash.com/photo-1491555103944-7c647fd857e6?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                alt="Office"
+                class="rounded-xl w-auto h-full object-cover"
+              />
+            </div>
+          </div>
 
+          <!-- Features Section -->
+          <div class="hidden md:grid mt-10 grid grid-cols-3 gap-6 px-0 md:px-4">
+            <div class="border border-[#E5E7EB] rounded-xl p-4 lg:p-6">
+              <div class="flex items-start gap-3 mb-3">
+                <h3 class="font-semibold text-base">
+                  Porquê escolher a Compass?
+                </h3>
+              </div>
+              <p class="text-sm leading-relaxed text-justify">
+                Viajar deve ser simples e seguro. Na Compass, oferecemos packs
+                exclusivos, ferramentas inteligentes e apoio dedicado para que
+                planeies a tua aventura sem complicações.
+              </p>
+            </div>
+            <div class="border border-[#E5E7EB] rounded-xl p-4 lg:p-6">
+              <div class="flex items-start gap-3 mb-3">
+                <h3 class="font-semibold text-base">A nossa visão</h3>
+              </div>
+              <p class="text-sm leading-relaxed text-justify">
+                Queremos inspirar pessoas a explorar o mundo, criando memórias e
+                experiências únicas. Trabalhamos para tornar cada viagem mais
+                acessível, personalizada e inesquecível.
+              </p>
+            </div>
+            <div class="border border-[#E5E7EB] rounded-xl p-4 lg:p-6">
+              <div class="flex items-start gap-3 mb-3">
+                <h3 class="font-semibold text-base">A nossa equipa</h3>
+              </div>
+              <p class="text-sm leading-relaxed text-justify">
+                Somos apaixonados por viagens e tecnologia. A nossa equipa une
+                experiência, criatividade e proximidade para te ajudar em cada
+                etapa da tua jornada.
+              </p>
+            </div>
+          </div>
+
+          <!-- Features Section Mobile -->
+          <!-- Swiper -->
+          <div
+            class="block md:hidden swiper mobileFeatures px-5 mt-10 w-[95vw] max-w-[500px] mx-auto h-fit"
+          >
+            <div class="swiper-wrapper">
+              <div
+                class="swiper-slide border border-[#E5E7EB] rounded-xl p-6 pb-8"
+              >
+                <div class="flex items-start gap-3 mb-3">
+                  <h3 class="font-semibold text-base">
+                    Porquê escolher a Compass?
+                  </h3>
+                </div>
+                <p class="text-sm leading-relaxed text-justify">
+                  Viajar deve ser simples e seguro. Na Compass, oferecemos packs
+                  exclusivos, ferramentas inteligentes e apoio dedicado para que
+                  planeies a tua aventura sem complicações.
+                </p>
+              </div>
+              <div
+                class="swiper-slide border border-[#E5E7EB] rounded-xl p-6 pb-8"
+              >
+                <div class="flex items-start gap-3 mb-3">
+                  <h3 class="font-semibold text-base">A nossa visão</h3>
+                </div>
+                <p class="text-sm leading-relaxed text-justify">
+                  Queremos inspirar pessoas a explorar o mundo, criando memórias
+                  e experiências únicas. Trabalhamos para tornar cada viagem
+                  mais acessível, personalizada e inesquecível.
+                </p>
+              </div>
+              <div
+                class="swiper-slide border border-[#E5E7EB] rounded-xl p-6 pb-8"
+              >
+                <div class="flex items-start gap-3 mb-3">
+                  <h3 class="font-semibold text-base">A nossa equipa</h3>
+                </div>
+                <p class="text-sm leading-relaxed text-justify">
+                  Somos apaixonados por viagens e tecnologia. A nossa equipa une
+                  experiência, criatividade e proximidade para te ajudar em cada
+                  etapa da tua jornada.
+                </p>
+              </div>
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+        </div>
+      </section>
       <section
         id="contactsSect"
         class="h-screen snap-start flex flex-col justify-center items-center"
@@ -743,5 +893,17 @@
     <script type="module" src="./js/views/NavbarView.js"></script>
     <script type="module" src="./js/views/mainView.js"></script>
     <script type="module" src="./js/models/ModelHelper.js"></script>
+
+    <script>
+      var swiper = new Swiper(".mobileFeatures", {
+        pagination: {
+          el: ".swiper-pagination",
+        },
+        autoplay: true,
+        loop: true,
+        spaceBetween: 30,
+        setWrapperSize: true,
+      });
+    </script>
   </body>
 </html>
