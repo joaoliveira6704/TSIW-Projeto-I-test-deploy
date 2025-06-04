@@ -222,8 +222,29 @@
         id="landingSect"
         class="h-screen snap-start flex flex-col justify-center items-center"
       >
-        <h1 class="hidden md:block text-6xl text-center">
-          Your Path<br />Our Compass
+        <div
+          class="hidden md:block video-docker absolute top-0 left-0 w-full h-full overflow-hidden"
+        >
+          <video
+            class="min-w-full min-h-full blur-sm absolute object-cover"
+            src="./img/media/lookat.mp4"
+            type="video/mp4"
+            autoplay
+            muted
+            loop
+          ></video>
+        </div>
+        <h1
+          class="video-content space-y-2 z-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl p-6"
+        >
+          <span class="block text-white">
+            Your path<br />
+            <span
+              class="text-transparent bg-clip-text bg-gradient-to-tr to-red-400 from-blue-600"
+            >
+              Our compass
+            </span>
+          </span>
         </h1>
         <!-- Marquee -->
         <div class="marquee-container block md:hidden">
@@ -551,14 +572,12 @@
     >
       <div class="relative p-4 w-full max-w-2xl max-h-full">
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+        <div class="relative bg-white rounded-lg shadow-sm">
           <!-- Modal header -->
           <div
             class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200"
           >
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-              Passaporte
-            </h3>
+            <h3 class="text-xl font-semibold text-blue-950">Passaporte</h3>
             <button
               type="button"
               class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"

@@ -10,6 +10,29 @@ export function getAllUsers() {
   return users;
 }
 
+// Returns user object by id
+export function getUserById(id) {
+  const numId = typeof id === "string" ? Number(id) : id;
+  return users.find((user) => user.id === numId) || null;
+}
+
+// Updates a user by id
+export function updateUser(id, { name, email, password, isAdmin }) {
+  const numId = typeof id === "string" ? Number(id) : id;
+  const user = users.find((user) => user.id === numId);
+  if (users.some((user) => user.email === email && user.id !== numId)) {
+    throw Error(`Já existe um utilizador com o email "${email}"!`);
+  }
+  user.name = name;
+  user.email = email;
+  if (password !== "") {
+    user.password = password;
+  }
+  user.isAdmin = isAdmin === true || isAdmin === "true";
+
+  localStorage.setItem("users", JSON.stringify(users));
+}
+
 // Add User
 export function add(name, email, password, passwordConfirm) {
   if (password !== passwordConfirm) {

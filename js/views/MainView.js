@@ -116,51 +116,52 @@ passportBtn.addEventListener("click", () => {
   const user = User.getUserLogged();
 
   const passportModalGrid = document.getElementById("passportModalGrid");
-  const userCountries = user.badges;
   let regionNames = new Intl.DisplayNames(["pt"], { type: "region" });
   passportModalGrid.innerHTML = "";
-  userCountries.forEach((country) => {
-    passportModalGrid.insertAdjacentHTML(
-      "beforeend",
-      `
-      <div class="has-tooltip col-span-2 sm:col-span-1 p-1">
-      <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>${regionNames.of(
-        country.toUpperCase()
-      )}</span>
-        <img 
-          class="w-8 h-8 object-contain transition-all" 
-          src="./img/flags/${country.toLowerCase()}.svg"
-          alt="${country}"
-          title="${country}"
-        >
-      </div>`
-    );
-  });
-  Helper.getAllCountries().then((countries) => {
-    console.log(countries);
 
+  let userCountries = [];
+  if (user && user.badges) {
+    userCountries = user.badges;
+    userCountries.forEach((country) => {
+      passportModalGrid.insertAdjacentHTML(
+        "beforeend",
+        `
+        <div class="has-tooltip col-span-2 sm:col-span-1 p-1">
+        <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>${regionNames.of(
+          country.toUpperCase()
+        )}</span>
+          <img 
+            class="w-8 h-8 object-contain transition-all" 
+            src="./img/flags/${country.toLowerCase()}.svg"
+            alt="${country}"
+            title="${country}"
+          >
+        </div>`
+      );
+    });
+  }
+
+  Helper.getAllCountries().then((countries) => {
     countries.forEach((country) => {
       if (!userCountries.includes(country.toLowerCase())) {
         passportModalGrid.insertAdjacentHTML(
           "beforeend",
           `<div class="has-tooltip col-span-2 sm:col-span-1 p-1">
-          <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>${regionNames.of(
-            country.toUpperCase()
-          )}</span>
-        <img 
-          class="w-8 h-8 object-contain grayscale hover:grayscale-0 transition-all" 
-          src="./img/flags/${country.toLowerCase()}.svg"
-          alt="${country}"
-          title="${country}"
-        >
-      </div>`
+            <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>${regionNames.of(
+              country.toUpperCase()
+            )}</span>
+          <img 
+            class="w-8 h-8 object-contain grayscale hover:grayscale-0 transition-all" 
+            src="./img/flags/${country.toLowerCase()}.svg"
+            alt="${country}"
+            title="${country}"
+          >
+        </div>`
         );
       }
     });
   });
 });
-
-passportBtn;
 
 function formatDateToLabel(dateString) {
   const [year, month, day] = dateString.split("-");

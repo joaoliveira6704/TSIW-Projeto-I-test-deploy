@@ -7,6 +7,23 @@ export function init() {
     : [];
 }
 
+// Add a Tourism Type
+export function add(name) {
+  let tourismTypes = getAll();
+  if (
+    tourismTypes.some(
+      (type) => String(type.name).toLowerCase() === name.toLowerCase()
+    )
+  ) {
+    throw new Error(`Já existe um tipo de turismo com o nome "${name}"!`);
+  }
+
+  const id = Date.now();
+  const newType = new TourismType(id, name);
+  tourismTypes.push(newType);
+  localStorage.setItem("tourismTypes", JSON.stringify(tourismTypes));
+}
+
 export function getAll() {
   return tourismTypes;
 }

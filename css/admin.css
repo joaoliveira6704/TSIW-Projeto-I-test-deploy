@@ -13,17 +13,19 @@
 
 body {
   font-family: "Space Mono", sans-serif;
+  background: none;
+  background-color: #fff;
 }
 
 footer {
-    font-family: 'Space Mono', sans-serif;
-    font-size: 1rem;
-    background-color: #39578a;
-  }
+  font-family: "Space Mono", sans-serif;
+  font-size: 1rem;
+  background-color: #39578a;
+}
 
-  h1 {
-    font-family: 'Space Mono', sans-serif;
-    font-weight: bold;
-    font-size: 2rem;
-    color: #111;
-  }
+h1 {
+  font-family: "Space Mono", sans-serif;
+  font-weight: bold;
+  font-size: 2rem;
+  color: #111;
+}

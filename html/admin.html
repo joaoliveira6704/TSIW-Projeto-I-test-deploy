@@ -10,13 +10,10 @@
       type="image/x-icon"
     />
     <!-- CSS -->
-    <link rel="stylesheet" href="../css/admin.css" />
     <link rel="stylesheet" href="../css/style.css" />
-    <!-- Tailwind -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <link rel="stylesheet" href="../css/admin.css" />
   </head>
-  <body class="hidden bg-gray-100 flex flex-col min-h-full">
+  <body class="hidden bg-gray-100! flex flex-col min-h-full">
     <div class="container mx-auto p-4 max-w-4xl flex-grow">
       <section>
         <button
@@ -68,6 +65,8 @@
           <button
             id="userAddBtn"
             class="btn-std cursor-pointer mb-2 hover:bg-gray-200"
+            data-modal-target="userAddModal"
+            data-modal-toggle="userAddModal"
           >
             Adicionar Utilizador
           </button>
@@ -77,138 +76,8 @@
           >
             Filtrar Admin
           </button>
-          <!-- Modal Area -->
-
-          <!-- User modals -->
           <div
-            id="userAddModal"
-            tabindex="-1"
-            aria-hidden="true"
-            class="hidden backdrop-blur-sm bg-transparent overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
-          >
-            <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-              <!-- Modal content -->
-              <div
-                class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5"
-              >
-                <!-- Modal header -->
-                <div
-                  class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600"
-                >
-                  <h3
-                    class="text-lg font-semibold text-gray-900 dark:text-white"
-                  >
-                    Adicionar Utilizador
-                  </h3>
-                  <button
-                    type="button"
-                    class="text-gray-400 cursor-pointer bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                    data-modal-toggle="userAddModal"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      class="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clip-rule="evenodd"
-                      ></path>
-                    </svg>
-                    <span class="sr-only">Fechar</span>
-                  </button>
-                </div>
-                <!-- Modal body -->
-                <form id="userAdd">
-                  <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                    <div>
-                      <label
-                        for="name"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Nome</label
-                      >
-                      <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Nome do utilizador..."
-                        required=""
-                      />
-                    </div>
-                    <div>
-                      <label
-                        for="email"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Email</label
-                      >
-                      <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Email do utilizador..."
-                        required=""
-                      />
-                    </div>
-                    <div>
-                      <label
-                        for="password"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Password</label
-                      >
-                      <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="••••••••••"
-                        required=""
-                      />
-                    </div>
-                    <div>
-                      <label
-                        for="passwordConfirm"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Confirmar Password</label
-                      >
-                      <input
-                        type="password"
-                        name="passwordConfirm"
-                        id="passwordConfirm"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="••••••••••"
-                        required=""
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      class="btn-std cursor-pointer flex hover:bg-gray-200"
-                    >
-                      <svg
-                        class="mr-1 -ml-1 w-6 h-6"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                          clip-rule="evenodd"
-                        ></path>
-                      </svg>
-                      Adicionar Utilizador
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div
-            class="p-5 border border-gray-200 dark:border-gray-700 max-w-full h-fit max-h-[250px]"
+            class="p-5 border border-gray-200 dark:border-gray-700 max-w-full max-h-[250px] h-full overflow-y-auto"
           >
             <table class="table-auto w-full border-spacing-x-4">
               <thead>
@@ -223,6 +92,134 @@
 
               <tbody id="userTableList" class="space-y-2"></tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- User Modal Area -->
+
+        <!-- User Add -->
+        <div
+          id="userAddModal"
+          tabindex="-1"
+          aria-hidden="true"
+          class="hidden backdrop-blur-sm bg-transparent overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
+        >
+          <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+            <!-- Modal content -->
+            <div class="relative p-4 bg-blue-950 rounded-lg shadow sm:p-5">
+              <!-- Modal header -->
+              <div
+                class="flex justify-between items-center pb-4 mb-4 rounded-t border-white sm:mb-5 border-b"
+              >
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                  Adicionar Utilizador
+                </h3>
+                <button
+                  type="button"
+                  class="text-gray-400 cursor-pointer bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  data-modal-target="userAddModal"
+                  data-modal-toggle="userAddModal"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  <span class="sr-only">Fechar</span>
+                </button>
+              </div>
+              <!-- Modal body -->
+              <form id="userAddForm">
+                <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                  <div>
+                    <label
+                      for="name"
+                      class="block mb-2 text-sm font-medium dark:text-white"
+                      >Nome</label
+                    >
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
+                      placeholder="Nome do utilizador..."
+                      required=""
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="email"
+                      class="block mb-2 text-sm font-medium text-white"
+                      >Email</label
+                    >
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
+                      placeholder="Email do utilizador..."
+                      required=""
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="password"
+                      class="block mb-2 text-sm font-medium text-white"
+                      >Password</label
+                    >
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
+                      placeholder="••••••••••"
+                      required=""
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="passwordConfirm"
+                      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >Confirmar Password</label
+                    >
+                    <input
+                      type="password"
+                      name="passwordConfirm"
+                      id="passwordConfirm"
+                      class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
+                      placeholder="••••••••••"
+                      required=""
+                    />
+                  </div>
+                  <button
+                    id="addUserBtn"
+                    class="btn-std cursor-pointer border-white! text-white! flex hover:bg-gray-400"
+                  >
+                    <svg
+                      class="mr-1 -ml-1 w-6 h-6"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Adicionar Utilizador
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
 
@@ -265,7 +262,7 @@
             Adicionar Voo
           </button>
           <div
-            class="p-5 border border-gray-200 dark:border-gray-700 max-w-full h-fit max-h-[250px]"
+            class="p-5 border border-gray-200 dark:border-gray-700 max-w-full h-[250px] overflow-y-auto"
           >
             <table class="table-fixed w-full border-spacing-y-2">
               <thead>
@@ -278,7 +275,6 @@
                   <th class="text-right">Opções</th>
                 </tr>
               </thead>
-
               <tbody id="flightTableList" class="space-y-2"></tbody>
             </table>
           </div>
@@ -318,6 +314,8 @@
           <button
             id="addTourismType"
             class="btn-std cursor-pointer mb-2 hover:bg-gray-200"
+            data-modal-target="tourismAddModal"
+            data-modal-toggle="tourismAddModal"
           >
             Adicionar Tipo de Turismo
           </button>
@@ -337,6 +335,91 @@
             </table>
           </div>
         </div>
+
+        <!-- TourismType Modal Area -->
+
+        <!-- Tourism Type Add -->
+        <div
+          id="tourismAddModal"
+          tabindex="-1"
+          aria-hidden="true"
+          class="hidden backdrop-blur-sm bg-transparent overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
+        >
+          <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+            <!-- Modal content -->
+            <div class="relative p-4 rounded-lg shadow bg-blue-950 sm:p-5">
+              <!-- Modal header -->
+              <div
+                class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 border-white"
+              >
+                <h3 class="text-lg font-semibold text-white">
+                  Adicionar Tipo de Turismo
+                </h3>
+                <button
+                  type="button"
+                  class="text-gray-400 cursor-pointer bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  data-modal-target="tourismAddModal"
+                  data-modal-toggle="tourismAddModal"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  <span class="sr-only">Fechar</span>
+                </button>
+              </div>
+              <!-- Modal body -->
+              <form id="tourismTypeAddForm">
+                <div class="flex flex-col gap-4 mb-4">
+                  <div>
+                    <label
+                      for="name"
+                      class="block mb-2 text-sm font-medium text-white"
+                      >Nome</label
+                    >
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
+                      placeholder="Nome do tipo de turismo..."
+                      required=""
+                    />
+                  </div>
+
+                  <button
+                    id="addTourismTypeBtn"
+                    class="btn-std cursor-pointer border-white! text-white! flex hover:bg-gray-400"
+                  >
+                    <svg
+                      class="mr-1 -ml-1 w-6 h-6"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Adicionar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
         <h2 id="accordion-collapse-heading-4">
           <button
             type="button"
@@ -372,6 +455,8 @@
           <button
             id="addPack"
             class="btn-std cursor-pointer mb-2 hover:bg-gray-200"
+            data-modal-target="packAddModal"
+            data-modal-toggle="packAddModal"
           >
             Adicionar Pack
           </button>
@@ -394,6 +479,84 @@
           </div>
         </div>
       </section>
+    </div>
+
+    <!-- Packs Modal Area -->
+
+    <!-- Pack Add -->
+    <div
+      id="packAddModal"
+      tabindex="-1"
+      aria-hidden="true"
+      class="hidden backdrop-blur-sm bg-transparent overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
+    >
+      <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="relative p-4 bg-blue-950 rounded-lg shadow sm:p-5">
+          <!-- Modal header -->
+          <div
+            class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-white"
+          >
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+              Adicionar Tipo de Turismo
+            </h3>
+            <button
+              type="button"
+              class="text-gray-400 cursor-pointer bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              data-modal-target="packAddModal"
+              data-modal-toggle="packAddModal"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span class="sr-only">Fechar</span>
+            </button>
+          </div>
+          <!-- Modal body -->
+          <form id="addPackForm">
+            <div>
+              <label
+                for="packTripSelect"
+                class="block mb-2 text-white text-sm font-medium"
+                >Escolha uma viagem existente</label
+              >
+              <select
+                id="packTripSelect"
+                class="w-full p-2 border border-white text-white rounded"
+              ></select>
+            </div>
+            <div class="mt-3">
+              <label
+                for="packPrice"
+                class="block mb-2 text-sm text-white font-medium"
+                >Novo preço do pack</label
+              >
+              <input
+                type="number"
+                id="packPrice"
+                class="w-full p-2 border border-white rounded text-white"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              class="btn-std cursor-pointer border-white! text-white! flex hover:bg-gray-400 mt-4"
+            >
+              Adicionar Pack
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
 
     <footer class="bg-blue-900 text-white py-6 border-t border-black">
@@ -470,6 +633,9 @@
         </div>
       </div>
     </footer>
+    <!-- Tailwind -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <!-- Scripts -->
     <script type="module" src="../js/views/AdminView.js"></script>
   </body>

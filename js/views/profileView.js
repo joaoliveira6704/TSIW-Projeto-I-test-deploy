@@ -1,5 +1,6 @@
 import * as User from "../models/UserModel.js";
 import * as Trips from "../models/TripModel.js";
+import * as Helper from "../models/ModelHelper.js";
 
 Trips.init();
 
@@ -67,7 +68,8 @@ window.addEventListener("load", (event) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        const image = data.photos[1]?.src.medium || "../img/images/fallback.jpg";
+        const image =
+          data.photos[1]?.src.medium || "../img/images/fallback.jpg";
 
         favoritesWrapper.insertAdjacentHTML(
           "beforeend",
@@ -109,7 +111,8 @@ window.addEventListener("load", (event) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          const image = data.photos[1]?.src.medium || "../img/images/fallback.jpg";
+          const image =
+            data.photos[1]?.src.medium || "../img/images/fallback.jpg";
 
           tripsWrapper.insertAdjacentHTML(
             "beforeend",
@@ -124,9 +127,9 @@ window.addEventListener("load", (event) => {
             </div>
             <div class="w-3/5 p-3 flex flex-col justify-center">
               <p class="font-bold text-gray-800 truncate">${trip.name}</p>
-              <p class="text-sm text-gray-600">${formatDateToLabel(
+              <p class="text-sm text-gray-600">${Helper.formatDateToLabel(
                 trip.startDate
-              )}<br>${formatDateToLabel(trip.endDate)}</p>
+              )}<br>${Helper.formatDateToLabel(trip.endDate)}</p>
             </div>
           </div></button>`
           );
@@ -153,13 +156,59 @@ window.addEventListener("load", (event) => {
   }
 });
 
-function formatDateToLabel(dateString) {
-  const [year, month, day] = dateString.split("-");
-  const currentYear = new Date().getFullYear().toString();
+const passportBtns = document.querySelectorAll(
+  '[data-modal-target="passport-modal"]'
+);
 
-  if (year === currentYear) {
-    return `${day}/${month}`;
-  } else {
-    return `${day}/${month}/${year}`;
-  }
-}
+passportBtns.forEach((passportBtn) => {
+  passportBtn.addEventListener("click", () => {
+    const user = User.getUserLogged();
+
+    const passportModalGrid = document.getElementById("passportModalGrid");
+    let regionNames = new Intl.DisplayNames(["pt"], { type: "region" });
+    passportModalGrid.innerHTML = "";
+
+    let userCountries = [];
+    if (user && user.badges) {
+      userCountries = user.badges;
+      userCountries.forEach((country) => {
+        passportModalGrid.insertAdjacentHTML(
+          "beforeend",
+          `
+          <div class="has-tooltip col-span-2 sm:col-span-1 p-1">
+          <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>${regionNames.of(
+            country.toUpperCase()
+          )}</span>
+            <img 
+              class="w-8 h-8 object-contain transition-all" 
+              src="../img/flags/${country.toLowerCase()}.svg"
+              alt="${country}"
+              title="${country}"
+            >
+          </div>`
+        );
+      });
+    }
+
+    Helper.getAllCountries().then((countries) => {
+      countries.forEach((country) => {
+        if (!userCountries.includes(country.toLowerCase())) {
+          passportModalGrid.insertAdjacentHTML(
+            "beforeend",
+            `<div class="has-tooltip col-span-2 sm:col-span-1 p-1">
+                <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>${regionNames.of(
+                  country.toUpperCase()
+                )}</span>
+              <img 
+                class="w-8 h-8 object-contain grayscale hover:grayscale-0 transition-all" 
+                src="../img/flags/${country.toLowerCase()}.svg"
+                alt="${country}"
+                title="${country}"
+              >
+            </div>`
+          );
+        }
+      });
+    });
+  });
+});
