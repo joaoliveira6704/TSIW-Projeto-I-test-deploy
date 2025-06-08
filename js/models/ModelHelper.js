@@ -1,7 +1,7 @@
 let countriesData;
 
 export function getAllCountries() {
-  return fetch("https://restcountries.com/v3.1/all")
+  return fetch("https://restcountries.com/v3.1/all?fields=cca2,continents")
     .then((response) => response.json())
     .then((data) => {
       countriesData = data;
