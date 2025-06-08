@@ -1,7 +1,12 @@
+let countriesData;
+
 export function getAllCountries() {
   return fetch("https://restcountries.com/v3.1/all")
     .then((response) => response.json())
-    .then((data) => data.map((country) => country.cca2));
+    .then((data) => {
+      countriesData = data;
+      return data;
+    });
 }
 
 export function formatDateToLabel(dateString) {

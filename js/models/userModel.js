@@ -33,6 +33,15 @@ export function updateUser(id, { name, email, password, isAdmin }) {
   localStorage.setItem("users", JSON.stringify(users));
 }
 
+// Updates the logged user
+export function updateLoggedUser(id) {
+  const user = users.find((u) => String(u.id) === String(id));
+  if (!user) throw Error("Utilizador não encontrado!");
+
+  localStorage.setItem("loggedUser", JSON.stringify(user));
+  sessionStorage.setItem("loggedUser", JSON.stringify(user));
+}
+
 // Add User
 export function add(name, email, password, passwordConfirm) {
   if (password !== passwordConfirm) {

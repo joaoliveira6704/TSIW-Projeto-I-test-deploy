@@ -3,6 +3,7 @@ import * as TourismTypes from "../models/TourismtypeModel.js";
 import * as Flights from "../models/flightModel.js";
 import * as Trips from "../models/TripModel.js";
 
+// Inicializa os dados das várias entidades
 User.init();
 TourismTypes.init();
 Flights.init();
@@ -10,23 +11,27 @@ Trips.init();
 
 const body = document.querySelector("body");
 
+// Seletores das tabelas na página de admin
 const userTableList = document.getElementById("userTableList");
 const tourismTypeTableList = document.getElementById("tourismTypeList");
 const flightTableList = document.getElementById("flightTableList");
 const packsTableList = document.getElementById("packsTableList");
 
+// Ao carregar a página, verifica se o utilizador é admin e preenche as tabelas
 window.addEventListener("load", (event) => {
   const isAdmin = User.isAdmin(User.getUserLogged());
   if (!isAdmin) {
+    // Se não for admin, redireciona para o index
     location.href = "../index.html";
   } else {
     body.classList.remove("hidden");
   }
-  /* Users */
-  const users = User.getAllUsers();
 
+  /* ----------- USERS ----------- */
+  const users = User.getAllUsers();
   userTableList.innerHTML = "";
 
+  // Preenche a tabela de utilizadores
   users.forEach((user) => {
     let userType = User.isAdmin(user) ? "Admin" : "Normal";
 
@@ -53,6 +58,8 @@ window.addEventListener("load", (event) => {
 
     userTableList.appendChild(row);
   });
+
+  // Modal de edição de utilizador (HTML inserido no body)
   body.insertAdjacentHTML(
     "beforeend",
     `<!-- User Edit -->
@@ -181,10 +188,12 @@ window.addEventListener("load", (event) => {
         </div>`
   );
 
+  // Seletores do modal de edição de utilizador
   const editUserBtn = document.getElementById("editUserBtn");
   const userEditForm = document.getElementById("userEditForm");
   const userEditModal = new Modal(document.getElementById("userEditModal"));
 
+  // Eventos para editar ou apagar utilizadores
   userTableList.addEventListener("click", (event) => {
     const editBtn = event.target.closest(".edit-btn");
     if (editBtn) {
@@ -230,11 +239,11 @@ window.addEventListener("load", (event) => {
     }
   });
 
-  /* Tourism Type */
+  /* ----------- TOURISM TYPES ----------- */
   const tourismTypes = TourismTypes.getAll();
-
   tourismTypeTableList.innerHTML = "";
 
+  // Preenche a tabela de tipos de turismo
   tourismTypes.forEach((tourismType) => {
     const row = document.createElement("tr");
     row.className = "border-t py-3";
@@ -251,6 +260,7 @@ window.addEventListener("load", (event) => {
     tourismTypeTableList.appendChild(row);
   });
 
+  // Evento para apagar tipos de turismo
   tourismTypeTableList.addEventListener("click", (event) => {
     const deleteBtn = event.target.closest(".delete-btn");
     if (deleteBtn) {
@@ -262,10 +272,11 @@ window.addEventListener("load", (event) => {
     }
   });
 
-  /* Flights */
+  /* ----------- FLIGHTS ----------- */
   const flights = Flights.getAllFlights();
   flightTableList.innerHTML = "";
 
+  // Preenche a tabela de voos
   flights.forEach((flight) => {
     const row = document.createElement("tr");
     row.className = "border-t py-3";
@@ -287,6 +298,7 @@ window.addEventListener("load", (event) => {
     flightTableList.appendChild(row);
   });
 
+  // Evento para apagar voos
   flightTableList.addEventListener("click", (event) => {
     const deleteBtn = event.target.closest(".delete-btn");
     if (deleteBtn) {
@@ -298,10 +310,11 @@ window.addEventListener("load", (event) => {
     }
   });
 
-  /* Packs */
+  /* ----------- PACKS ----------- */
   const packs = Trips.getAllPacks();
   packsTableList.innerHTML = "";
 
+  // Preenche a tabela de packs
   packs.forEach((pack) => {
     const row = document.createElement("tr");
     row.className = "border-t py-3";
@@ -325,6 +338,8 @@ window.addEventListener("load", (event) => {
     `;
     packsTableList.appendChild(row);
   });
+
+  // Evento para apagar packs
   packsTableList.addEventListener("click", (event) => {
     const deleteBtn = event.target.closest(".delete-btn");
     if (deleteBtn) {
@@ -337,6 +352,7 @@ window.addEventListener("load", (event) => {
   });
 });
 
+// Função para formatar datas para o formato dd/mm ou dd/mm/aaaa
 function formatDateToLabel(dateString) {
   const [datePart] = dateString.split("T");
   const [year, month, day] = datePart.split("-");
@@ -349,6 +365,7 @@ function formatDateToLabel(dateString) {
   }
 }
 
+// Adicionar utilizador
 const addUserBtn = document.getElementById("addUserBtn");
 const userAddForm = document.getElementById("userAddForm");
 
@@ -370,6 +387,7 @@ addUserBtn.addEventListener("click", (event) => {
   location.reload();
 });
 
+// Adicionar tipo de turismo
 const addTourismTypeBtn = document.getElementById("addTourismTypeBtn");
 const tourismTypeAddForm = document.getElementById("tourismTypeAddForm");
 
@@ -389,6 +407,7 @@ addTourismTypeBtn.addEventListener("click", (event) => {
   }
 });
 
+// Preenche o select de viagens para packs
 function fillPackTripSelect() {
   const select = document.getElementById("packTripSelect");
   select.innerHTML = "";
@@ -406,12 +425,14 @@ function fillPackTripSelect() {
   });
 }
 
+// Evento para abrir o modal de adicionar pack e preencher o select
 document
   .getElementById("addPack")
   .addEventListener("click", fillPackTripSelect);
 
 const addPackForm = document.getElementById("addPackForm");
 
+// Evento para adicionar um novo pack
 addPackForm.addEventListener("submit", function (e) {
   e.preventDefault();
   const tripId = document.getElementById("packTripSelect").value;
@@ -425,6 +446,7 @@ addPackForm.addEventListener("submit", function (e) {
   }
 });
 
+// Função para mostrar mensagens de erro ou sucesso nos formulários
 function displayMessage(form, message, type = "error") {
   const oldMessage = form.querySelector(".text-red-500, .text-green-500");
   if (oldMessage) {
@@ -440,10 +462,13 @@ function displayMessage(form, message, type = "error") {
 
 let pendingDelete = null;
 
+// Função que mostra o modal de confirmação antes de apagar um item
 function displayConfirmation(onConfirm) {
+  // Remove qualquer modal antigo de confirmação que possa existir
   const oldModal = document.querySelector("#confirmDeleteModal");
   if (oldModal) oldModal.remove();
 
+  // Adiciona o HTML do modal de confirmação ao body
   body.insertAdjacentHTML(
     "beforeend",
     `<!-- Main modal -->
@@ -472,14 +497,19 @@ function displayConfirmation(onConfirm) {
   const modal = document.getElementById("confirmDeleteModal");
   modal.classList.remove("hidden");
 
+  // Se o utilizador confirmar, remove o modal e executa a função de confirmação
   document.getElementById("deleteConfirmBtn").onclick = function () {
     modal.remove();
     if (typeof onConfirm === "function") onConfirm();
   };
+
+  // Se cancelar, remove o modal e limpa o pendingDelete
   document.getElementById("deleteCancelBtn").onclick = function () {
     modal.remove();
     pendingDelete = null;
   };
+
+  // Se fechar o modal no X, também remove e limpa o pendingDelete
   document.getElementById("closeDeleteModal").onclick = function () {
     modal.remove();
     pendingDelete = null;

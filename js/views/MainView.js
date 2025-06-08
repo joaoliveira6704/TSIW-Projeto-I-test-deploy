@@ -3,15 +3,18 @@ import * as Helper from "../models/modelHelper.js";
 import * as User from "../models/UserModel.js";
 import * as Flights from "../models/flightModel.js";
 
+// Inicializa os dados de packs de viagens e utilizadores
 Trips.init();
 User.init();
 
+// Quando a página carrega, prepara os slides dos packs
 window.addEventListener("load", () => {
   const packs = Trips.getAllPacks();
   const swiperPacks = document.getElementById("swiperPacks");
   const swiperDesktop = document.getElementById("swiperDesktopWrapper");
   const apiKey = "NpYuyyJzclnrvUUkVK1ISyi2FGnrw4p9sNg9CCODQGsiFc0nWvuUJJMN";
 
+  // Para cada pack, vai buscar uma imagem à API do Pexels e constrói o slide
   const fetchSlides = packs.map((pack) => {
     const query = `${pack.name} city`;
 
@@ -20,9 +23,11 @@ window.addEventListener("load", () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        // Usa a imagem da API ou um fallback se não houver
         const image =
           data.photos[0]?.src.medium || "../img/images/fallback.jpg";
 
+        // Adiciona o slide ao swiper mobile
         swiperPacks.insertAdjacentHTML(
           "beforeend",
           `<div class="swiper-slide relative cursor-drag">
@@ -40,6 +45,7 @@ window.addEventListener("load", () => {
             </div>
           </div>`
         );
+        // Adiciona o slide ao swiper desktop
         swiperDesktop.insertAdjacentHTML(
           "beforeend",
           `<div class="swiper-slide rounded-lg w-[400px]! h-[420px] flex flex-col overflow-hidden cursor-drag">
@@ -69,14 +75,17 @@ window.addEventListener("load", () => {
           </div>`
         );
 
+        // Junta todas as cidades de origem e destino dos voos do pack
         let locations = [];
         pack.flights.forEach((flight) => {
           const flightObj = Flights.getFlightById(flight);
           if (!flightObj) return;
           locations.push(flightObj.origin, flightObj.destination);
         });
+        // Remove duplicados
         locations = [...new Set(locations)];
 
+        // Adiciona as localizações à lista do card
         locations.forEach((location) => {
           document
             .getElementById(`locationCardText-${pack.id}`)
@@ -85,13 +94,14 @@ window.addEventListener("load", () => {
       });
   });
 
+  // Só inicializa o Swiper depois de todas as imagens estarem carregadas
   Promise.all(fetchSlides).then(() => {
     new Swiper(".mySwiper", {
       effect: "cards",
       grabCursor: true,
     });
 
-    // Desktop Swiper
+    // Swiper para desktop
     new Swiper(".packsDesktop", {
       slidesPerView: "auto",
       centeredSlides: true,
@@ -118,59 +128,89 @@ window.addEventListener("load", () => {
   });
 });
 
+// Lida com o modal do passaporte (badges de países visitados)
 const passportBtn = document.getElementById("passportBtn");
+const continentFilter = document.getElementById("continentFilter");
 
+let allCountriesData;
+
+// Ao clicar no botão do passaporte, carrega os países e mostra o grid
 passportBtn.addEventListener("click", () => {
-  const user = User.getUserLogged();
+  Helper.getAllCountries().then((data) => {
+    allCountriesData = data;
+    renderPassportGrid();
+    continentFilter.onchange = () => renderPassportGrid(continentFilter.value);
+  });
+});
 
+// Renderiza o grid de países visitados e não visitados
+function renderPassportGrid(continent = "") {
+  const user = User.getUserLogged();
   const passportModalGrid = document.getElementById("passportModalGrid");
   let regionNames = new Intl.DisplayNames(["pt"], { type: "region" });
   passportModalGrid.innerHTML = "";
 
   let userCountries = [];
   if (user && user.badges) {
-    userCountries = user.badges;
-    userCountries.forEach((country) => {
-      passportModalGrid.insertAdjacentHTML(
-        "beforeend",
-        `
-        <div class="has-tooltip col-span-2 sm:col-span-1 p-1">
-        <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>${regionNames.of(
-          country.toUpperCase()
-        )}</span>
-          <img 
-            class="w-8 h-8 object-contain transition-all" 
-            src="./img/flags/${country.toLowerCase()}.svg"
-            alt="${country}"
-            title="${country}"
-          >
-        </div>`
-      );
-    });
+    userCountries = user.badges.map((c) => c.toLowerCase());
   }
 
-  Helper.getAllCountries().then((countries) => {
-    countries.forEach((country) => {
-      if (!userCountries.includes(country.toLowerCase())) {
-        passportModalGrid.insertAdjacentHTML(
-          "beforeend",
-          `<div class="has-tooltip col-span-2 sm:col-span-1 p-1">
-            <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>${regionNames.of(
-              country.toUpperCase()
-            )}</span>
-          <img 
-            class="w-8 h-8 object-contain grayscale hover:grayscale-0 transition-all" 
-            src="./img/flags/${country.toLowerCase()}.svg"
-            alt="${country}"
-            title="${country}"
-          >
-        </div>`
-        );
-      }
-    });
+  // Filtra os países pelo continente selecionado (se houver)
+  const filteredCountries = allCountriesData.filter((country) => {
+    const code = country.cca2?.toLowerCase();
+    const countryContinents = country.continents || [];
+    if (!code) return false;
+    if (continent && !countryContinents.includes(continent)) return false;
+    return true;
   });
-});
 
-document.getElementById("logo").addEventListener("click", () => {
-  location.href = "#landingSect";
-});
+  // Separa os países visitados dos não visitados
+  const visited = filteredCountries.filter((country) =>
+    userCountries.includes(country.cca2.toLowerCase())
+  );
+  const notVisited = filteredCountries.filter(
+    (country) => !userCountries.includes(country.cca2.toLowerCase())
+  );
+
+  // Mostra os países visitados (sem grayscale)
+  visited.forEach((country) => {
+    const code = country.cca2.toLowerCase();
+    passportModalGrid.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div class="has-tooltip col-span-2 sm:col-span-1 p-1">
+        <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>
+          ${regionNames.of(code.toUpperCase())}
+        </span>
+        <img 
+          class="w-8 h-8 object-contain transition-all" 
+          src="../img/flags/${code}.svg"
+          alt="${code}"
+          title="${code}"
+        >
+      </div>
+      `
+    );
+  });
+
+  // Mostra os países não visitados (com grayscale)
+  notVisited.forEach((country) => {
+    const code = country.cca2.toLowerCase();
+    passportModalGrid.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div class="has-tooltip col-span-2 sm:col-span-1 p-1">
+        <span class='tooltip rounded shadow-lg p-1 bg-gray-100 text-black -mt-8'>
+          ${regionNames.of(code.toUpperCase())}
+        </span>
+        <img 
+          class="w-8 h-8 object-contain grayscale hover:grayscale-0 transition-all" 
+          src="../img/flags/${code}.svg"
+          alt="${code}"
+          title="${code}"
+        >
+      </div>
+      `
+    );
+  });
+}

@@ -30,8 +30,9 @@ const contactsBtn = document.getElementById("contactsBtn");
 
 const today = new Date().toLocaleDateString("pt-PT");
 
-/* --- Shared Logic --- */
+/* --- Funções partilhadas para botões de logout e admin --- */
 
+// Configura o botão de logout para terminar sessão
 function setupLogoutButton(selector) {
   const logoutBtn = document.getElementById(selector);
   if (logoutBtn) {
@@ -43,6 +44,7 @@ function setupLogoutButton(selector) {
   }
 }
 
+// Configura o botão de admin para redirecionar para a página de admin
 function setupAdminButton(selector) {
   const adminBtn = document.getElementById(selector);
   if (adminBtn) {
@@ -52,12 +54,14 @@ function setupAdminButton(selector) {
   }
 }
 
-/* --- Login Modal --- */
+/* --- Modal de Login --- */
 
+// Abre o modal de login ou mostra o menu de utilizador se já estiver autenticado
 openLoginModalBtn.addEventListener("click", () => {
   if (User.isLogged()) {
     const adminModalSection = document.getElementById("adminModalSection");
 
+    // Se for admin, mostra opção de admin
     if (User.isAdmin(User.getUserLogged())) {
       logoutListSection.classList.remove("last:rounded-b-xl");
       if (!adminModalSection) {
@@ -79,6 +83,7 @@ openLoginModalBtn.addEventListener("click", () => {
 
     loggedModal.classList.toggle("hidden");
 
+    // Fecha o modal se clicar fora dele
     document.addEventListener("click", (e) => {
       if (
         !loggedModal.contains(e.target) &&
@@ -90,6 +95,7 @@ openLoginModalBtn.addEventListener("click", () => {
       }
     });
 
+    // Ligações rápidas para packs e contactos
     packsOffersBtn.addEventListener("click", () => {
       closeAndRedirect("desktop", "#packsOffers");
     });
@@ -97,12 +103,14 @@ openLoginModalBtn.addEventListener("click", () => {
       closeAndRedirect("desktop", "#contactsSect");
     });
 
+    // Fecha o modal ao clicar fora
     if (!loggedModal.classList.contains("hidden")) {
       onClickOutside(loggedModal, () => {
         loggedModal.classList.add("hidden");
       });
     }
   } else {
+    // Se não está autenticado, mostra o modal de login
     loginModal.classList.remove("hidden");
     setTimeout(() => {
       modalContent.classList.remove("opacity-0", "scale-95");
@@ -111,17 +119,20 @@ openLoginModalBtn.addEventListener("click", () => {
   }
 });
 
+// Redireciona para o perfil ao clicar no botão de perfil
 profileBtn.addEventListener("click", () => {
   location.href = "./html/profile.html";
 });
 
+// Termina sessão ao clicar no botão de logout
 logoutBtn.addEventListener("click", () => {
   User.logout();
   loggedModal.classList.add("hidden");
 });
 
-/* --- Register Modal --- */
+/* --- Modal de Registo --- */
 
+// Abre o modal de registo a partir do login
 reopenRegisterBtn.addEventListener("click", () => {
   loginModal.classList.add("hidden");
   registerModal.classList.remove("hidden");
@@ -133,6 +144,7 @@ reopenRegisterBtn.addEventListener("click", () => {
   }, 10);
 });
 
+// Abre o modal de login a partir do registo
 reopenLoginBtn.addEventListener("click", () => {
   registerModal.classList.add("hidden");
   loginModal.classList.remove("hidden");
@@ -144,8 +156,9 @@ reopenLoginBtn.addEventListener("click", () => {
   }, 10);
 });
 
-/* --- Close Modals --- */
+/* --- Fechar Modais --- */
 
+// Fecha os modais ao clicar nos botões ou fora deles
 closeModalBtn.addEventListener("click", closeLoginModal);
 closeRegisterModalBtn.addEventListener("click", closeRegisterModal);
 
@@ -157,6 +170,7 @@ window.addEventListener("click", (e) => {
   }
 });
 
+// Funções para animar e fechar os modais
 function closeLoginModal() {
   modalContent.classList.remove("opacity-100", "scale-100");
   modalContent.classList.add("opacity-0", "scale-95");
@@ -175,6 +189,7 @@ function closeRegisterModal() {
 
 /* --- Sidebar --- */
 
+// Seletores e variáveis para o sidebar
 const sideBar = document.getElementById("sidebar");
 const navButtons = document.getElementById("navButtons");
 const openProfileDropdownBtn = document.getElementById("profileSidebar");
@@ -183,6 +198,7 @@ const sidebarBackdrop = document.getElementById("sidebarBackdrop");
 
 let currentSidebarContent = null;
 
+// Abre o sidebar e mostra o conteúdo pretendido
 function openSidebar(contentType) {
   sidebarBackdrop.classList.remove("hidden");
   sidebarBackdrop.classList.add("block");
@@ -191,6 +207,7 @@ function openSidebar(contentType) {
   currentSidebarContent = contentType;
 }
 
+// Fecha o sidebar e limpa o conteúdo
 function closeSidebar() {
   sideBar.classList.add("translate-x-full");
   navButtons.style.right = "0";
@@ -202,6 +219,7 @@ function closeSidebar() {
   sidebarBackdrop.classList.remove("block");
 }
 
+// Preenche o sidebar com o conteúdo do perfil
 function populateProfileContent() {
   sideBar.innerHTML = `
     <div id="anchorDiv" class="right-0 transition">
@@ -249,6 +267,7 @@ function populateProfileContent() {
     </div>
   `;
 
+  // Ligações rápidas para packs, contactos e sobre nós no mobile
   packsOffersBtnMobile.addEventListener("click", () => {
     closeAndRedirect("mobile", "#packsOffers");
   });
@@ -259,6 +278,7 @@ function populateProfileContent() {
     closeAndRedirect("mobile", "#aboutSect");
   });
 
+  // Se for admin, mostra opção de admin no mobile
   if (User.isAdmin(User.getUserLogged())) {
     if (!document.getElementById("adminBtnMobile")) {
       sideBar.insertAdjacentHTML(
@@ -280,6 +300,7 @@ function populateProfileContent() {
   openFormDropdownBtn.classList.remove("activeSideBar");
 }
 
+// Preenche o sidebar com o formulário de pesquisa de viagens
 function populateFormContent() {
   sideBar.innerHTML = `
     <div class="flex justify-center bg-blue-900 w-full h-fit p-2 text-white">Procurar Viagens</div>
@@ -336,34 +357,37 @@ function populateFormContent() {
   openProfileDropdownBtn.classList.remove("activeSideBar");
   openFormDropdownBtn.classList.add("activeSideBar");
 
+  // Inicializa o datepicker no input de data
   const input = document.getElementById("navbar-datepicker");
-
   new Datepicker(input, {
     autohide: true,
     format: "dd-mm-yyyy",
     minDate: today,
   });
 
+  // Botão para pesquisar viagens
   const searchMobileBtn = document.getElementById("searchMobileBtn");
   searchMobileBtn.addEventListener("click", () => {
     sendFormQuery();
   });
 }
 
+// Envia os dados do formulário para a página de construção de viagem
 function sendFormQuery() {
   const selectedDate = document.getElementById("navbar-datepicker").value;
   const origin = document.getElementById("inputOriginSearchMobile").value;
   const passengersCount = document.getElementById("mobile-counter-input").value;
-
   const typeOfTourism = document.getElementById("tourismInput").value;
   User.setUserQuery(selectedDate, origin, typeOfTourism, passengersCount);
   location.href = "./html/tripBuilder.html";
 }
 
+// Ligações rápidas para "Sobre Nós" no desktop
 document.getElementById("aboutBtn").addEventListener("click", () => {
   closeAndRedirect("desktop", "#aboutSect");
 });
 
+// Fecha o sidebar ou modal e redireciona para a secção pretendida
 function closeAndRedirect(type, section) {
   if (type == "mobile") {
     closeSidebar();
@@ -373,8 +397,9 @@ function closeAndRedirect(type, section) {
   location.href = section;
 }
 
-/* --- Sidebar Triggers --- */
+/* --- Triggers do Sidebar --- */
 
+// Abre o sidebar do perfil
 openProfileDropdownBtn.addEventListener("click", () => {
   if (!User.isLogged()) {
     loginModal.classList.remove("hidden");
@@ -393,6 +418,7 @@ openProfileDropdownBtn.addEventListener("click", () => {
   }
 });
 
+// Abre o sidebar do formulário
 openFormDropdownBtn.addEventListener("click", () => {
   if (!User.isLogged()) {
     loginModal.classList.remove("hidden");
@@ -411,8 +437,11 @@ openFormDropdownBtn.addEventListener("click", () => {
     populateData();
   }
 });
+
+// Cache para nomes de aeroportos
 const airportNameCache = {};
 
+// Fecha a lista de aeroportos se clicar fora dela
 document.addEventListener("click", function (e) {
   const input = document.getElementById("inputOriginSearchMobile");
   const list = document.getElementById("mobileAirportsList");
@@ -422,6 +451,7 @@ document.addEventListener("click", function (e) {
   }
 });
 
+// Preenche os dados do formulário no sidebar (dropdowns, lista de aeroportos, etc)
 function populateData() {
   const tourismSelect = document.getElementById("tourismInput");
   const tourismTypes = TourismTypes.getAll();
@@ -443,6 +473,7 @@ function populateData() {
     renderMobileAirportList(filteredOrigins);
   });
 
+  // Renderiza a lista de aeroportos filtrados
   function renderMobileAirportList(origins) {
     const existingList = document.getElementById("mobileAirportsList");
     if (existingList) existingList.remove();
@@ -481,6 +512,8 @@ function populateData() {
       inputOriginSearchMobile.parentElement.appendChild(ul);
     });
   }
+
+  // Controlo do contador de passageiros
   const decrementBtn = document.getElementById("mobileDecrementBtn");
   const incrementBtn = document.getElementById("mobileIncrementBtn");
   const counterInput = document.getElementById("mobile-counter-input");
@@ -496,12 +529,14 @@ function populateData() {
   });
 }
 
+// Fecha o sidebar ao clicar no backdrop
 sidebarBackdrop.addEventListener("click", () => {
   if (currentSidebarContent === "form" || currentSidebarContent === "profile") {
     closeSidebar();
   }
 });
 
+// Vai buscar o nome do aeroporto a uma API externa
 function fetchAirportName(iataCode) {
   const url = `https://airport-info.p.rapidapi.com/airport?iata=${iataCode}`;
 
