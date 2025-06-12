@@ -16,6 +16,15 @@ export function getUserById(id) {
   return users.find((user) => user.id === numId) || null;
 }
 
+export function userHasScratch(userCheck) {
+  if (!userCheck) {
+    return false;
+  }
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+  return oneWeekAgo.toISOString().split("T")[0] >= userCheck.lastScratch; // YYYY-MM-DD format
+}
+
 // Updates a user by id
 export function updateUser(id, { name, email, password, isAdmin }) {
   const numId = typeof id === "string" ? Number(id) : id;
@@ -40,6 +49,23 @@ export function updateLoggedUser(id) {
 
   localStorage.setItem("loggedUser", JSON.stringify(user));
   sessionStorage.setItem("loggedUser", JSON.stringify(user));
+}
+
+export function updateScratch(userCheck, milesWon) {
+  const user = users.find((u) => String(u.id) === String(userCheck.id));
+  const today = new Date();
+  today.setDate(today.getDate());
+  user.lastScratch = today.toISOString().split("T")[0];
+
+  user.miles["available"] += milesWon;
+  user.miles["total"] += milesWon;
+
+  if (localStorage.getItem("loggedUser")) {
+    localStorage.setItem("loggedUser", JSON.stringify(user));
+  } else {
+    sessionStorage.setItem("loggedUser", JSON.stringify(user));
+  }
+  localStorage.setItem("users", JSON.stringify(users));
 }
 
 // Add User
@@ -154,6 +180,8 @@ class User {
   badges = [];
   favorites = [];
   trips = [];
+  lastScratch = "";
+  tourismTypes = [];
 
   constructor(
     id,
@@ -165,7 +193,9 @@ class User {
     miles = { available: 0, total: 0 },
     badges = [],
     favorites = [],
-    trips = []
+    trips = [],
+    lastScratch,
+    tourismTypes = []
   ) {
     this.id = id;
     this.name = name;
@@ -177,5 +207,7 @@ class User {
     this.badges = badges;
     this.favorites = favorites;
     this.trips = trips;
+    this.lastScratch = lastScratch;
+    this.tourismTypes = tourismTypes;
   }
 }

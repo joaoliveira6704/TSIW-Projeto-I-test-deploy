@@ -2,13 +2,21 @@ import * as Trips from "../models/TripModel.js";
 import * as Helper from "../models/modelHelper.js";
 import * as User from "../models/UserModel.js";
 import * as Flights from "../models/flightModel.js";
+import { mouseEvent, dispatchEvent } from "../models/scratchModel.js";
 
 // Inicializa os dados de packs de viagens e utilizadores
 Trips.init();
 User.init();
 
+const scratchModal = document.getElementById("scratchModal");
+
 // Quando a página carrega, prepara os slides dos packs
 window.addEventListener("load", () => {
+  let userHasScratch = User.userHasScratch(User.getUserLogged());
+  if (!userHasScratch || !User.isLogged()) {
+    scratchModal.classList.add("hidden");
+  }
+
   const packs = Trips.getAllPacks();
   const swiperPacks = document.getElementById("swiperPacks");
   const swiperDesktop = document.getElementById("swiperDesktopWrapper");
@@ -34,7 +42,7 @@ window.addEventListener("load", () => {
             <img src="${image}" alt="${
             pack.name
           }" class="w-full h-auto rounded-t-lg" />
-            <div class="absolute backdrop-blur-sm bottom-0 left-0 p-5 w-full h-30 bg-white text-black p-2">
+            <div class="absolute backdrop-blur-sm bottom-0 left-0 p-5 w-full h-30 bg-white color-primary p-2">
                 <div class="flex gap-6 items-center font-space font-light mb-3">
                     <p class="text-lg">${pack.name}</p>
                     <p class="text-sm">${Helper.formatDateToLabel(
@@ -48,13 +56,13 @@ window.addEventListener("load", () => {
         // Adiciona o slide ao swiper desktop
         swiperDesktop.insertAdjacentHTML(
           "beforeend",
-          `<div class="swiper-slide rounded-lg w-[400px]! h-[420px] flex flex-col overflow-hidden cursor-drag">
+          `<div class="swiper-slide rounded-lg w-[400px]! h-[420px] flex flex-col overflow-hidden shadow-xl cursor-drag color-primary">
             <img src="${image}" alt="${
             pack.name
           }" class="w-full h-[220px] object-cover rounded-t-lg" />
             <div class="bg-white bg-opacity-90 p-4 color-primary flex flex-col justify-between h-full w-full backdrop-blur-md">
               <div>
-                <div class="flex gap-4 mb-5 items-center justify-between">
+                <div class="flex gap-4 mb-5 justify-between">
                   <div>
                     <p class="font-space font-light text-lg">${pack.name}</p>
                     <p class="font-space font-light text-sm">${Helper.formatDateToLabel(
@@ -69,7 +77,7 @@ window.addEventListener("load", () => {
               </div>
               <div class="flex justify-between items-center text-primary font-light">
                 <span>${pack.price}€</span>
-                <button class="btn-std cursor-pointer">Ver Pack</button>
+                <button class="cursor-pointer btn-std font-bold border-2">Ver Pack</button>
               </div>
             </div>
           </div>`
@@ -80,7 +88,7 @@ window.addEventListener("load", () => {
         pack.flights.forEach((flight) => {
           const flightObj = Flights.getFlightById(flight);
           if (!flightObj) return;
-          locations.push(flightObj.origin, flightObj.destination);
+          locations.push(flightObj.originName, flightObj.destinationName);
         });
         // Remove duplicados
         locations = [...new Set(locations)];
@@ -89,13 +97,26 @@ window.addEventListener("load", () => {
         locations.forEach((location) => {
           document
             .getElementById(`locationCardText-${pack.id}`)
-            .insertAdjacentHTML("beforeend", `<li>${location}</li>`);
+            .insertAdjacentHTML(
+              "beforeend",
+              `<li class="text-right">${location}</li>`
+            );
         });
       });
   });
 
   // Só inicializa o Swiper depois de todas as imagens estarem carregadas
   Promise.all(fetchSlides).then(() => {
+    var swiper = new Swiper(".mobileFeatures", {
+      pagination: {
+        el: ".swiper-pagination",
+      },
+      autoplay: true,
+      loop: true,
+      spaceBetween: 30,
+      setWrapperSize: true,
+    });
+
     new Swiper(".mySwiper", {
       effect: "cards",
       grabCursor: true,
@@ -214,3 +235,44 @@ function renderPassportGrid(continent = "") {
     );
   });
 }
+applyMilesBtn = document.getElementById("applyMilesBtn");
+cancelMilesBtn = document.getElementById("cancelMilesBtn");
+
+let canApply = false;
+
+applyMilesBtn.addEventListener("click", () => {
+  if (canApply) {
+    User.updateScratch(User.getUserLogged(), milesWon);
+    scratchModal.classList.add("hidden");
+  }
+});
+
+cancelMilesBtn.addEventListener("click", () => {
+  scratchModal.classList.add("hidden");
+});
+
+/* ScratchCard */
+let milesWon = Math.floor(Math.random() * 100);
+const scContainer = document.getElementById("canvas-test");
+console.log(scContainer);
+console.log(scContainer.offsetWidth);
+const sc = new ScratchCard(scContainer, {
+  scratchType: SCRATCH_TYPE.CIRCLE,
+  containerWidth: scContainer.offsetWidth,
+  containerHeight: scContainer.offsetHeight,
+  imageForwardSrc: "../img/images/pattern.png",
+  brushSrc: "https://switchy.a.cdnify.io/served/brush.png",
+
+  htmlBackground: `<p class="flex text-black text-xl text-center items-center"><strong>Ganhaste ${milesWon} milhas!</strong></p>`,
+  clearZoneRadius: 20,
+  percentToFinish: 40, // When the percent exceeds 50 on touchend event the callback will be exec.
+  callback: function () {
+    canApply = true;
+  },
+});
+
+sc.init().then(() => {
+  sc.canvas.addEventListener("scratch.move", () => {
+    this.percent = sc.getPercent().toFixed(2);
+  });
+});

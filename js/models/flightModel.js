@@ -32,6 +32,43 @@ export function getFlightById(id) {
   return flights.find((flight) => flight.id === id);
 }
 
+export function findAlternateLeg(from, to, flightList) {
+  const flights = getAllFlights();
+
+  // Encontra o voo de escala (legFlight) que termina em 'to'
+  let legFlight = flights.find((flight) => flight.destination === to);
+
+  console.log(legFlight);
+
+  // Encontra o voo alternativo que parte de 'from' e chega ao ponto de partida do legFlight
+  let newFlight = flights.find(
+    (flight) =>
+      flight.destination == legFlight.origin &&
+      flight.origin == from &&
+      legFlight.departureTime > flight.arrivalTime
+  );
+  console.log(newFlight);
+  // Encontra o índice do 'from' na lista de destinos
+  const index = flightList.findIndex((destination) => destination === to);
+
+  // Só faz a alteração se o índice for válido e o destino seguinte for 'to'
+  if (index !== -1) {
+    const array1 = flightList.slice(0, index);
+    const array2 = flightList.slice(index, flightList.length);
+
+    array2.unshift(newFlight.destination);
+
+    let newArray = array1.concat(array2);
+    console.log(newArray);
+    return newArray;
+  }
+}
+
+export function getAllFlightsByLeg(from, to) {
+  const allFlights = getAllFlights();
+  return allFlights.filter((f) => f.origin === from && f.destination === to);
+}
+
 // Delete Flight type by ID
 export function deleteFlight(id) {
   const numId = typeof id === "string" ? Number(id) : id;
@@ -74,6 +111,7 @@ export function getFlightsByOrigin(originGet) {
 class Flight {
   id = null;
   origin = "";
+  originName = "";
   destination = "";
   destinationName = "";
   departureTime = "";
@@ -89,6 +127,7 @@ class Flight {
   constructor(
     id,
     origin,
+    originName,
     destination,
     destinationName,
     departureTime,
@@ -103,6 +142,7 @@ class Flight {
   ) {
     this.id = id;
     this.origin = origin;
+    this.originName = originName;
     this.destination = destination;
     this.destinationName = destinationName;
     this.departureTime = departureTime;

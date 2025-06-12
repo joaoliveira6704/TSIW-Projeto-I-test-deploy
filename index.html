@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="./css/navbar.css" />
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src=" https://cdn.jsdelivr.net/npm/scratchcard-js@1.5.5/build/scratchcard.min.js "></script>
     <!-- SwiperJS -->
     <link
       rel="stylesheet"
@@ -128,7 +130,7 @@
                     id="packsOffersBtn"
                     class="flex hover:bg-gray-300 cursor-pointer gap-2 w-full items-center justify-between px-4 py-2"
                   >
-                    <span>Packs e Ofertas</span>
+                    <span>Ofertas</span>
                     <img
                       src="./img/icons/blue/coins.svg"
                       alt="Log Out"
@@ -238,22 +240,26 @@
         <div
           class="hidden md:block video-docker absolute top-0 left-0 w-full h-full overflow-hidden"
         >
-          <video
+          <!-- <video
             class="min-w-full min-h-full blur-sm absolute object-cover"
             src="./img/media/lookat.mp4"
             type="video/mp4"
             autoplay
             muted
             loop
-          ></video>
+          ></video> -->
+          <img
+            src="https://images.unsplash.com/photo-1489914169085-9b54fdd8f2a2?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt=""
+          />
         </div>
         <h1
-          class="video-content space-y-2 z-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl p-6"
+          class="space-y-2 z-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl p-6"
         >
           <span class="block text-white">
             Your path<br />
             <span
-              class="text-transparent bg-clip-text bg-gradient-to-tr to-red-400 from-blue-600"
+              class="text-transparent bg-clip-text bg-gradient-to-tr to-blue-600 from-red-600"
             >
               Our compass
             </span>
@@ -359,9 +365,9 @@
         class="h-screen snap-start flex flex-col justify-center items-center"
       >
         <h2
-          class="text-2xl md:text-4xl mb-10 font-bold font-title leading-snug"
+          class="text-2xl md:text-4xl mb-10 font-bold color-primary font-title leading-snug"
         >
-          PACKS E OFERTAS
+          OFERTAS
         </h2>
 
         <!-- Mobile Swiper -->
@@ -374,7 +380,7 @@
           class="hidden sm:block swiper-outer-container relative w-full max-w-[1500px] mx-auto"
         >
           <!-- Swiper -->
-          <div class="swiper packsDesktop w-full h-fit z-20">
+          <div class="swiper packsDesktop w-full h-[450px] z-20">
             <div id="swiperDesktopWrapper" class="swiper-wrapper"></div>
           </div>
 
@@ -409,10 +415,10 @@
                 >
               </h2>
               <div
-                class="items-center md:items-left justify-between w-full block px-0 md:px-5"
+                class="items-center md:items-left justify-between w-full block pr-0 md:pr-5"
               >
                 <p
-                  class="text-white text-center md:text-justify text-sm md:text-base leading-relaxed mb-6 max-w-full"
+                  class="text-white text-justify md:text-justify text-sm md:text-base leading-relaxed mb-6 max-w-full"
                 >
                   A Compass simplifica as tuas viagens, combinando tecnologia e
                   paixão por explorar. Descobre destinos incríveis com total
@@ -427,7 +433,7 @@
                       200+
                     </p>
                     <p class="text-gray-400 text-xs sm:text-sm">
-                      Viagens Compradas
+                      Viagens Vendidas
                     </p>
                   </div>
                   <div class="px-3">
@@ -448,7 +454,9 @@
                     <p class="text-blue-500 font-bold text-sm sm:text-lg">
                       10+
                     </p>
-                    <p class="text-gray-400 text-xs sm:text-sm">Packs</p>
+                    <p class="text-gray-400 text-xs sm:text-sm">
+                      Packs Vendidos
+                    </p>
                   </div>
                 </div>
               </div>
@@ -556,7 +564,7 @@
       </section>
       <section
         id="contactsSect"
-        class="h-screen snap-start flex flex-col justify-center items-center"
+        class="h-screen snap-start bg-blue-950 flex flex-col justify-center items-center"
       >
         <div class="p-4">
           <div
@@ -654,7 +662,7 @@
                         </svg>
                       </div>
                       <a
-                        href="javascript:void(0)"
+                        href="mailto:support@compass.com"
                         class="text-sm ml-4 hidden md:block"
                       >
                         <small class="block textwhite">Email</small>
@@ -1144,34 +1152,77 @@
         </button>
       </div>
     </footer>
+
+    <!-- Scratch modal -->
+    <div
+      id="scratchModal"
+      class="flex fixed top-0 left-0 right-0 bottom-0 text-center z-50 justify-center items-center w-screen h-screen overscroll-none backdrop-blur-sm max-h-screen"
+    >
+      <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow-sm">
+          <!-- Modal header -->
+          <div class="flex items-center justify-between p-4 md:p-5">
+            <h3 class="text-xl font-semibold text-gray-900">
+              Raspa para ganhares milhas!
+            </h3>
+          </div>
+          <!-- Modal body -->
+          <div id="canvas-test" class="sc__container"></div>
+          <!-- Modal footer -->
+          <div class="flex gap-4 items-center w-full justify-end p-4 md:p-5">
+            <button
+              id="cancelMilesBtn"
+              type="button"
+              class="w-full cursor-pointer btn-std font-bold border-2 border-[#D12127] text-[#D12127] hover:bg-[#D12127] hover:bg-opacity-10"
+            >
+              Fechar
+            </button>
+            <button
+              id="applyMilesBtn"
+              type="button"
+              class="w-full cursor-pointer btn-std font-bold border-2"
+            >
+              Resgatar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Choices.js -->
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <!-- Flowbite -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <!-- Your initialization script -->
+
+    <!-- Script de inicialização de dados -->
     <script src="./js/init.js"></script>
 
-    <!-- Your modules -->
+    <!-- Models -->
     <script type="module" src="./js/models/UserModel.js"></script>
     <script type="module" src="./js/models/TourismtypeModel.js"></script>
+    <script type="module" src="./js/models/ModelHelper.js"></script>
+
+    <!-- Views -->
     <script type="module" src="./js/views/AuthView.js"></script>
     <script type="module" src="./js/views/FormView.js"></script>
     <script type="module" src="./js/views/NavbarView.js"></script>
     <script type="module" src="./js/views/mainView.js"></script>
-    <script type="module" src="./js/models/ModelHelper.js"></script>
 
+    <!-- Tradutor -->
     <script>
-      var swiper = new Swiper(".mobileFeatures", {
-        pagination: {
-          el: ".swiper-pagination",
-        },
-        autoplay: true,
-        loop: true,
-        spaceBetween: 30,
-        setWrapperSize: true,
-      });
+      window.gtranslateSettings = {
+        default_language: "pt",
+        languages: ["en", "es", "fr", "de", "pt"],
+        wrapper_selector: ".gtranslate_wrapper",
+      };
     </script>
+    <script
+      src="https://cdn.gtranslate.net/widgets/latest/float.js"
+      defer
+    ></script>
+    <div class="gtranslate_wrapper"></div>
   </body>
 </html>

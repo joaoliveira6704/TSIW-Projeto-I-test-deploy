@@ -1,0 +1,47 @@
+/* Scratch */
+.sc__container {
+  position: relative;
+  overflow: hidden;
+  height: 100px;
+  width: 300px;
+  min-height: 100px;
+  min-width: 300px;
+  text-align: center !important;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sc__container > img {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 3000px;
+  object-fit: fill;
+  height: 1000px;
+}
+
+.sc__container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+}
+
+.sc__infos {
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+  margin-top: 5px;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.sc__inner {
+  height: fit-content !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

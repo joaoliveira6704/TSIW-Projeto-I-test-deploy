@@ -1,0 +1,92 @@
+.datepicker-controls .next-btn:hover,
+.datepicker-controls .prev-btn:hover {
+  cursor: url("../img/cursor-pointer.svg"), auto !important;
+}
+
+datepicker {
+  background-color: white !important;
+  color: #39578a;
+}
+.datepicker-dropdown {
+  background-color: white !important;
+  border: 2px solid #39578a !important;
+  border-radius: 7px;
+}
+
+.datepicker-picker,
+.datepicker-header,
+.datepicker-footer {
+  background-color: white !important;
+}
+.datepicker-cell:hover {
+  background-color: #5d7aaa !important;
+  color: #f3f4f6 !important;
+}
+.disabled:hover {
+  background-color: transparent !important;
+  color: #f3f4f6;
+}
+
+.datepicker-cell {
+  background-color: transparent !important;
+  color: #39578a !important;
+}
+
+.selected,
+.focused {
+  background-color: #39578a !important;
+  color: #f3f4f6 !important;
+}
+
+.disabled {
+  color: gray !important;
+}
+
+.focused {
+  background-color: #39578a !important;
+  color: white;
+}
+
+.datepicker-controls .view-switch {
+  background-color: white;
+  color: #39578a;
+}
+
+.datepicker-controls .next-btn svg,
+.datepicker-controls .prev-btn svg {
+  color: #39578a;
+}
+
+.datepicker-controls .next-btn:hover {
+  background-color: #39578a !important;
+  color: white;
+}
+
+.datepicker-controls .next-btn:hover svg {
+  color: white;
+}
+
+.datepicker-controls .prev-btn {
+  background-color: #f3f4f6 !important;
+  color: #39578a;
+}
+
+.datepicker-controls .next-btn {
+  background-color: #f3f4f6 !important;
+  color: #39578a;
+}
+
+.datepicker-controls .prev-btn:hover {
+  background-color: #39578a !important;
+  color: white;
+}
+
+.datepicker-controls button:hover {
+  background-color: #39578a !important;
+  color: white;
+  cursor: url("../img/cursor-pointer.svg"), auto !important;
+}
+
+.datepicker-controls .prev-btn:hover svg {
+  color: white;
+}

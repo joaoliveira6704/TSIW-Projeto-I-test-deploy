@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import url(customui.css);
 
 body {
   font-family: "Space Mono", sans-serif;
@@ -11,4 +12,43 @@ body {
 
 [data-carousel-item] {
   height: fit-content;
+}
+
+/* Definições de impressão para manter cores */
+* {
+  -webkit-print-color-adjust: exact !important; /* Chrome, Safari 6 – 15.3, Edge */
+  color-adjust: exact !important; /* Firefox 48 – 96 */
+  print-color-adjust: exact !important; /* Firefox 97+, Safari 15.4+ */
+}
+
+label {
+  cursor: url("../img/cursor.svg"), auto;
+}
+.destinationGhost {
+  background-color: #6c6ea0;
+}
+
+.tripGhost {
+  transform: scale(0.7) !important;
+}
+
+#destinationSortableList .sortable-placeholder {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+.leaflet-popup-content-wrapper {
+  padding: 0px !important;
+  border-radius: 10px !important;
+  background-color: white !important;
+  font-family: "Space Mono", sans-serif !important;
+  width: fit-content !important;
+}
+
+.leaflet-popup-content {
+  margin: 0px !important;
+  width: auto !important;
 }

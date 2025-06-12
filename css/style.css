@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 @import url(swiper.css);
+@import url(datepicker.css);
+@import url(customui.css);
+@import url(scratch.css);
+
 @font-face {
   font-family: "Typo Hoop";
   src: url("../img/fonts/Typo\ Hoop_Regular.otf");
@@ -9,11 +13,6 @@
   font-family: "Typo Hoop";
   src: url("../img/fonts/Typo\ Hoop_Bold.otf");
   font-weight: bold;
-}
-
-html,
-.cursor {
-  cursor: url("../img/cursor.svg"), auto;
 }
 
 body {
@@ -30,17 +29,7 @@ body {
 }
 
 #packsOffers {
-  background: url("../img/images/bgsect2.png") no-repeat;
-  background-size: cover;
-}
-
-#contactsSect {
-  background: url("../img/images/bgsect3.png") no-repeat;
-  background-position: bottom;
-}
-
-.cursor-drag {
-  cursor: url("../img/cursor-drag.svg"), auto;
+  background-color: rgb(241, 241, 241);
 }
 
 h1,
@@ -72,116 +61,6 @@ h1,
 
 #loggedModal {
   border-color: #39578a;
-}
-
-.cursor-pointer,
-.datepicker-controls .next-btn:hover,
-.datepicker-controls .prev-btn:hover {
-  cursor: url("../img/cursor-pointer.svg"), auto !important;
-}
-
-datepicker {
-  background-color: white !important;
-  color: #39578a;
-}
-.datepicker-dropdown {
-  background-color: white !important;
-  border: 2px solid #39578a !important;
-  border-radius: 7px;
-}
-
-.datepicker-picker,
-.datepicker-header,
-.datepicker-footer {
-  background-color: white !important;
-}
-.datepicker-cell:hover {
-  background-color: #5d7aaa !important;
-  color: #f3f4f6 !important;
-}
-.disabled:hover {
-  background-color: transparent !important;
-  color: #f3f4f6;
-}
-
-.datepicker-cell {
-  background-color: transparent !important;
-  color: #39578a !important;
-}
-
-.selected,
-.focused {
-  background-color: #39578a !important;
-  color: #f3f4f6 !important;
-}
-
-.disabled {
-  color: gray !important;
-}
-
-.focused {
-  background-color: #39578a !important;
-  color: white;
-}
-
-.datepicker-controls .view-switch {
-  background-color: white;
-  color: #39578a;
-}
-
-.datepicker-controls .next-btn svg,
-.datepicker-controls .prev-btn svg {
-  color: #39578a;
-}
-
-.datepicker-controls .next-btn:hover {
-  background-color: #39578a !important;
-  color: white;
-}
-
-.datepicker-controls .next-btn:hover svg {
-  color: white;
-}
-
-.datepicker-controls .prev-btn {
-  background-color: #f3f4f6 !important;
-  color: #39578a;
-}
-
-.datepicker-controls .next-btn {
-  background-color: #f3f4f6 !important;
-  color: #39578a;
-}
-
-.datepicker-controls .prev-btn:hover {
-  background-color: #39578a !important;
-  color: white;
-}
-
-.datepicker-controls button:hover {
-  background-color: #39578a !important;
-  color: white;
-  cursor: url("../img/cursor-pointer.svg"), auto !important;
-}
-
-.datepicker-controls .prev-btn:hover svg {
-  color: white;
-}
-
-.border-primary {
-  border-color: #39578a;
-}
-
-.color-primary {
-  color: #39578a;
-}
-
-.btn-std {
-  font-family: "Space Mono", monospace;
-  border: 1px solid #39578a;
-  border-radius: 6px;
-  padding: 10px 20px;
-  color: #39578a;
 }
 
 html,

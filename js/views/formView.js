@@ -1,6 +1,7 @@
 import * as TourismTypes from "../models/TourismtypeModel.js";
 import * as Flights from "../models/flightModel.js";
 import * as User from "../models/UserModel.js";
+import * as Helper from "../models/ModelHelper.js"
 
 // Inicializa os dados de tipos de turismo, voos e utilizadores
 TourismTypes.init();
@@ -64,6 +65,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
             </li>`
     );
   });
+  tourismFormSection.insertAdjacentHTML(
+    "beforeend",
+    `<li class="list-none"><button
+              data-id="Todos"
+                class="block px-4 py-2 w-full hover:first:rounded-t-md last:hover:rounded-b-md hover:bg-gray-200"
+                >Todos</button
+              >
+            </li>`
+  );
 
   // Carrega as origens dos voos e mostra a lista
   const origins = Flights.getAllUniqueOrigins();
@@ -104,7 +114,7 @@ function renderOriginList(origins) {
       return Promise.resolve({ iata, name: airportNameCache[iata] });
     }
 
-    return fetchAirportName(iata).then((name) => {
+    return Helper.fetchAirportName(iata).then((name) => {
       const safeName = name || "Unknown Airport";
       airportNameCache[iata] = safeName;
       return { iata, name: safeName };
@@ -166,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (entry.isIntersecting) {
         const index = Array.from(sections).indexOf(entry.target);
         currentSectionIndex = index;
-
         if (currentSectionIndex === 0) {
           // Se está na primeira secção, mete o formulário no footer
           if (!footer.contains(mainForm)) {
@@ -191,6 +200,15 @@ document.addEventListener("DOMContentLoaded", () => {
             img.src = "./img/logos/logoDarkmode_logotipo darkmode.png";
           });
         } else {
+          if (currentSectionIndex === 1) {
+            logoImg.forEach((img) => {
+              img.src = "./img/logos/logo-12.png";
+            });
+          } else {
+            logoImg.forEach((img) => {
+              img.src = "./img/logos/logoDarkmode_logo darkmode.png";
+            });
+          }
           // Nas outras secções, mete o formulário no topo e ajusta o header
           if (!formNavContainer.contains(mainForm)) {
             formNavContainer.appendChild(mainForm);
@@ -200,9 +218,6 @@ document.addEventListener("DOMContentLoaded", () => {
           } else {
             formNavContainer.classList.remove("hidden");
           }
-          logoImg.forEach((img) => {
-            img.src = "./img/logos/logoDarkmode_logo darkmode.png";
-          });
           new Datepicker(datePicker, {
             autohide: true,
             format: "dd-mm-yyyy",
@@ -234,32 +249,6 @@ window.addEventListener("resize", () => {
   }
 });
 
-// Vai buscar o nome do aeroporto a uma API externa
-function fetchAirportName(iataCode) {
-  const url = `https://airport-info.p.rapidapi.com/airport?iata=${iataCode}`;
-
-  const options = {
-    method: "GET",
-    headers: {
-      "X-RapidAPI-Key": "5a7f871babmsh993b19d7060d6f6p1efa56jsncee69110043c",
-      "X-RapidAPI-Host": "airport-info.p.rapidapi.com",
-    },
-  };
-
-  return fetch(url, options)
-    .then((response) => {
-      if (!response.ok)
-        throw new Error("Network response was not ok: " + response.status);
-      return response.json();
-    })
-    .then((data) => {
-      return data.name;
-    })
-    .catch((error) => {
-      console.error("Error fetching airport info:", error);
-      return null;
-    });
-}
 
 const searchFlightBtn = document.getElementById("searchFlightBtn");
 
@@ -269,7 +258,7 @@ searchFlightBtn.addEventListener("click", () => {
 });
 
 // Envia os dados do formulário para a próxima página
-function sendFormQuery(platform) { 
+function sendFormQuery(platform) {
   const datePicker = document.getElementById("form-datepicker");
   const selectedDate = datePicker.value;
   const origin = inputOriginSearch.value;

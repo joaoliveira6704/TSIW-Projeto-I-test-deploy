@@ -24,6 +24,8 @@ const tripsWrapper = document.getElementById("tripsWrapper");
 const profileImg = document.getElementById("profileImg");
 const profileEditBtn = document.getElementById("profileEditBtn");
 
+
+
 // Ao carregar a página, preenche os dados do perfil
 window.addEventListener("load", (event) => {
   // Escolhe um avatar aleatório

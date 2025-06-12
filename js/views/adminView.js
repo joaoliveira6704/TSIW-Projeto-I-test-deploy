@@ -45,11 +45,11 @@ window.addEventListener("load", (event) => {
       <td class="text-center">${userType}</td>
       <td class="text-center">
         <div class="inline-flex gap-4">
-          <button class="text-blue-500 hover:text-blue-300 rounded-md py-0.5 cursor-pointer edit-btn" data-id="${user.id}" data-modal-target="userEditModal"
+          <button class="color-primary hover:opacity-60 rounded-md py-0.5 cursor-pointer edit-btn" data-id="${user.id}" data-modal-target="userEditModal"
                   data-modal-toggle="userEditModal">
             Editar
           </button>
-          <button id="userDeleteBtn" class="text-blue-500 hover:text-blue-300 rounded-md py-0.5 cursor-pointer delete-btn" data-id="${user.id}">
+          <button id="userDeleteBtn" class="color-primary hover:opacity-60 cursor-pointer delete-btn" data-id="${user.id}">
             Apagar
           </button>
         </div>
@@ -81,27 +81,6 @@ window.addEventListener("load", (event) => {
                 <h3 class="text-lg font-semibold text-white dark:text-white">
                   Editar Utilizador
                 </h3>
-                <button
-                  type="button"
-                  class="text-gray-400 cursor-pointer bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                  data-modal-target="userEditModal"
-                  data-modal-toggle="userEditModal"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                  <span class="sr-only">Fechar</span>
-                </button>
               </div>
               <!-- Modal body -->
               <form id="userEditForm" class="p-4 md:p-5">
@@ -252,7 +231,7 @@ window.addEventListener("load", (event) => {
       <td>${tourismType.id}</td>
       <td>${tourismType.name}</td>
       <td class="text-right">
-          <button class="text-blue-500 hover:text-blue-300 rounded-md py-0.5 cursor-pointer delete-btn" data-id="${tourismType.id}">
+          <button class="color-primary hover:opacity-60 cursor-pointer delete-btn" data-id="${tourismType.id}">
             Apagar
           </button>
       </td>
@@ -288,7 +267,7 @@ window.addEventListener("load", (event) => {
       <td>${flight.price}€</td>
       <td>${formatDateToLabel(flight.departureTime)}</td>
       <td class="text-right">
-        <button class="text-blue-500 hover:text-blue-300 rounded-md py-0.5 cursor-pointer delete-btn" data-id="${
+        <button class="color-primary hover:opacity-60 cursor-pointer delete-btn" data-id="${
           flight.id
         }">
             Apagar
@@ -328,7 +307,7 @@ window.addEventListener("load", (event) => {
     )}</td>
       <td class="text-right">
         <div class="inline-flex gap-4">
-          <button class="text-blue-500 hover:text-blue-300 rounded-md py-0.5 cursor-pointer delete-btn" data-id="${
+          <button class="color-primary hover:opacity-60 cursor-pointer delete-btn" data-id="${
             pack.id
           }">
             Apagar

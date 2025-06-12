@@ -27,7 +27,7 @@
     <!-- sortableJS -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   </head>
-  <body class="dark:bg-gray-800">
+  <body class="dark:bg-gray-800 bg-none!">
     <header class="top-0 left-0 w-full bg-transparent z-50">
       <div
         class="max-w-[1530px] mx-0 flex lg:mx-auto justify-between items-center py-4 px-6"
@@ -65,73 +65,120 @@
         </div>
       </div>
     </header>
-    <main>
-      <div class="relative left-50">
-        <button
-          id="mapViewBtn"
-          class="bg-white p-3 rounded-t-xl border-2 border-blue-600 border-b-0 cursor-pointer"
-        >
-          <img src="../img/icons/blue/map.svg" alt="mapIcon" class="h-4" />
-        </button>
-        <button
-          id="listViewBtn"
-          class="bg-white p-3 rounded-t-xl border-2 border-blue-600 cursor-pointer"
-        >
-          <img src="../img/icons/blue/menu.svg" alt="menuIcon" class="h-4" />
-        </button>
+    <main class="flex flex-col gap-2">
+      <div class="flex ml-20 items-center gap-7">
+        <h1 id="pagetitle">Build your Trip</h1>
+
+        <div class="p-1">
+          <button
+            id="mapViewBtn"
+            class="bg-blue-100 p-2 rounded-lg border-3 border-blue-600 cursor-pointer hover:bg-blue-100"
+          >
+            <img src="../img/icons/blue/map.svg" alt="mapIcon" class="h-4" />
+          </button>
+          <button
+            id="listViewBtn"
+            class="bg-white p-2 rounded-lg border-2 border-blue-600 cursor-pointer hover:bg-blue-100"
+          >
+            <img src="../img/icons/blue/menu.svg" alt="menuIcon" class="h-4" />
+          </button>
+        </div>
       </div>
 
       <!-- Main Grid -->
       <div
-        class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] lg:grid-rows-[2fr_1fr] flex gap-4 px-40"
+        class="grid grid-cols-1 lg:grid-cols-[1fr_auto] lg:grid-rows-[3fr_auto] flex gap-x-4 gap-y-2 h-full px-10 lg:px-20 lg:w-auto"
       >
         <!-- map view -->
         <div
           id="map"
-          class="h-100 lg:h-150 w-full rounded-lg border-2 border-blue-900"
+          class="h-100 lg:h-full w-full rounded-lg lg:border-2 border-blue-900"
         ></div>
         <!-- list view -->
         <div
           id="mapListView"
-          class="h-100 lg:h-150 w-full rounded-lg border-1 border-white hidden bg-white"
+          class="h-100 lg:h-full w-full rounded-lg border-1 border-blue-900 hidden bg-white overflow-y-auto"
         >
           <ul
             id="destinationSortableListView"
             class="grid grid-cols-1 lg:grid-cols-3 gap-2 p-2"
-          >
-            <li class="bg-white p-4 rounded shadow-lg" value="value 1">
-              <p id="destination" class="truncate">Value 1</p>
-            </li>
-          </ul>
+          ></ul>
         </div>
 
         <!-- Trip Destination List -->
         <div class="flex flex-col gap-3 h-full">
           <div
-            class="pr-10 pl-5 bg-[#39578A] focus:bg-[#6C6EA0] text-white h-20 w-full flex items-center justify-between rounded-lg pointer-events-none"
-            tabindex="1"
+            class="pr-10 pl-5 bg-[#39578A] focus:bg-[#6C6EA0] text-white h-20 w-full flex items-center gap-3 rounded-lg"
           >
-            <div class="flex gap-5 inline-flex">
-              <img
-                src="../img/icons/white/plane.svg"
-                alt="startingPoint"
-                class="h-5"
-              />
-              <p id="destinationName" class="truncate">Start Point</p>
-            </div>
+            <img
+              src="../img/icons/white/plane.svg"
+              alt="startingPoint"
+              class="h-5"
+            />
+            <p id="origin">Start Point</p>
           </div>
-          <div class="h-127">
+
+          <div class="h-73">
             <ul
               id="destinationSortableList"
-              class="space-y-2 max-h-full min-h-full border-1 border-gray-200 p-2 rounded-lg overflow-y-auto bg-white"
+              class="space-y-2 max-h-full min-h-full border-1 border-blue-200 p-2 rounded-lg overflow-y-auto bg-white"
             ></ul>
           </div>
+          <div
+            id="trashCan"
+            class="h-10 border-1 border-red-600 p-2 rounded-lg bg-white flex justify-center items-center bg-[url(../img/icons/other/trashCanRed.png)] opacity-30 bg-no-repeat bg-center"
+          ></div>
         </div>
-        <img
-          src="../img/images/360_F_65482539_C0ZozE5gUjCafz7Xq98WB4dW6LAhqKfs.jpg"
-          alt=""
-          class="w-[180px]"
-        />
+        <!-- Poi Cards -->
+        <div id="poiSection" class="hidden lg:flex flex-col h-full gap-2">
+          <h2 id="poiTitle" class="flex h-fit w-fit">
+            Hover each pin to see it's Points of Interest
+          </h2>
+          <div id="poiCards" class="overflow-x-auto flex gap-7">
+            <img
+              class="h-30 w-30 rounded-lg border-2 border-blue-800"
+              src="../img/images/placeholderPattern.png"
+            />
+            <img
+              class="h-30 w-30 rounded-lg border-2 border-blue-800"
+              src="../img/images/placeholderPattern.png"
+            />
+            <img
+              class="h-30 w-30 rounded-lg border-2 border-blue-800"
+              src="../img/images/placeholderPattern.png"
+            />
+          </div>
+        </div>
+
+        <!-- Submit Panel -->
+        <div class="w-full h-full flex flex-col p-2 bg-white gap-2">
+          <div id="returnTripRadio" class="flex gap-3 w-full">
+            <div class="flex items-center gap-2">
+              <label for="return" class="select-none"> Return</label>
+              <input type="radio" id="return" name="tripRadio" />
+            </div>
+            <div class="flex items-center gap-2">
+              <label for="oneWay" class="select-none"> One way</label>
+              <input checked type="radio" id="oneWay" name="tripRadio" />
+            </div>
+          </div>
+          <p>Nº de Milhas: <span id="miles">****</span> mls</p>
+
+          <div class="flex gap-3 my-auto">
+            <button
+              id="clearListBtn"
+              class="border-2 border-red-600 rounded-lg bg-white text-red-600 px-2 py-1 hover:bg-red-100"
+            >
+              Limpar lista
+            </button>
+            <button
+              id="submitBtn"
+              class="w-full h-full border-2 border-blue-600 rounded-lg text-blue-600 px-2 bg-blue-100 hover:bg-blue-600 hover:text-white"
+            >
+              Selecionar Voos
+            </button>
+          </div>
+        </div>
       </div>
     </main>
     <footer></footer>

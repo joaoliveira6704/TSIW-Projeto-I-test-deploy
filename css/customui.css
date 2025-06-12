@@ -1,0 +1,49 @@
+/* Cursores */
+
+.cursor-drag {
+  cursor: url("../img/cursor-drag.svg"), auto;
+}
+html,
+.cursor {
+  cursor: url("../img/cursor.svg"), auto;
+}
+
+.cursor-pointer {
+  cursor: url("../img/cursor-pointer.svg"), auto !important;
+}
+
+/* Cores */
+
+.border-primary {
+  border-color: #39578a;
+}
+
+.color-primary {
+  color: #39578a;
+}
+
+/* Botões */
+
+.btn-std {
+  font-family: "Space Mono", monospace;
+  border: 1px solid #39578a;
+  border-radius: 6px;
+  padding: 10px 20px;
+  color: #39578a;
+}
+
+.btn-std:hover {
+  background-color: rgba(57, 87, 138, 0.1);
+}
+
+/* Tooltip */
+
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+  transform: translateY(60px);
+}
+.has-tooltip:hover .tooltip {
+  visibility: visible;
+  z-index: 100;
+}
