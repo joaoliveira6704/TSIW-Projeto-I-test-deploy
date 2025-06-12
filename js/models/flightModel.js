@@ -86,6 +86,7 @@ export function getAllUniqueOrigins() {
   const origins = flights.map((flight) => flight.origin);
 
   const uniqueOrigins = [...new Set(origins)];
+  console.log(uniqueOrigins);
 
   return uniqueOrigins;
 }

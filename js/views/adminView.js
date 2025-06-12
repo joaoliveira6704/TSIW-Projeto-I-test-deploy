@@ -218,6 +218,18 @@ window.addEventListener("load", (event) => {
     }
   });
 
+  /* ----------- VOOS -------------------- */
+
+  const tourismTypeSelect = document.getElementById("tourismTypeSelect");
+  const tourismTypesList = TourismTypes.getAll();
+
+  tourismTypesList.forEach((tourismType) => {
+    tourismTypeSelect.insertAdjacentHTML(
+      "beforeend",
+      `<option value="${tourismType.name}">${tourismType.name}</option>`
+    );
+  });
+
   /* ----------- TOURISM TYPES ----------- */
   const tourismTypes = TourismTypes.getAll();
   tourismTypeTableList.innerHTML = "";
@@ -494,3 +506,60 @@ function displayConfirmation(onConfirm) {
     pendingDelete = null;
   };
 }
+
+const flightForm = document.getElementById("flightAddForm");
+const addPoiBtn = document.getElementById("addPoiBtn");
+const poiWrapper = document.getElementById("poiWrapper");
+addPoiBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  poiWrapper.insertAdjacentHTML(
+    "beforeend",
+    `<div class="flex"><div>
+                    <label
+                      for="poi"
+                      class="block mb-2 text-sm font-medium dark:text-white"
+                      >Nome</label
+                    >
+                    <input
+                      type="text"
+                      name="poi"
+                      id="poi"
+                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
+                      placeholder="Religioso"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="poiLat"
+                      class="block mb-2 text-sm font-medium dark:text-white"
+                      >Latitude</label
+                    >
+                    <input
+                      type="number"
+                      step="0.1"
+                      name="poiLat"
+                      id="poiLat"
+                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
+                      placeholder="Latitude"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      for="poiLong"
+                      class="block mb-2 text-sm font-medium dark:text-white"
+                      >Longitude</label
+                    >
+                    <input
+                      type="number"
+                      step="0.1"
+                      name="poiLong"
+                      id="poiLong"
+                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
+                      placeholder="Longitude"
+                      required
+                    />
+                  </div></div>`
+  );
+});
