@@ -532,9 +532,10 @@ sc.init().then(() => {
 const contactForm = document.getElementById("contactForm");
 
 contactForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
   Swal.fire({
     title: "Mensagem Enviada",
-
     icon: "success",
     html: "A tua mensagem foi recebida pela nossa equipa.<br/>Por favor aguarda pacientemente a tua resposta.<br/>Verifica a tua caixa de spam.",
     showClass: {
