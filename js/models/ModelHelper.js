@@ -143,9 +143,13 @@ export function formatDate(isoString) {
   }).format(date);
 }
 
-// Calcula desconto: para cada 200 milhas, desconta 5€ do preço final
+// Calcula desconto: para cada 200 milhas, desconta 5€ do preço final. Devolve 0 se o preço final for negativo
 export function calculateDiscount(miles, finalPrice) {
-  return finalPrice - Math.floor(miles / 200) * 5;
+  if (finalPrice - Math.floor(miles / 200) * 5 > 0) {
+    return finalPrice - Math.floor(miles / 200) * 5;
+  } else {
+    return 0;
+  }
 }
 
 export function clearSessionstorage() {

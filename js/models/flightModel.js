@@ -186,8 +186,8 @@ export function extractTripDataFromFlights(flightIds) {
 }
 
 // Função auxiliar para obter voos por IDs
-export function getFlightsByIds(flightIds, allFlights) {
-  const allFlights = getAllFlights();
+export function getFlightsByIds(flightIds) {
+  let allFlights = getAllFlights();
   return allFlights.filter((flight) => flightIds.includes(flight.id));
 }
 
