@@ -1290,12 +1290,12 @@ function initdata() {
       {
         id: 1,
         name: "Grand Tour Europeu",
-        typesOfTourism: [1, 3, 4], // Aventura, Religioso, Gastronómico
+        typesOfTourism: [1, 3, 4],
         price: 1250,
         startDate: "2025-07-01",
         endDate: "2025-07-12",
         isPack: true,
-        flights: [1, 3, 5, 6, 7], // OPO→LIS→BCN→ROM→ATH→IST
+        flights: [1, 3, 5, 6, 7],
         miles: 4320,
         reviews: [
           {
@@ -1322,19 +1322,19 @@ function initdata() {
         startDate: "2025-07-03",
         endDate: "2025-07-10",
         isPack: true,
-        flights: [8, 9, 10, 11, 12, 13], // OPO→CDG→LHR→AMS→BER→PRG→VIE
+        flights: [8, 9, 10, 11, 12, 13],
         miles: 5430,
         reviews: [
           {
-            userId: 2,
-            name: "Bob",
+            userId: 8,
+            name: "Maria",
             message: "Adorei a viagem! Recomendo!",
             rating: 5,
             date: "13-05-2025",
           },
           {
-            userId: 1,
-            name: "Alice",
+            userId: 6,
+            name: "Ana",
             message: "Não gostei muito :(",
             rating: 2,
             date: "14-06-2025",
@@ -1356,7 +1356,7 @@ function initdata() {
       {
         id: 4,
         name: "Portugal Completo",
-        typesOfTourism: [2, 3, 4], // Praia, Religioso, Gastronómico
+        typesOfTourism: [2, 3, 4],
         price: 280,
         startDate: "2025-07-05",
         endDate: "2025-07-08",
@@ -1365,15 +1365,15 @@ function initdata() {
         miles: 300,
         reviews: [
           {
-            userId: 2,
-            name: "Bob",
+            userId: 23,
+            name: "Bernardo",
             message: "Adorei a viagem! Recomendo!",
             rating: 5,
             date: "02-05-2025",
           },
           {
-            userId: 4,
-            name: "John",
+            userId: 21,
+            name: "André",
             message: "Não gostei muito :(",
             rating: 2,
             date: "04-05-2025",
@@ -1392,15 +1392,15 @@ function initdata() {
         miles: 900,
         reviews: [
           {
-            userId: 2,
-            name: "Bob",
+            userId: 26,
+            name: "Vasco",
             message: "Adorei a viagem! Recomendo!",
             rating: 5,
             date: "02-05-2025",
           },
           {
-            userId: 4,
-            name: "John",
+            userId: 7,
+            name: "José",
             message: "Fantástico! 5 estrelas!",
             rating: 5,
             date: "10-05-2025",
@@ -1427,19 +1427,19 @@ function initdata() {
         startDate: "2025-07-01",
         endDate: "2025-07-05",
         isPack: true,
-        flights: [5, 6, 7], // BCN→ROM→ATH→IST
+        flights: [5, 6, 7],
         miles: 1540,
         reviews: [
           {
-            userId: 2,
-            name: "Bob",
+            userId: 18,
+            name: "Marta",
             message: "Adorei a viagem! Recomendo!",
             rating: 5,
             date: "07-06-2025",
           },
           {
-            userId: 1,
-            name: "Alice",
+            userId: 15,
+            name: "Paulo",
             message: "Não gostei muito :(",
             rating: 2,
             date: "07-06-2025",
@@ -1458,14 +1458,14 @@ function initdata() {
         miles: 1675,
         reviews: [
           {
-            userId: 4,
+            userId: 46,
             name: "Charlie",
             message: "Adorei a viagem! Recomendo!",
             rating: 4,
             date: "07-06-2025",
           },
           {
-            userId: 1,
+            userId: 12,
             name: "Alice",
             message: "Super fácil de comprar e a melhor experiência :)",
             rating: 5,

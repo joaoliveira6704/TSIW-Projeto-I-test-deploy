@@ -15,7 +15,6 @@
       type="image/x-icon"
     />
     <!-- CSS -->
-
     <link rel="stylesheet" href="../css/admin.css" />
   </head>
   <body class="hidden cursor! bg-gray-100! flex flex-col min-h-full">
@@ -75,12 +74,6 @@
           >
             Adicionar Utilizador
           </button>
-          <!-- <button
-            id="userFilterBtn"
-            class="btn-std cursor-pointer mb-2 hover:bg-gray-200"
-          >
-            Filtrar Admin
-          </button> -->
           <div
             class="p-5 border border-gray-200 dark:border-gray-700 max-w-full max-h-[250px] h-full overflow-y-auto"
           >
@@ -100,9 +93,7 @@
           </div>
         </div>
 
-        <!-- User Modal Area -->
-
-        <!-- User Add -->
+        <!-- Adicionar utilizadores -->
         <div
           id="userAddModal"
           tabindex="-1"
@@ -110,9 +101,7 @@
           class="hidden backdrop-blur-sm bg-transparent overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
         >
           <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-            <!-- Modal content -->
             <div class="relative p-4 bg-blue-950 rounded-lg shadow sm:p-5">
-              <!-- Modal header -->
               <div
                 class="flex justify-between items-center pb-4 mb-4 rounded-t border-white sm:mb-5 border-b"
               >
@@ -287,24 +276,18 @@
           </div>
         </div>
 
-        <!-- flight Modal Area -->
-
-        <!-- Flight Add Modal - Fixed for scrollability -->
+        <!-- Modal adicionar voos -->
         <div
           id="flightAddModal"
           tabindex="-1"
           aria-hidden="true"
           class="fixed inset-0 z-50 hidden overflow-y-auto"
         >
-          <!-- Backdrop -->
           <div class="fixed inset-0 backdrop-blur-sm"></div>
-
-          <!-- Modal container with proper scrolling -->
           <div class="flex min-h-full items-center justify-center p-4">
             <div
               class="relative w-full max-w-2xl max-h-[90vh] bg-blue-950 rounded-lg shadow-xl"
             >
-              <!-- Modal header - fixed at top -->
               <div
                 class="flex items-center justify-between p-4 border-b border-white"
               >
@@ -609,7 +592,7 @@
                     </div>
                   </div>
 
-                  <!-- POI Section -->
+                  <!-- Secção POI -->
                   <div class="mt-6">
                     <button
                       type="button"
@@ -629,14 +612,10 @@
                       </svg>
                       Adicionar P.O.I
                     </button>
-                    <div id="poiWrapper" class="mt-4 space-y-4">
-                      <!-- POI fields will be added here dynamically -->
-                    </div>
+                    <div id="poiWrapper" class="mt-4 space-y-4"></div>
                   </div>
                 </form>
               </div>
-
-              <!-- Modal footer - fixed at bottom -->
               <div
                 class="flex items-center justify-end p-4 border-t border-white"
               >
@@ -709,9 +688,7 @@
           </div>
         </div>
 
-        <!-- TourismType Modal Area -->
-
-        <!-- Tourism Type Add -->
+        <!-- Modal Tipo de Turismo -->
         <div
           id="tourismAddModal"
           tabindex="-1"
@@ -854,9 +831,7 @@
       </section>
     </div>
 
-    <!-- Packs Modal Area -->
-
-    <!-- Pack Add -->
+    <!-- Adicionar Pack -->
     <div
       id="packAddModal"
       tabindex="-1"
@@ -864,9 +839,7 @@
       class="hidden backdrop-blur-sm bg-transparent overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
     >
       <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
-        <!-- Modal content -->
         <div class="relative p-4 bg-blue-950 rounded-lg shadow sm:p-5">
-          <!-- Modal header -->
           <div
             class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-white"
           >
@@ -895,7 +868,6 @@
               <span class="sr-only">Fechar</span>
             </button>
           </div>
-          <!-- Modal body -->
           <form id="addPackForm">
             <div>
               <label

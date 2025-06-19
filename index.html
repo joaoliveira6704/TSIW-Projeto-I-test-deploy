@@ -21,11 +21,6 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
     />
-    <!-- Choices.js CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css"
-    />
     <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
@@ -88,17 +83,6 @@
             />
           </button>
 
-          <!-- Scratch-off -->
-          <!-- <button
-            class="group cursor-pointer rounded-full border border-white hover:border-blue-500 p-3 flex backdrop-blur transition"
-          >
-            <img
-              src="./img/icons/white/coins.svg"
-              alt="coinsIcon"
-              class="w-4 h-4"
-            />
-          </button> -->
-
           <div class="relative inline-block">
             <!-- Login Button -->
             <button
@@ -113,7 +97,6 @@
               />
             </button>
 
-            <!-- Logged-in dropdown -->
             <div
               id="loggedModal"
               class="hidden absolute right-0 top-12 mt-2 w-max rounded-xl border-2 bg-white shadow-lg text-sm z-50"
@@ -249,22 +232,14 @@
         <div
           class="hidden md:block video-docker absolute top-0 left-0 w-full h-full overflow-hidden"
         >
-          <!-- <video
-            class="min-w-full min-h-full blur-sm absolute object-cover"
-            src="./img/media/lookat.mp4"
-            type="video/mp4"
-            autoplay
-            muted
-            loop
-          ></video> -->
           <img
             src="https://images.unsplash.com/photo-1489914169085-9b54fdd8f2a2?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             class="object-cover h-full w-full"
-            alt=""
+            alt="landing image"
           />
         </div>
         <h1
-          class="space-y-2 z-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl p-6 text-center"
+          class="space-y-2 z-10 hidden md:block text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl p-6 text-center"
         >
           <span class="block text-white">
             Your path<br />
@@ -401,7 +376,6 @@
             <div id="swiperDesktopWrapper" class="swiper-wrapper"></div>
           </div>
 
-          <!-- Navigation buttons -->
           <div
             class="swiper-button-prev absolute left-0 top-1/2 -translate-y-1/2 z-30"
           ></div>
@@ -416,7 +390,6 @@
       >
         <div class="max-w-[1200px] max-h-full mt-5 sm:mt-0 text-center">
           <div class="flex gap-10 text-center md:text-left px-0 md:px-4">
-            <!-- Left Content -->
             <div class="flex-1">
               <div class="flex flex-col justify-between h-full">
                 <h2
@@ -434,7 +407,7 @@
                   paixão por explorar. Descobre destinos incríveis com total
                   confiança e praticidade.
                 </p>
-                <!-- Stats -->
+                <!-- Estatísticas -->
                 <div
                   class="flex justify-around mb-6 md:text-center md:justify-between max-w-full md:max-w-xl"
                 >
@@ -477,14 +450,7 @@
                   </div>
                 </div>
               </div>
-              <!-- <button
-                class="btn-std bg-white hover:outline hover:outline-red-500 hover:bg-gray-200 border-blue-500 text-blue-500"
-                onclick="location.href='#contactsSect'"
-              >
-                Contacta-nos
-              </button> -->
             </div>
-            <!-- Right Image -->
             <div class="flex-1 hidden md:block">
               <img
                 src="https://images.unsplash.com/photo-1491555103944-7c647fd857e6?q=80&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -494,7 +460,6 @@
             </div>
           </div>
 
-          <!-- Features Section -->
           <div class="hidden md:grid mt-10 grid grid-cols-3 gap-6 px-0 md:px-4">
             <div class="rounded-xl p-4 lg:p-6">
               <div class="flex items-start gap-3 mb-3">
@@ -530,7 +495,6 @@
             </div>
           </div>
 
-          <!-- Features Section Mobile -->
           <!-- Swiper -->
           <div
             class="block md:hidden swiper mobileFeatures px-5 mt-5 w-[95vw] max-w-[500px] mx-auto h-fit"
@@ -813,20 +777,16 @@
         </div>
       </section>
 
-      <!-- Modals -->
-
       <!-- Modal Login -->
       <section>
         <div
           id="loginModal"
           class="hidden fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/30 z-50 transition-opacity duration-300"
         >
-          <!-- Modal box -->
           <div
             id="modalContent"
             class="opacity-0 scale-95 transform transition-all duration-300 bg-white rounded-2xl p-8 w-full max-w-md shadow-xl relative"
           >
-            <!-- Close button -->
             <button
               id="closeModalBtn"
               class="absolute top-3 right-4 cursor-pointer text-gray-500 hover:text-gray-700 text-2xl"
@@ -896,18 +856,16 @@
         </div>
       </section>
 
-      <!-- Modal Register -->
+      <!-- Modal Registo -->
       <section>
         <div
           id="registerModal"
           class="hidden fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/30 z-50 transition-opacity duration-300"
         >
-          <!-- Modal box -->
           <div
             id="modalRegisterContent"
             class="opacity-0 scale-95 transform transition-all duration-300 bg-white rounded-2xl p-8 w-full max-w-md shadow-xl relative"
           >
-            <!-- Close button -->
             <button
               id="closeRegisterModalBtn"
               class="absolute top-3 right-4 cursor-pointer text-gray-500 hover:text-gray-700 text-2xl"
@@ -993,7 +951,7 @@
       </section>
     </main>
 
-    <!-- Modal Passaport -->
+    <!-- Modal Passaporte -->
     <div
       id="passport-modal"
       tabindex="-1"
@@ -1001,9 +959,7 @@
       class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full backdrop-blur-sm h-[calc(100%-1rem)] max-h-full"
     >
       <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow-sm">
-          <!-- Modal header -->
           <div
             class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200"
           >
@@ -1031,7 +987,6 @@
               <span class="sr-only">Close modal</span>
             </button>
           </div>
-          <!-- Modal body -->
           <select id="continentFilter" class="p-2 text-black rounded border">
             <option value="">Todos os continentes</option>
             <option value="Europe">Europa</option>
@@ -1058,11 +1013,9 @@
       class="hidden flex overflow-y-auto backdrop-blur-sm overflow-x-hidden fixed items-center top-0 right-0 left-0 z-50 w-full h-screen"
     >
       <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
         <div
           class="relative bg-white rounded-lg shadow-sm -translate-y-1/2 z-50"
         >
-          <!-- Modal header -->
           <div
             class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200"
           >
@@ -1099,12 +1052,11 @@
     </div>
 
     <footer class="w-screen h-fit z-20 py-20 bottom-0 fixed">
-      <!-- Flight search Form -->
+      <!-- Form Pesquisa voos -->
       <div
         id="mainForm"
         class="group hidden lg:flex items-end text-blue-900 gap-1 truncate overflow-ellipsis sm:px-2 mx-auto w-fit min-w-fit h-fit overflow-visible"
       >
-        <!-- Home Airport -->
         <button
           id="dropdownTopButton"
           data-dropdown-toggle="airportDropdown"
@@ -1124,7 +1076,7 @@
           <img src="./img/icons/blue/pin.svg" alt="turismIcon" class="w-5" />
         </button>
 
-        <!-- Airport Selector Dropdown -->
+        <!-- Dropdown aeroporto -->
         <div
           id="airportDropdown"
           class="hidden bg-white rounded-md w-fit border-1 border-blue-900"
@@ -1136,7 +1088,7 @@
           ></ul>
         </div>
 
-        <!-- Turism Dropdown -->
+        <!-- Tipo de turismo -->
         <button
           id="tourismDropdownBtn"
           data-dropdown-toggle="tourismDropdown"
@@ -1159,7 +1111,7 @@
           ></ul>
         </div>
 
-        <!-- Nº Passengers -->
+        <!-- Nº Passageiros -->
         <div class="h-fit flex flex-col gap-2">
           <div
             class="group flex gap-5 min-w-fit h-fit bg-white hover:outline-blue-600 hover:outline-3 px-4 py-3 transition"
@@ -1223,17 +1175,13 @@
       class="flex fixed top-0 left-0 right-0 bottom-0 text-center z-50 justify-center items-center w-screen h-screen overscroll-none backdrop-blur-sm max-h-screen"
     >
       <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <!-- Modal content -->
         <div class="relative bg-white rounded-lg shadow-sm">
-          <!-- Modal header -->
           <div class="flex items-center justify-between p-4 md:p-5">
             <h3 class="text-xl font-semibold text-gray-900">
               Raspa para ganhares milhas!
             </h3>
           </div>
-          <!-- Modal body -->
           <div id="canvas-test" class="sc__container"></div>
-          <!-- Modal footer -->
           <div class="flex gap-4 items-center w-full justify-end p-4 md:p-5">
             <button
               id="cancelMilesBtn"
