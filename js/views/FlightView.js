@@ -1,47 +1,33 @@
 import * as Flights from "../models/FlightModel.js";
 import * as Helper from "../models/ModelHelper.js";
-
+import * as Users from "../models/userModel.js";
 // Inicializa os dados de voos no localStorage, se necessário
 Flights.init();
 
 // Lista de destinos para o percurso
-const destinations = ["OPO", "LIS", "MAD", "ROM"];
-const name = "Viagem Europeia";
+let destinations;
+let name;
 const flightsSection = document.getElementById("flightsSection");
 let totalPrice = 0; // Preço total dos voos selecionados
 let selectedFlights = {}; // Guarda o id do voo selecionado em cada secção
 let selectedCount = 0; // Quantos voos já foram selecionados
-const totalSections = destinations.length - 1; // Número de secções
-
-// Mapeamento de nomes de companhias para códigos IATA (para mostrar o logo)
-const IATA_CODES = {
-  TAP: "TP",
-  Vueling: "VY",
-  Iberia: "IB",
-  "Air France": "AF",
-  "British Airways": "BA",
-  Lufthansa: "LH",
-  Ryanair: "FR",
-  KLM: "KL",
-  "Swiss Air": "LX",
-  "Austrian Airlines": "OS",
-  SAS: "SK",
-  Norwegian: "DY",
-  "Aer Lingus": "EI",
-  "Aegean Airlines": "A3",
-  "Turkish Airlines": "TK",
-  "Brussels Airlines": "SN",
-  "Czech Airlines": "OK",
-  Finnair: "AY",
-  "ITA Airways": "AZ",
-  Icelandair: "FI",
-  "Air Europa": "UX",
-  EasyJet: "U2",
-  Delta: "DL",
-};
+let totalSections;
+let userQuery;
+let miles;
 
 // Quando o DOM estiver pronto, começa a construir a interface
 window.addEventListener("DOMContentLoaded", () => {
+  if (!sessionStorage.getItem("tripData") || !Users.isLogged()) {
+    location.href = "../index.html";
+    return;
+  }
+  userQuery = JSON.parse(sessionStorage.getItem("userQuery"));
+  let trip = JSON.parse(sessionStorage.getItem("tripData"));
+  destinations = trip.destinations;
+  name = trip.name;
+  miles = trip.miles;
+  totalSections = destinations.length - 1;
+  document.title = `${trip.name} - Seleção de Voos`;
   populateView();
 });
 
@@ -191,6 +177,7 @@ function populateView() {
   }
 
   // Adiciona os event listeners para seleção de datas no carrossel
+
   document.querySelectorAll("[data-date]").forEach((item) => {
     item.addEventListener("click", function () {
       const date = this.getAttribute("data-date");
@@ -278,10 +265,11 @@ function populateView() {
     `<div class="flex flex-col sm:flex-row justify-end items-center mt-6 gap-4">
       <p class="text-xl font-semibold total-price">Valor Total: €0</p>
       <div class="flex items-center space-x-4">
-        <button class="border-2 border-red-500 text-red-500 px-4 py-2 rounded hover:bg-red-50">
+        <button class="w-fit cursor-pointer btn-std font-bold border-2 border-[#D12127] text-[#D12127] hover:bg-[#D12127] hover:bg-opacity-10">
           Cancelar
         </button>
-        <button id="payment-btn" class="bg-transparent border-2 border-gray-600 cursor-not-allowed opacity-50 text-gray-600 px-4 py-2 rounded flex items-center" disabled>
+        <button id="resume-btn" class="w-fit btn-std font-bold border-2 border-gray-600 cursor-not-allowed opacity-50 text-gray-600 px-4 py-2 rounded flex items-center" disabled>
+
           <span>0/${totalSections}</span>
         </button>
       </div>
@@ -289,10 +277,11 @@ function populateView() {
   );
 
   // Adiciona o event listener ao botão de pagamento
-  const paymentBtn = document.getElementById("payment-btn");
-  if (paymentBtn) {
-    paymentBtn.addEventListener("click", function () {
-      if (paymentBtn.disabled) return;
+  const resumeBtn = document.getElementById("resume-btn");
+  if (resumeBtn) {
+    resumeBtn.addEventListener("click", function () {
+      let finalPrice = totalPrice;
+      if (resumeBtn.disabled) return;
 
       const flightIds = [];
       for (let i = 0; i < totalSections; i++) {
@@ -300,7 +289,16 @@ function populateView() {
           flightIds.push(selectedFlights[i]);
         }
       }
-      console.log("Selected flights:", flightIds);
+      const currentTrip = {
+        name: name,
+        flights: flightIds,
+        price: finalPrice,
+        miles: miles,
+      };
+
+      // Store the trip data in sessionStorage
+      sessionStorage.setItem("currentTrip", JSON.stringify(currentTrip));
+      location.href = "./resume.html";
     });
   }
 
@@ -443,7 +441,7 @@ function showFlights(section, flights) {
     const arrTime = Helper.formatTime(flight.arrivalTime);
 
     // Usa o código IATA para mostrar o logo da companhia
-    const iata = IATA_CODES[flight.company] || flight.company;
+    const iata = Helper.getIata(flight.company) || flight.company;
     const logoUrl = `https://images.daisycon.io/airline/?width=100&height=40&color=ffffff&iata=${iata}`;
 
     const html = `
@@ -620,7 +618,7 @@ function calcTotal() {
     if (flightId) {
       const flight = Flights.getFlightById(flightId);
       if (flight) {
-        totalPrice += flight.price;
+        totalPrice += flight.price * parseInt(userQuery.passengers);
       }
     }
   });
@@ -638,23 +636,17 @@ function updateTotal() {
 
 // Atualiza o contador de voos selecionados e o botão de pagamento
 function updateCounter() {
-  const btn = document.getElementById("payment-btn");
+  const btn = document.getElementById("resume-btn");
 
   if (btn) {
     if (selectedCount === totalSections) {
-      btn.innerHTML = `<span>Pagamento</span>`;
+      btn.innerHTML = `<span>Ver Resumo</span>`;
       btn.classList.remove(
         "bg-transparent",
         "border-gray-600",
         "cursor-not-allowed",
         "opacity-50",
         "text-gray-600"
-      );
-      btn.classList.add(
-        "bg-green-500",
-        "text-white",
-        "hover:bg-green-600",
-        "border-green-600"
       );
       btn.disabled = false;
     } else {

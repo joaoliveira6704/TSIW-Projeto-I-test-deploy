@@ -1,5 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 @import url(customui.css);
+@font-face {
+  font-family: "Typo Hoop";
+  src: url("../img/fonts/Typo\ Hoop_Regular.otf");
+}
+
+@font-face {
+  font-family: "Typo Hoop";
+  src: url("../img/fonts/Typo\ Hoop_Bold.otf");
+  font-weight: bold;
+}
+
+h1 {
+  font-family: "Typo Hoop";
+}
 
 body {
   font-family: "Space Mono", sans-serif;
@@ -26,6 +40,7 @@ label {
 }
 .destinationGhost {
   background-color: #6c6ea0;
+  transform: scale(0.7) !important;
 }
 
 .tripGhost {
@@ -51,4 +66,10 @@ label {
 .leaflet-popup-content {
   margin: 0px !important;
   width: auto !important;
+}
+
+.disabled {
+  border-color: gray !important;
+  background-color: white !important;
+  color: gray !important;
 }

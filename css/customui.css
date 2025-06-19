@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
 /* Cursores */
 
 .cursor-drag {
@@ -46,4 +48,15 @@ html,
 .has-tooltip:hover .tooltip {
   visibility: visible;
   z-index: 100;
+}
+
+@media (max-width: 768px) {
+  .gt-lang-code {
+    display: none !important;
+    font-family: "Space Mono", sans-serif;
+  }
+}
+.gt-lang-code,
+.nturl {
+  font-family: "Space Mono", sans-serif;
 }

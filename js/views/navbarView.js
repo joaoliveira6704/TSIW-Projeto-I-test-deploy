@@ -322,6 +322,8 @@ function populateFormContent() {
     type="text"
     placeholder="Ex:'OPO'"
     class="border p-2"
+    maxlength="3"
+    minlength="3"
     autocomplete = "off"
   />
       </li>
@@ -379,6 +381,9 @@ function sendFormQuery() {
   const passengersCount = document.getElementById("mobile-counter-input").value;
   const typeOfTourism = document.getElementById("tourismInput").value;
   User.setUserQuery(selectedDate, origin, typeOfTourism, passengersCount);
+  if (!selectedDate || !origin) {
+    return;
+  }
   location.href = "./html/tripBuilder.html";
 }
 
@@ -457,6 +462,10 @@ function populateData() {
   const tourismTypes = TourismTypes.getAll();
 
   tourismSelect.innerHTML = `<option disabled selected>Selecionar</option>`;
+  tourismSelect.insertAdjacentHTML(
+    "beforeend",
+    `<option value="Todos">Todos</option>`
+  );
   tourismTypes.forEach((type) => {
     tourismSelect.insertAdjacentHTML(
       "beforeend",

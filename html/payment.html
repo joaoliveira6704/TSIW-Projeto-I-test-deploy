@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="../img/logos/logoDarkmode_logo darkmode.png"
+      type="image/x-icon"
+    />
+    <title>Pagamento da Viagem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/tripBuilder.css" />
+
+    <!-- Flowbite CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body class="h-screen cursor">
+    <section id="flightPayment" class="w-full max-w-4xl mx-auto">
+      <div class="mx-auto px-6 pt-8 pb-20">
+        <div class="flex flex-col items-left space-y-6 mb-6">
+          <button class="cursor-pointer w-fit">
+            <img src="../img/logos/logo-12.png" alt="Logo" width="70" />
+          </button>
+          <h1 class="text-2xl font-bold text-gray-900">PAGAMENTO</h1>
+        </div>
+
+        <!-- Form Section -->
+        <form class="space-y-6">
+          <div>
+            <label
+              for="nameOnCard"
+              class="block text-sm font-medium text-gray-700"
+              >Nome Completo <span class="text-red-500">*</span></label
+            >
+            <input
+              type="text"
+              id="nameOnCard"
+              name="nameOnCard"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-900 focus:border-blue-900 sm:text-sm"
+              required
+            />
+          </div>
+
+          <div class="flex flex-col gap-6">
+            <div>
+              <label
+                for="cardNumber"
+                class="block text-sm font-medium text-gray-700"
+                >Número Cartão <span class="text-red-500">*</span></label
+              >
+              <input
+                type="text"
+                id="cardNumber"
+                name="cardNumber"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-900 focus:border-blue-900 sm:text-sm"
+                required
+                placeholder="1234 5678 9012 3456"
+                maxlength="19"
+              />
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="cvv" class="block text-sm font-medium text-gray-700"
+                  >CVV <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="text"
+                  id="cvv"
+                  name="cvv"
+                  placeholder="123"
+                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-900 focus:border-blue-900 sm:text-sm"
+                  required
+                  maxlength="3"
+                />
+              </div>
+              <div>
+                <label
+                  for="expireDate"
+                  class="block text-sm font-medium text-gray-700"
+                  >Validade Cartão <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="text"
+                  id="expireDate"
+                  name="expireDate"
+                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-900 focus:border-blue-900 sm:text-sm"
+                  required
+                  placeholder="MM/AA"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label for="nif" class="block text-sm font-medium text-gray-700"
+              >NIF</label
+            >
+            <input
+              type="text"
+              id="nif"
+              name="nif"
+              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-900 focus:border-blue-900 sm:text-sm"
+            />
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              id="milesCheckbox"
+              name="milesCheckbox"
+              class="h-4 cursor-pointer w-4 text-blue-900 border-gray-300 rounded focus:ring-blue-900"
+            />
+            <label
+              id="milesLabel"
+              for="milesCheckbox"
+              class="text-sm text-gray-700"
+            ></label>
+          </div>
+
+          <div class="border-t border-gray-300 pt-4 mt-4">
+            <p class="text-sm text-gray-700">
+              Preço Final: <span id="priceLabel" class="font-bold"></span> -
+              Acumula
+              <span id="accumMiles" class="font-bold"></span>
+              <span class="text-blue-600">***</span>
+            </p>
+            <p class="text-xs mt-2 text-gray-700">
+              <span class="text-blue-600">**</span> - 100 milhas = 5€
+            </p>
+            <p class="text-xs mt-4 text-gray-700">
+              <span class="text-blue-600">***</span> - Milhas apenas usáveis
+              após o pagamento.
+            </p>
+          </div>
+
+          <div class="mt-4 flex space-x-4">
+            <button
+              id="cancelBtn"
+              type="button"
+              class="w-full cursor-pointer btn-std font-bold border-2 border-[#D12127] text-[#D12127] hover:bg-[#D12127] hover:bg-opacity-10"
+            >
+              CANCELAR
+            </button>
+            <button
+              type="submit"
+              class="w-full cursor-pointer btn-std font-bold border-2"
+            >
+              PAGAR
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Flowbite JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
+    <!-- Views -->
+    <script type="module" src="../js/views/PaymentView.js"></script>
+
+    <!-- Tradutor -->
+    <script>
+      window.gtranslateSettings = {
+        default_language: "pt",
+        languages: ["en", "es", "fr", "de", "pt"],
+        wrapper_selector: ".gtranslate_wrapper",
+      };
+    </script>
+    <script
+      src="https://cdn.gtranslate.net/widgets/latest/float.js"
+      defer
+    ></script>
+    <div class="print:hidden gtranslate_wrapper"></div>
+  </body>
+</html>

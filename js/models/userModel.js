@@ -1,48 +1,65 @@
+// Variável para armazenar os utilizadores em memória
 let users;
 
-// Load users from localstorage
+// Carrega os utilizadores do localStorage
 export function init() {
   users = localStorage.users ? JSON.parse(localStorage.users) : [];
 }
 
-// Returns all users
+// Devolve todos os utilizadores
 export function getAllUsers() {
   return users;
 }
 
-// Returns user object by id
+// Devolve um utilizador pelo seu ID
 export function getUserById(id) {
   const numId = typeof id === "string" ? Number(id) : id;
   return users.find((user) => user.id === numId) || null;
 }
 
+// Verifica se o utilizador tem direito ao scratch (raspadinha semanal)
 export function userHasScratch(userCheck) {
   if (!userCheck) {
     return false;
   }
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-  return oneWeekAgo.toISOString().split("T")[0] >= userCheck.lastScratch; // YYYY-MM-DD format
+  // Só pode raspar se já passou uma semana desde o último scratch
+  return oneWeekAgo.toISOString().split("T")[0] >= userCheck.lastScratch; // formato YYYY-MM-DD
 }
 
-// Updates a user by id
+// Atualiza um utilizador pelo ID
 export function updateUser(id, { name, email, password, isAdmin }) {
   const numId = typeof id === "string" ? Number(id) : id;
   const user = users.find((user) => user.id === numId);
+
+  if (!user) {
+    throw Error("Utilizador não encontrado!");
+  }
+
+  // Verifica se já existe outro utilizador com o mesmo email
   if (users.some((user) => user.email === email && user.id !== numId)) {
     throw Error(`Já existe um utilizador com o email "${email}"!`);
   }
+
   user.name = name;
   user.email = email;
-  if (password !== "") {
-    user.password = password;
-  }
-  user.isAdmin = isAdmin === true || isAdmin === "true";
+  user.isAdmin = isAdmin === true;
 
-  localStorage.setItem("users", JSON.stringify(users));
+  // Se for fornecida nova password, faz hash e atualiza
+  if (password !== "") {
+    return hashPassword(password, "compass").then((hashedPassword) => {
+      user.password = hashedPassword;
+      localStorage.setItem("users", JSON.stringify(users));
+      return user; // Devolve o utilizador atualizado
+    });
+  } else {
+    localStorage.setItem("users", JSON.stringify(users));
+    return Promise.resolve(user);
+  }
 }
 
-// Updates the logged user
+// Atualiza o utilizador autenticado (logged in)
 export function updateLoggedUser(id) {
   const user = users.find((u) => String(u.id) === String(id));
   if (!user) throw Error("Utilizador não encontrado!");
@@ -51,24 +68,60 @@ export function updateLoggedUser(id) {
   sessionStorage.setItem("loggedUser", JSON.stringify(user));
 }
 
-export function updateScratch(userCheck, milesWon) {
-  const user = users.find((u) => String(u.id) === String(userCheck.id));
-  const today = new Date();
-  today.setDate(today.getDate());
-  user.lastScratch = today.toISOString().split("T")[0];
+// Atualiza um utilizador por objeto (útil para alterações diretas)
+export function updateUserByObject(userToUpdate) {
+  const userIndex = users.findIndex((user) => user.id === userToUpdate.id);
 
-  user.miles["available"] += milesWon;
-  user.miles["total"] += milesWon;
-
-  if (localStorage.getItem("loggedUser")) {
-    localStorage.setItem("loggedUser", JSON.stringify(user));
-  } else {
-    sessionStorage.setItem("loggedUser", JSON.stringify(user));
+  if (userIndex === -1) {
+    throw Error("Utilizador não encontrado!");
   }
+
+  // Atualiza o utilizador no array
+  users[userIndex] = { ...users[userIndex], ...userToUpdate };
+
+  // Guarda no localStorage
   localStorage.setItem("users", JSON.stringify(users));
+
+  // Atualiza também o utilizador logado se for o mesmo
+  updateLoggedUser(userToUpdate.id);
+
+  return users[userIndex];
 }
 
-// Add User
+// Atualiza as milhas do utilizador após o scratch
+export function updateScratch(userCheck, milesWon) {
+  const user = users.find((u) => String(u.id) === String(userCheck.id));
+  if (!user) {
+    throw Error("Utilizador não encontrado!");
+  }
+
+  const today = new Date();
+  user.lastScratch = today.toISOString().split("T")[0];
+
+  // Inicializa o objeto de milhas se não existir
+  if (!user.miles) {
+    user.miles = { available: 0, total: 0 };
+  }
+
+  user.miles.available += milesWon;
+  user.miles.total += milesWon;
+
+  // Guarda no localStorage
+  localStorage.setItem("users", JSON.stringify(users));
+
+  // Atualiza o utilizador autenticado se for o mesmo
+  const loggedUser = getUserLogged();
+  if (loggedUser && loggedUser.id === user.id) {
+    if (localStorage.getItem("loggedUser")) {
+      localStorage.setItem("loggedUser", JSON.stringify(user));
+    }
+    if (sessionStorage.getItem("loggedUser")) {
+      sessionStorage.setItem("loggedUser", JSON.stringify(user));
+    }
+  }
+}
+
+// Adiciona um novo utilizador
 export function add(name, email, password, passwordConfirm) {
   if (password !== passwordConfirm) {
     throw Error("As Passwords não coincidem!");
@@ -78,37 +131,56 @@ export function add(name, email, password, passwordConfirm) {
     throw Error(`Já existe um utilizador com o email "${email}"!`);
   }
 
-  const id = Date.now();
-  users.push(new User(id, name, email, password));
-  localStorage.setItem("users", JSON.stringify(users));
+  return hashPassword(password).then((hashedPassword) => {
+    const id = Date.now();
+    users.push(
+      new User(id, name, email, hashedPassword, false, "", 0, [], [], [], "")
+    );
+    localStorage.setItem("users", JSON.stringify(users));
+    return true;
+  });
 }
 
-// User Login
+// Função para fazer hash da password (segurança)
+function hashPassword(password, salt = "compass") {
+  const te = new TextEncoder();
+  return window.crypto.subtle
+    .digest("SHA-256", te.encode(password + salt))
+    .then((hashBuffer) => {
+      const hashArray = new Uint8Array(hashBuffer);
+      return btoa(String.fromCharCode(...hashArray));
+    });
+}
+
+// Login do utilizador
 export function login(email, password, keepSigned) {
   const user = users.find((user) => user.email === email);
 
   if (!user) {
-    throw new Error("Não existe nenhum utilizador com o email introduzido!");
+    throw Error("Não existe nenhum utilizador com o email introduzido!");
   }
 
-  if (user.password !== password) {
-    throw new Error("Password Incorreta!");
-  }
+  return hashPassword(password).then((hashedPassword) => {
+    if (user.password !== hashedPassword) {
+      throw Error("Password Incorreta!");
+    }
 
-  if (keepSigned) {
-    localStorage.setItem("loggedUser", JSON.stringify(user));
-  } else {
-    sessionStorage.setItem("loggedUser", JSON.stringify(user));
-  }
-  return true;
+    if (keepSigned) {
+      localStorage.setItem("loggedUser", JSON.stringify(user));
+    } else {
+      sessionStorage.setItem("loggedUser", JSON.stringify(user));
+    }
+    return true;
+  });
 }
 
-// User Logout
+// Logout do utilizador
 export function logout() {
-  sessionStorage.removeItem("loggedUser") ||
-    localStorage.removeItem("loggedUser");
+  sessionStorage.removeItem("loggedUser");
+  localStorage.removeItem("loggedUser");
 }
 
+// Guarda a query do utilizador (preferências de pesquisa)
 export function setUserQuery(date, origin, typeOfTourism, passengers) {
   const userQuery = {
     date: date || "",
@@ -119,7 +191,7 @@ export function setUserQuery(date, origin, typeOfTourism, passengers) {
   sessionStorage.setItem("userQuery", JSON.stringify(userQuery));
 }
 
-// Checks if user is logged in
+// Verifica se existe um utilizador autenticado
 export function isLogged() {
   return (
     !!sessionStorage.getItem("loggedUser") ||
@@ -127,12 +199,12 @@ export function isLogged() {
   );
 }
 
-// Checks if user is Admin
+// Verifica se o utilizador é administrador
 export function isAdmin(user) {
   return user.isAdmin;
 }
 
-// Returns the logged user
+// Devolve o utilizador autenticado
 export function getUserLogged() {
   let user = sessionStorage.getItem("loggedUser");
   if (!user) {
@@ -141,47 +213,154 @@ export function getUserLogged() {
   return user ? JSON.parse(user) : null;
 }
 
-// Delete user by ID
+// Apaga um utilizador pelo ID
 export function deleteUser(id) {
   const numId = typeof id === "string" ? Number(id) : id;
-
   const index = users.findIndex((user) => user.id === numId);
 
-  users.splice(index, 1);
-  localStorage.setItem("users", JSON.stringify(users));
+  if (index !== -1) {
+    users.splice(index, 1);
+    localStorage.setItem("users", JSON.stringify(users));
+  }
 }
 
-// Delete pack from user
+// Remove um pack das viagens do utilizador
 export function deletePack(id) {
   const packId = typeof id === "string" ? Number(id) : id;
 
   users.forEach((user) => {
-    for (let i = user.trips.length - 1; i >= 0; i--) {
-      if (user.trips[i].id === packId) {
-        user.trips.splice(i, 1);
+    if (user.trips && Array.isArray(user.trips)) {
+      for (let i = user.trips.length - 1; i >= 0; i--) {
+        if (user.trips[i].id === packId) {
+          user.trips.splice(i, 1);
+        }
       }
     }
   });
   localStorage.setItem("users", JSON.stringify(users));
 }
 
+// Atualiza as milhas do utilizador (usadas e ganhas)
+export function updateUserMiles(userId, milesUsed, milesEarned) {
+  const user = getUserById(userId); // Usa getUserById para obter o utilizador
+
+  if (!user) {
+    throw new Error("Utilizador não encontrado");
+  }
+
+  // Atualiza as milhas
+  user.miles.available = user.miles.available - milesUsed + milesEarned;
+  user.miles.total = user.miles.total + milesEarned;
+
+  // Garante que as milhas disponíveis não ficam negativas
+  if (user.miles.available <= 0) {
+    user.miles.available = 0;
+  }
+
+  // Guarda o array atualizado no localStorage
+  localStorage.setItem("users", JSON.stringify(users));
+
+  // Atualiza o utilizador autenticado se for o mesmo
+  const loggedUser = getUserLogged();
+  if (loggedUser && loggedUser.id === userId) {
+    loggedUser.miles.available = user.miles.available;
+    loggedUser.miles.total = user.miles.total;
+    if (localStorage.getItem("loggedUser")) {
+      localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
+    }
+    if (sessionStorage.getItem("loggedUser")) {
+      sessionStorage.setItem("loggedUser", JSON.stringify(loggedUser));
+    }
+  }
+
+  return user.miles;
+}
+
+// Adiciona uma viagem ao utilizador
+export function addTripToUser(userId, tripId) {
+  const user = getUserById(userId);
+
+  if (user) {
+    // Adiciona o ID da viagem se ainda não existir
+    if (!user.trips.includes(tripId)) {
+      user.trips.push(tripId);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      updateLoggedUser(userId);
+    }
+  }
+}
+
+export function removeFavorite(destination) {
+  let currentUser = getUserLogged();
+  currentUser.favorites = currentUser.favorites.filter(
+    (fav) => fav !== destination
+  );
+  updateUserByObject(currentUser);
+}
+
+export function getSoldTrips() {
+  let users = getAllUsers();
+  let tripsArray = [];
+  users.forEach((user) => {
+    tripsArray.push(user.trips.length);
+  });
+
+  return tripsArray;
+}
+
+export function addFavorite(destination) {
+  let currentUser = getUserLogged();
+  currentUser.favorites.push(destination);
+  updateUserByObject(currentUser);
+}
+
+export function toggleFavorite(destinName) {
+  const user = getUserLogged();
+  if (user.favorites.includes(destinName)) {
+    removeFavorite(destinName);
+  } else {
+    addFavorite(destinName);
+  }
+}
+
+export function addBadgestoUser(userId, flightBadges) {
+  const user = getUserById(userId);
+
+  if (user) {
+    // Adiciona o badge
+    flightBadges.forEach((badge) => {
+      if (!user.badges.includes(badge)) {
+        user.badges.push(badge);
+        localStorage.setItem("users", JSON.stringify(users));
+
+        updateLoggedUser(userId);
+      }
+    });
+  }
+}
+
+// Guarda o array de utilizadores no localStorage
+export function saveUsers(updatedUsers) {
+  users = updatedUsers; // Atualiza a variável global users
+  localStorage.setItem("users", JSON.stringify(users));
+}
+
 /**
- * User class
+ * Classe User que representa um utilizador
  */
 class User {
-  id = null;
+  id = 0;
   name = "";
   email = "";
   password = "";
   isAdmin = false;
   homeAirport = "";
   miles = { available: 0, total: 0 };
-  trips = 0;
   badges = [];
   favorites = [];
   trips = [];
   lastScratch = "";
-  tourismTypes = [];
 
   constructor(
     id,
@@ -190,12 +369,11 @@ class User {
     password,
     isAdmin,
     homeAirport,
-    miles = { available: 0, total: 0 },
-    badges = [],
-    favorites = [],
-    trips = [],
-    lastScratch,
-    tourismTypes = []
+    miles,
+    badges,
+    favorites,
+    trips,
+    lastScratch
   ) {
     this.id = id;
     this.name = name;
@@ -208,6 +386,5 @@ class User {
     this.favorites = favorites;
     this.trips = trips;
     this.lastScratch = lastScratch;
-    this.tourismTypes = tourismTypes;
   }
 }

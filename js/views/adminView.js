@@ -1,3 +1,4 @@
+// Importa os módulos necessários para gerir utilizadores, tipos de turismo, voos e viagens
 import * as User from "../models/UserModel.js";
 import * as TourismTypes from "../models/TourismtypeModel.js";
 import * as Flights from "../models/flightModel.js";
@@ -11,7 +12,7 @@ Trips.init();
 
 const body = document.querySelector("body");
 
-// Seletores das tabelas na página de admin
+// Seletores das tabelas na página de administração
 const userTableList = document.getElementById("userTableList");
 const tourismTypeTableList = document.getElementById("tourismTypeList");
 const flightTableList = document.getElementById("flightTableList");
@@ -19,6 +20,7 @@ const packsTableList = document.getElementById("packsTableList");
 
 // Ao carregar a página, verifica se o utilizador é admin e preenche as tabelas
 window.addEventListener("load", (event) => {
+  setupFlightFormView();
   const isAdmin = User.isAdmin(User.getUserLogged());
   if (!isAdmin) {
     // Se não for admin, redireciona para o index
@@ -27,7 +29,7 @@ window.addEventListener("load", (event) => {
     body.classList.remove("hidden");
   }
 
-  /* ----------- USERS ----------- */
+  /* ----------- UTILIZADORES ----------- */
   const users = User.getAllUsers();
   userTableList.innerHTML = "";
 
@@ -226,11 +228,11 @@ window.addEventListener("load", (event) => {
   tourismTypesList.forEach((tourismType) => {
     tourismTypeSelect.insertAdjacentHTML(
       "beforeend",
-      `<option value="${tourismType.name}">${tourismType.name}</option>`
+      `<option value="${tourismType.id}">${tourismType.name}</option>`
     );
   });
 
-  /* ----------- TOURISM TYPES ----------- */
+  /* ----------- TIPOS DE TURISMO ----------- */
   const tourismTypes = TourismTypes.getAll();
   tourismTypeTableList.innerHTML = "";
 
@@ -263,7 +265,7 @@ window.addEventListener("load", (event) => {
     }
   });
 
-  /* ----------- FLIGHTS ----------- */
+  /* ----------- VOOS ----------- */
   const flights = Flights.getAllFlights();
   flightTableList.innerHTML = "";
 
@@ -443,6 +445,27 @@ function displayMessage(form, message, type = "error") {
   if (oldMessage) {
     oldMessage.remove();
   }
+
+  if (type === "flight") {
+    if (form.querySelector("#errorWrapper")) {
+      form.querySelector("#errorWrapper").remove();
+    }
+    const colorClass = "text-red-500";
+    form.insertAdjacentHTML("beforeend", `<div id="errorWrapper"></div>`);
+    const errorWrapperNew = form.querySelector("#errorWrapper");
+
+    // Garante que message é um array antes de usar forEach
+    const messageArray = Array.isArray(message) ? message : [message];
+
+    messageArray.forEach((part) => {
+      errorWrapperNew.insertAdjacentHTML(
+        "beforeend",
+        `<p class='${colorClass} mt-2'>- ${part}</p>`
+      );
+    });
+    return;
+  }
+
   if (type === "clear" || !message) return;
   const colorClass = type === "error" ? "text-red-500" : "text-green-500";
   form.insertAdjacentHTML(
@@ -458,6 +481,9 @@ function displayConfirmation(onConfirm) {
   // Remove qualquer modal antigo de confirmação que possa existir
   const oldModal = document.querySelector("#confirmDeleteModal");
   if (oldModal) oldModal.remove();
+
+  // Referência ao body
+  const body = document.body;
 
   // Adiciona o HTML do modal de confirmação ao body
   body.insertAdjacentHTML(
@@ -510,56 +536,305 @@ function displayConfirmation(onConfirm) {
 const flightForm = document.getElementById("flightAddForm");
 const addPoiBtn = document.getElementById("addPoiBtn");
 const poiWrapper = document.getElementById("poiWrapper");
-addPoiBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  poiWrapper.insertAdjacentHTML(
-    "beforeend",
-    `<div class="flex"><div>
-                    <label
-                      for="poi"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Nome</label
-                    >
-                    <input
-                      type="text"
-                      name="poi"
-                      id="poi"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="Religioso"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="poiLat"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Latitude</label
-                    >
-                    <input
-                      type="number"
-                      step="0.1"
-                      name="poiLat"
-                      id="poiLat"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="Latitude"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="poiLong"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Longitude</label
-                    >
-                    <input
-                      type="number"
-                      step="0.1"
-                      name="poiLong"
-                      id="poiLong"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="Longitude"
-                      required
-                    />
-                  </div></div>`
+
+// Adiciona campos para pontos de interesse (POI) ao formulário de voo
+if (addPoiBtn && poiWrapper) {
+  addPoiBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+
+    // Conta atual de POIs para IDs únicos
+    const poiCount = poiWrapper.querySelectorAll("[data-poi-container]").length;
+
+    poiWrapper.insertAdjacentHTML(
+      "beforeend",
+      `<div class="block sm:flex gap-4 mb-4 p-4 border border-gray-300 rounded-lg" data-poi-container>
+        <div class="flex-1">
+          <label for="poiName${poiCount}" class="block mb-2 text-sm font-medium dark:text-white">
+            Nome do POI
+          </label>
+          <input
+            type="text"
+            name="poiName${poiCount}"
+            id="poiName${poiCount}"
+            class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white bg-transparent"
+            placeholder="Nome do ponto de interesse"
+            required
+          />
+        </div>
+        <div class="flex-1">
+          <label for="poiLat${poiCount}" class="block mb-2 text-sm font-medium dark:text-white">
+            Latitude
+          </label>
+          <input
+            type="number"
+            step="0.000001"
+            name="poiLat${poiCount}"
+            id="poiLat${poiCount}"
+            class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white bg-transparent"
+            placeholder="Latitude"
+            required
+          />
+        </div>
+        <div class="flex-1">
+          <label for="poiLong${poiCount}" class="block mb-2 text-sm font-medium dark:text-white">
+            Longitude
+          </label>
+          <input
+            type="number"
+            step="0.000001"
+            name="poiLong${poiCount}"
+            id="poiLong${poiCount}"
+            class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white bg-transparent"
+            placeholder="Longitude"  
+            required
+          />
+        </div>
+        <div class="flex items-end">
+          <button type="button" class="remove-poi-btn px-3 py-2 text-sm text-white bg-red-600 rounded-lg hover:bg-red-700">
+            Remover
+          </button>
+        </div>
+      </div>`
+    );
+
+    // Adiciona evento ao botão de remover POI
+    const removeButtons = poiWrapper.querySelectorAll(".remove-poi-btn");
+    const lastRemoveButton = removeButtons[removeButtons.length - 1];
+    lastRemoveButton.addEventListener("click", function () {
+      this.closest("[data-poi-container]").remove();
+    });
+  });
+}
+
+// Extrai os dados do formulário de voo
+function extractFormData() {
+  const formData = {
+    origin: document.getElementById("origin").value.toUpperCase(),
+    originName: document.getElementById("originName").value,
+    destination: document.getElementById("dest").value.toUpperCase(),
+    destinationName: document.getElementById("destinName").value,
+    departureTime: document.getElementById("departureTime").value,
+    arrivalTime: document.getElementById("arrivalTime").value,
+    price: document.getElementById("price").value,
+    duration: Flights.calculateDurationInMinutes(
+      document.getElementById("departureTime").value,
+      document.getElementById("arrivalTime").value
+    ),
+    company: document.getElementById("company").value,
+    distance: document.getElementById("distance").value,
+    originLat: document.getElementById("originLat").value,
+    originLong: document.getElementById("originLong").value,
+    destinLat: document.getElementById("destLat").value,
+    destinLong: document.getElementById("destLong").value,
+    tourismTypes: getTourismTypesFromForm(),
+    pois: getPoisFromForm(),
+    badge: document.getElementById("badge").value,
+  };
+
+  return formData;
+}
+
+// Extrai os tipos de turismo selecionados do formulário
+function getTourismTypesFromForm() {
+  const tourismSelect = document.getElementById("tourismTypeSelect");
+  const selectedOptions = Array.from(tourismSelect.selectedOptions);
+  const tourismTypes = selectedOptions.map((option) => parseInt(option.value));
+  return tourismTypes;
+}
+
+// Extrai todos os pontos de interesse do formulário
+function getPoisFromForm() {
+  const poiWrapper = document.getElementById("poiWrapper");
+  if (!poiWrapper) return [];
+
+  const poiContainers = poiWrapper.querySelectorAll("[data-poi-container]");
+  const pois = [];
+
+  poiContainers.forEach((container, index) => {
+    const nameInput =
+      container.querySelector(`[name="poiName${index}"]`) ||
+      container.querySelector(`[name*="poiName"]`);
+    const latInput =
+      container.querySelector(`[name="poiLat${index}"]`) ||
+      container.querySelector(`[name*="poiLat"]`);
+    const longInput =
+      container.querySelector(`[name="poiLong${index}"]`) ||
+      container.querySelector(`[name*="poiLong"]`);
+
+    if (
+      nameInput &&
+      latInput &&
+      longInput &&
+      nameInput.value.trim() &&
+      latInput.value.trim() &&
+      longInput.value.trim()
+    ) {
+      pois.push({
+        name: nameInput.value.trim(),
+        lat: parseFloat(latInput.value),
+        long: parseFloat(longInput.value),
+      });
+    }
+  });
+
+  return pois;
+}
+
+// Validação dos dados do formulário de voo
+function validateFormData(formData) {
+  const errors = [];
+
+  // Validação básica dos campos obrigatórios
+  if (!formData.origin || formData.origin.trim() === "") {
+    errors.push("Origem é obrigatória");
+  }
+
+  if (!formData.destination || formData.destination.trim() === "") {
+    errors.push("Destino é obrigatório");
+  }
+
+  if (!formData.price || formData.price <= 0)
+    errors.push("O preço deve ser maior que zero");
+
+  // Validação das datas
+  if (formData.departureTime && formData.arrivalTime) {
+    const departure = new Date(formData.departureTime);
+    const arrival = new Date(formData.arrivalTime);
+
+    if (arrival <= departure) {
+      errors.push("A data de chegada deve ser posterior à partida");
+    }
+  }
+
+  // Validação de coordenadas
+  const lat1 = parseFloat(formData.originLat);
+  const long1 = parseFloat(formData.originLong);
+  const lat2 = parseFloat(formData.destinLat);
+  const long2 = parseFloat(formData.destinLong);
+
+  if (lat1 < -90 || lat1 > 90)
+    errors.push("Latitude de origem inválida (-90 a 90)");
+  if (long1 < -180 || long1 > 180)
+    errors.push("Longitude de origem inválida (-180 a 180)");
+  if (lat2 < -90 || lat2 > 90)
+    errors.push("Latitude de destino inválida (-90 a 90)");
+  if (long2 < -180 || long2 > 180)
+    errors.push("Longitude de destino inválida (-180 a 180)");
+
+  // Validação das coordenadas dos POIs
+  if (formData.pois && Array.isArray(formData.pois)) {
+    formData.pois.forEach((poi, index) => {
+      const poiLat = parseFloat(poi.lat);
+      const poiLong = parseFloat(poi.long);
+
+      if (poiLat < -90 || poiLat > 90) {
+        errors.push(`POI ${index + 1}: Latitude inválida (-90 a 90)`);
+      }
+      if (poiLong < -180 || poiLong > 180) {
+        errors.push(`POI ${index + 1}: Longitude inválida (-180 a 180)`);
+      }
+      if (poi.name.trim() === "") {
+        errors.push(`POI ${index + 1}: Nome é obrigatório`);
+      }
+    });
+  }
+
+  return errors;
+}
+
+// Dá reset ao formulário e fecha o modal
+function resetFormAndCloseModal() {
+  // Fecha o modal de adicionar voo
+  const modal = document.getElementById("flightAddModal");
+  if (modal) {
+    modal.classList.add("hidden");
+  }
+
+  // Dá reset ao formulário
+  if (flightForm) {
+    flightForm.reset();
+    location.reload();
+    // Limpa os POIs
+    if (poiWrapper) {
+      poiWrapper.innerHTML = "";
+    }
+    // Limpa mensagens de erro
+    displayMessage(flightForm, null, "clear");
+  }
+}
+
+// Mostra mensagem de sucesso ao adicionar voo
+function showSuccessMessage(flight) {
+  alert(
+    `Voo ${flight.originName} → ${flight.destinationName} adicionado com sucesso!`
   );
-});
+}
+
+// Handler principal para submissão do formulário de voo
+function handleFormSubmission(e) {
+  e.preventDefault();
+
+  try {
+    // Extrai os dados do formulário
+    const formData = extractFormData();
+
+    // Valida os dados
+    const validationErrors = validateFormData(formData);
+
+    if (validationErrors.length > 0) {
+      displayMessage(flightForm, validationErrors, "flight");
+      return;
+    }
+
+    // Verifica se o serviço de voos está disponível
+    if (typeof Flights === "undefined" || !Flights.saveFlightFromData) {
+      throw new Error("Flights service not available");
+    }
+
+    // Guarda o voo através do modelo
+    const savedFlight = Flights.saveFlightFromData(formData);
+
+    // Mostra sucesso e faz reset ao formulário
+    showSuccessMessage(savedFlight);
+    resetFormAndCloseModal();
+  } catch (error) {
+    displayMessage(flightForm, [error.message || error.toString()], "flight");
+  }
+}
+
+// Configura os listeners do formulário de voo
+export function setupFlightFormView() {
+  if (flightForm) {
+    flightForm.addEventListener("submit", handleFormSubmission);
+  }
+}
+
+const backdrop = flightAddModal.querySelector(".backdrop-blur-sm");
+const closeFlightModal = flightAddModal.querySelector("#closeFlightModal");
+const flightOpenBtn = flightAddModal.querySelector("#addFlight");
+
+// Function to close modal and handle cleanup
+function closeModalAndReopen() {
+  flightAddModal.removeAttribute("role");
+  flightAddModal.classList.remove("flex");
+  const bgGray = document.querySelectorAll(".dark\\:bg-gray-900\\/80");
+  flightAddModal.classList.add("hidden");
+  bgGray.forEach((bg) => bg.remove());
+  body.classList.remove("overflow-hidden");
+
+  // Auto-click the flight open button after closing
+  setTimeout(() => {
+    if (flightOpenBtn) {
+      flightOpenBtn.click();
+    }
+  }, 100);
+}
+
+// Backdrop click handler
+backdrop.addEventListener("click", closeModalAndReopen);
+
+// Close button click handler
+closeFlightModal.addEventListener("click", closeModalAndReopen);
+
+// Inicializa o setup do formulário de voo quando o DOM está pronto
+document.addEventListener("DOMContentLoaded", function () {});

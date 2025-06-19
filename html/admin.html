@@ -3,6 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="../img/logos/logoDarkmode_logo darkmode.png"
+      type="image/x-icon"
+    />
     <title>Admin Dashboard</title>
     <link
       rel="shortcut icon"
@@ -10,7 +15,7 @@
       type="image/x-icon"
     />
     <!-- CSS -->
-    <link rel="stylesheet" href="../css/style.css" />
+
     <link rel="stylesheet" href="../css/admin.css" />
   </head>
   <body class="hidden cursor! bg-gray-100! flex flex-col min-h-full">
@@ -70,12 +75,12 @@
           >
             Adicionar Utilizador
           </button>
-          <button
+          <!-- <button
             id="userFilterBtn"
             class="btn-std cursor-pointer mb-2 hover:bg-gray-200"
           >
             Filtrar Admin
-          </button>
+          </button> -->
           <div
             class="p-5 border border-gray-200 dark:border-gray-700 max-w-full max-h-[250px] h-full overflow-y-auto"
           >
@@ -264,9 +269,9 @@
             Adicionar Voo
           </button>
           <div
-            class="p-5 border border-gray-200 dark:border-gray-700 max-w-full h-[250px] overflow-y-auto"
+            class="p-5 border border-gray-200 dark:border-gray-700 max-w-full h-fit max-h-[250px] overflow-y-auto"
           >
-            <table class="table-fixed w-full border-spacing-y-2">
+            <table class="table-auto w-full border-spacing-x-8">
               <thead>
                 <tr>
                   <th class="text-left">ID</th>
@@ -284,291 +289,365 @@
 
         <!-- flight Modal Area -->
 
-        <!-- flight Add -->
+        <!-- Flight Add Modal - Fixed for scrollability -->
         <div
           id="flightAddModal"
           tabindex="-1"
           aria-hidden="true"
-          class="hidden backdrop-blur-sm bg-transparent overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full"
+          class="fixed inset-0 z-50 hidden overflow-y-auto"
         >
-          <div class="relative p-4 w-full max-w-2xl overflow-y-auto h-full">
-            <!-- Modal content -->
-            <div class="relative p-4 bg-blue-950 rounded-lg shadow sm:p-5">
-              <!-- Modal header -->
+          <!-- Backdrop -->
+          <div class="fixed inset-0 backdrop-blur-sm"></div>
+
+          <!-- Modal container with proper scrolling -->
+          <div class="flex min-h-full items-center justify-center p-4">
+            <div
+              class="relative w-full max-w-2xl max-h-[90vh] bg-blue-950 rounded-lg shadow-xl"
+            >
+              <!-- Modal header - fixed at top -->
               <div
-                class="flex justify-between items-center pb-4 mb-4 rounded-t border-white sm:mb-5 border-b"
+                class="flex items-center justify-between p-4 border-b border-white"
               >
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                  Adicionar Voo
-                </h3>
+                <h3 class="text-lg font-semibold text-white">Adicionar Voo</h3>
                 <button
                   type="button"
-                  class="text-gray-400 cursor-pointer bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                  data-modal-target="flightAddModal"
-                  data-modal-toggle="flightAddModal"
+                  id="closeFlightModal"
+                  class="text-gray-400 hover:bg-gray-600 hover:text-white rounded-lg text-sm p-1.5 inline-flex items-center"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fill-rule="evenodd"
                       d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                       clip-rule="evenodd"
-                    ></path>
+                    />
                   </svg>
                   <span class="sr-only">Fechar</span>
                 </button>
               </div>
-              <!-- Modal body -->
-              <form id="flightAddForm">
-                <div class="grid space-x-8 gap-4 mb-4 sm:grid-cols-2">
-                  <!-- Origem -->
-                  <div>
-                    <label
-                      for="origin"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Origem</label
-                    >
-                    <input
-                      type="text"
-                      name="origin"
-                      id="origin"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="OPO"
-                      maxlength="3"
-                      required
-                    />
+
+              <!-- Modal body - scrollable content -->
+              <div class="overflow-y-auto max-h-[calc(90vh-8rem)] p-4">
+                <form id="flightAddForm">
+                  <div class="grid gap-4 sm:grid-cols-2">
+                    <!-- Origem -->
+                    <div>
+                      <label
+                        for="origin"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Origem
+                      </label>
+                      <input
+                        type="text"
+                        name="origin"
+                        id="origin"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        placeholder="OPO"
+                        maxlength="3"
+                        minlength="3"
+                        required
+                      />
+                    </div>
+
+                    <!-- Nome da Origem -->
+                    <div>
+                      <label
+                        for="originName"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Nome da Origem
+                      </label>
+                      <input
+                        type="text"
+                        name="originName"
+                        id="originName"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        placeholder="Porto"
+                        required
+                      />
+                    </div>
+
+                    <!-- Latitude Origem -->
+                    <div>
+                      <label
+                        for="originLat"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Latitude Origem
+                      </label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        name="originLat"
+                        id="originLat"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        placeholder="41.2481"
+                        required
+                      />
+                    </div>
+
+                    <!-- Longitude Origem -->
+                    <div>
+                      <label
+                        for="originLong"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Longitude Origem
+                      </label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        name="originLong"
+                        id="originLong"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        placeholder="-8.6814"
+                        required
+                      />
+                    </div>
+
+                    <!-- Destino -->
+                    <div>
+                      <label
+                        for="dest"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Destino
+                      </label>
+                      <input
+                        type="text"
+                        name="dest"
+                        id="dest"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        placeholder="LIS"
+                        maxlength="3"
+                        required
+                      />
+                    </div>
+
+                    <!-- Nome do Destino -->
+                    <div>
+                      <label
+                        for="destinName"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Nome do Destino
+                      </label>
+                      <input
+                        type="text"
+                        name="destinName"
+                        id="destinName"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        placeholder="Lisboa"
+                        required
+                      />
+                    </div>
+
+                    <!-- Badge -->
+                    <div>
+                      <label
+                        for="badge"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Nome do Badge
+                      </label>
+                      <input
+                        type="text"
+                        name="badge"
+                        id="badge"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        placeholder="pt"
+                        maxlength="2"
+                        required
+                      />
+                    </div>
+
+                    <!-- Latitude Destino -->
+                    <div>
+                      <label
+                        for="destLat"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Latitude Destino
+                      </label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        name="destLat"
+                        id="destLat"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        placeholder="38.7223"
+                        required
+                      />
+                    </div>
+
+                    <!-- Longitude Destino -->
+                    <div>
+                      <label
+                        for="destLong"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Longitude Destino
+                      </label>
+                      <input
+                        type="number"
+                        step="0.1"
+                        name="destLong"
+                        id="destLong"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        placeholder="-9.1393"
+                        required
+                      />
+                    </div>
+
+                    <!-- Data de Partida -->
+                    <div>
+                      <label
+                        for="departureTime"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Data de Partida
+                      </label>
+                      <input
+                        type="datetime-local"
+                        name="departureTime"
+                        id="departureTime"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        required
+                      />
+                    </div>
+
+                    <!-- Data de Chegada -->
+                    <div>
+                      <label
+                        for="arrivalTime"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Data de Chegada
+                      </label>
+                      <input
+                        type="datetime-local"
+                        name="arrivalTime"
+                        id="arrivalTime"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        required
+                      />
+                    </div>
+
+                    <!-- Preço -->
+                    <div>
+                      <label
+                        for="price"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Preço
+                      </label>
+                      <input
+                        type="number"
+                        name="price"
+                        id="price"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        placeholder="150"
+                        required
+                      />
+                    </div>
+
+                    <!-- Companhia Aérea -->
+                    <div>
+                      <label
+                        for="company"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Companhia Aérea
+                      </label>
+                      <input
+                        type="text"
+                        name="company"
+                        id="company"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        placeholder="Ryanair"
+                        required
+                      />
+                    </div>
+
+                    <!-- Distância -->
+                    <div>
+                      <label
+                        for="distance"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Distância (milhas)
+                      </label>
+                      <input
+                        type="number"
+                        name="distance"
+                        id="distance"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white"
+                        placeholder="190"
+                        required
+                      />
+                    </div>
+
+                    <!-- Tipos de Turismo -->
+                    <div class="sm:col-span-2">
+                      <label
+                        for="tourismTypeSelect"
+                        class="block mb-2 text-sm font-medium text-white"
+                      >
+                        Tipos de Turismo
+                      </label>
+                      <select
+                        name="tourismTypeSelect"
+                        multiple
+                        id="tourismTypeSelect"
+                        class="border border-gray-300 text-sm rounded-lg block w-full p-2.5 text-white h-24"
+                        required
+                      ></select>
+                      <p class="text-xs text-gray-300 mt-1">
+                        Mantenha Ctrl pressionado para selecionar múltiplas
+                        opções
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <label
-                      for="originLat"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Latitude</label
+
+                  <!-- POI Section -->
+                  <div class="mt-6">
+                    <button
+                      type="button"
+                      id="addPoiBtn"
+                      class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg flex items-center"
                     >
-                    <input
-                      type="number"
-                      step="0.1"
-                      name="originLat"
-                      id="originLat"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="Latitude"
-                      required
-                    />
+                      <svg
+                        class="mr-2 w-4 h-4"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      Adicionar P.O.I
+                    </button>
+                    <div id="poiWrapper" class="mt-4 space-y-4">
+                      <!-- POI fields will be added here dynamically -->
+                    </div>
                   </div>
-                  <div>
-                    <label
-                      for="originLong"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Longitude</label
-                    >
-                    <input
-                      type="number"
-                      step="0.1"
-                      name="originLong"
-                      id="originLong"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="Longitude"
-                      required
-                    />
-                  </div>
-                  <!-- Destino -->
-                  <div>
-                    <label
-                      for="dest"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Destino</label
-                    >
-                    <input
-                      type="text"
-                      name="dest"
-                      id="dest"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="LIS"
-                      maxlength="3"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="destLat"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Latitude</label
-                    >
-                    <input
-                      type="number"
-                      step="0.1"
-                      name="destLat"
-                      id="destLat"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="Latitude"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="destLong"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Longitude</label
-                    >
-                    <input
-                      type="number"
-                      step="0.1"
-                      name="destLong"
-                      id="destLong"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="Longitude"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="departureTime"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Data de Partida (AAAA-MM-DDTHH:MM)</label
-                    >
-                    <input
-                      type="text"
-                      name="departureTime"
-                      id="departureTime"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="(AAAA-MM-DDTHH:MM)"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="arrivalTime"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Data de Chegada (AAAA-MM-DDTHH:MM)</label
-                    >
-                    <input
-                      type="text"
-                      name="arrivalTime"
-                      id="arrivalTime"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="(AAAA-MM-DDTHH:MM)"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="price"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Preço</label
-                    >
-                    <input
-                      type="number"
-                      name="price"
-                      id="price"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="XX€"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="duration"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Duração</label
-                    >
-                    <input
-                      type="text"
-                      name="duration"
-                      id="duration"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="1h30m"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="company"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Companhia Aérea</label
-                    >
-                    <input
-                      type="text"
-                      name="company"
-                      id="company"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="Ryanair"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="distance"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Distância (milhas)</label
-                    >
-                    <input
-                      type="number"
-                      name="distance"
-                      id="distance"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      placeholder="190"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      for="tourismTypeSelect"
-                      class="block mb-2 text-sm font-medium dark:text-white"
-                      >Tipos de Turismo</label
-                    >
-                    <select
-                      name="tourismTypeSelect"
-                      multiple
-                      id="tourismTypeSelect"
-                      class="border border-gray-300 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 text-white"
-                      required
-                    ></select>
-                  </div>
-                </div>
-                <div class="space-y-6">
-                  <button
-                    id="addPoiBtn"
-                    class="btn-std cursor-pointer border-white! text-white! flex hover:bg-gray-400"
-                  >
-                    <svg
-                      class="mr-1 -ml-1 w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                        clip-rule="evenodd"
-                      ></path>
-                    </svg>
-                    Adicionar P.O.I
-                  </button>
-                </div>
-                <div id="poiWrapper" class="space-y-4 mt-3"></div>
+                </form>
+              </div>
+
+              <!-- Modal footer - fixed at bottom -->
+              <div
+                class="flex items-center justify-end p-4 border-t border-white"
+              >
                 <button
-                  id="addFlightBtn"
-                  class="btn-std mt-6 cursor-pointer border-white! text-white! flex hover:bg-gray-400"
+                  type="submit"
+                  form="flightAddForm"
+                  class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg items-center mb-2"
                 >
-                  <svg
-                    class="mr-1 -ml-1 w-6 h-6"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
                   Adicionar Voo
                 </button>
-              </form>
+              </div>
             </div>
           </div>
         </div>
@@ -614,9 +693,9 @@
             Adicionar Tipo de Turismo
           </button>
           <div
-            class="p-5 border border-gray-200 dark:border-gray-700 max-w-full h-fit max-h-[250px]"
+            class="p-5 border border-gray-200 dark:border-gray-700 max-w-full h-fit max-h-[250px] overflow-y-auto"
           >
-            <table class="table-fixed w-full border-spacing-y-2">
+            <table class="table-auto w-full border-spacing-x-4">
               <thead>
                 <tr>
                   <th class="text-left">ID</th>
@@ -755,9 +834,9 @@
             Adicionar Pack
           </button>
           <div
-            class="p-5 border border-gray-200 dark:border-gray-700 max-w-full h-fit max-h-[250px]"
+            class="p-5 border border-gray-200 dark:border-gray-700 max-w-full h-fit max-h-[250px] overflow-y-auto"
           >
-            <table class="table-fixed w-full border-spacing-y-2">
+            <table class="table-auto w-full border-spacing-x-4">
               <thead>
                 <tr>
                   <th class="text-left">ID</th>
@@ -854,80 +933,6 @@
       </div>
     </div>
 
-    <footer class="bg-blue-900 text-white py-6 border-t border-black">
-      <div class="container mx-auto px-4 max-w-4xl">
-        <div class="grid grid-cols-3 gap-4 text-center">
-          <div>
-            <ul class="space-y-0.5 text-sm">
-              <li>
-                <a
-                  href="#"
-                  class="text-white hover:text-gray-200 hover:border-b hover:border-black pb-0.5 transition-all"
-                  >página inicial</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-white hover:text-gray-200 hover:border-b hover:border-black pb-0.5 transition-all"
-                  >pacotes</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-white hover:text-gray-200 hover:border-b hover:border-black pb-0.5 transition-all"
-                  >promoções</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div>
-            <ul class="space-y-0.5 text-sm">
-              <li>
-                <a
-                  href="#"
-                  class="text-white hover:text-gray-200 hover:border-b hover:border-black pb-0.5 transition-all"
-                  >perfil</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-white hover:text-gray-200 hover:border-b hover:border-black pb-0.5 transition-all"
-                  >passaporte</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-white hover:text-gray-200 hover:border-b hover:border-black pb-0.5 transition-all"
-                  >favoritos</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div>
-            <ul class="space-y-0.5 text-sm">
-              <li>
-                <a
-                  href="#"
-                  class="text-white hover:text-gray-200 hover:border-b hover:border-black pb-0.5 transition-all"
-                  >contacto</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-white hover:text-gray-200 hover:border-b hover:border-black pb-0.5 transition-all"
-                  >sobre nós</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
     <!-- Tailwind -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>

@@ -1,5 +1,7 @@
+// Variável para armazenar os dados dos países em memória
 let countriesData;
 
+// Vai buscar todos os países à API externa e guarda em memória
 export function getAllCountries() {
   return fetch("https://restcountries.com/v3.1/all?fields=cca2,continents")
     .then((response) => response.json())
@@ -9,6 +11,7 @@ export function getAllCountries() {
     });
 }
 
+// Formata uma data para o formato dd/mm ou dd/mm/aaaa
 export function formatDateToLabel(dateString) {
   const [year, month, day] = dateString.split("-");
   const currentYear = new Date().getFullYear().toString();
@@ -30,6 +33,7 @@ export function formatTime(dateString) {
   });
 }
 
+// Devolve o código IATA da companhia aérea (para mostrar o logo)
 export function getIata(company) {
   // Mapeamento de nomes de companhias para códigos IATA (para mostrar o logo)
   const IATA_CODES = {
@@ -40,27 +44,27 @@ export function getIata(company) {
     "British Airways": "BA",
     Lufthansa: "LH",
     Ryanair: "FR",
-    KLM: "KL",
-    "Swiss Air": "LX",
+    Swiss: "LX",
     "Austrian Airlines": "OS",
     SAS: "SK",
     Norwegian: "DY",
     "Aer Lingus": "EI",
-    "Aegean Airlines": "A3",
+    Aegean: "A3",
     "Turkish Airlines": "TK",
-    "Brussels Airlines": "SN",
-    "Czech Airlines": "OK",
     Finnair: "AY",
     "ITA Airways": "AZ",
-    Icelandair: "FI",
-    "Air Europa": "UX",
-    EasyJet: "U2",
-    Delta: "DL",
+    easyJet: "U2",
+    Alitalia: "AZ",
+    LOT: "LO",
+    "Wizz Air": "W6",
+    TAROM: "RO",
+    Eurowings: "EW",
+    Transavia: "HV",
   };
-
   return IATA_CODES[company] || company;
 }
 
+// Formata uma data ISO para "dia mês" em português
 export function formatDate(isoString) {
   const date = new Date(isoString);
 
@@ -70,12 +74,19 @@ export function formatDate(isoString) {
   }).format(date);
 }
 
-// Calcula desconto: para cada 100 milhas, desconta 20€ do preço final
+// Calcula desconto: para cada 200 milhas, desconta 5€ do preço final
 export function calculateDiscount(miles, finalPrice) {
-  return finalPrice - Math.floor(miles / 100) * 20;
+  return finalPrice - Math.floor(miles / 200) * 5;
 }
 
-/* Scratchoff */
+export function clearSessionstorage() {
+  sessionStorage.removeItem("currentTrip");
+  sessionStorage.removeItem("tripData");
+  sessionStorage.removeItem("userQuery");
+}
+
+/* Funções para scratchoff (raspadinha) */
+// Cria um evento de rato personalizado
 export function mouseEvent(type, sx, sy, cx, cy) {
   var evt;
   var e = {
@@ -122,6 +133,8 @@ export function mouseEvent(type, sx, sy, cx, cy) {
   }
   return evt;
 }
+
+// Dispara um evento de rato num elemento
 export function dispatchEvent(el, evt) {
   if (el.dispatchEvent) {
     el.dispatchEvent(evt);
@@ -153,11 +166,11 @@ export function fetchAirportName(iataCode) {
       return data.name;
     })
     .catch((error) => {
-      console.error("Error fetching airport info:", error);
       return null;
     });
 }
 
+// Cria um objeto de destino com nome, latitude, longitude e POIs
 export function createDestinObj(destinName, latitude, longitude, poi) {
   const obj = {
     objName: destinName,
@@ -169,16 +182,48 @@ export function createDestinObj(destinName, latitude, longitude, poi) {
   return obj;
 }
 
-export function formatDateToYMD(dateString) {
-  const [day, month, year] = dateString.split("-");
+export function generateStars(rating) {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+  let stars = "";
 
-  return Date.parse(`${year},${month},${day}`);
+  // Estrelas cheias
+  for (let i = 0; i < fullStars; i++) {
+    stars += '<span class="text-yellow-400">★</span>';
+  }
+
+  // Meia estrela
+  if (hasHalfStar) {
+    stars += '<span class="text-yellow-400">☆</span>';
+  }
+
+  // Estrelas vazias
+  const emptyStars = 5 - Math.ceil(rating);
+  for (let i = 0; i < emptyStars; i++) {
+    stars += '<span class="text-gray-300">★</span>';
+  }
+
+  return stars;
 }
 
+// Formata uma data para o formato YYYY-MM-DD
+export function formatDateToYMD(dateString) {
+  if (dateString.includes("T") || dateString.match(/^\d{4}-\d{2}-\d{2}/)) {
+    const dateOnly = dateString.split("T")[0];
+    const [year, month, day] = dateOnly.split("-");
+    return Date.parse(`${year},${month},${day}`);
+  } else {
+    const [day, month, year] = dateString.split("-");
+    return Date.parse(`${year},${month},${day}`);
+  }
+}
+
+// Formata a data de um voo (função placeholder)
 export function formatFlightTime(dateString) {
   const date = dateString.split("T")[0];
 }
 
+// Carrega as views de destinos e mapa (exemplo de integração com o mapa e lista)
 export function loadViews(flight) {
   /* flight loop */
 
@@ -187,7 +232,7 @@ export function loadViews(flight) {
   );
 
   if (departureDate < formatedDepartureTime) {
-    /* populate listView */
+    /* Adiciona à lista de destinos */
     destinationList.insertAdjacentHTML(
       "beforeend",
       `<li id="${flight.id}"class="border-2 border-blue-800 bg-white p-4 rounded shadow-lg last" value="${flight.destinationName}" id="${flight.id}">
@@ -195,12 +240,12 @@ export function loadViews(flight) {
         </li>`
     );
 
-    /* populate mapView */
+    /* Adiciona ao mapa */
     let pin = user.favorites.includes(flight.destinationName)
       ? favIcon
       : destinIcon;
 
-    const marker = L.marker([flight.destinLat, flight.destinLong], {
+    const marker = L.marker([flight.destinationLat, flight.destinationLong], {
       icon: pin,
       zIndexOffset: 900,
     }).addTo(iconGroup);
@@ -256,7 +301,7 @@ export function loadViews(flight) {
 
     marker.on("mouseover", function () {
       poiCards.innerHTML = "";
-      poiDisplay.textContent = `${flight.destinationName} points of interest`;
+      poiDisplay.textContent = `${flight.destinationName} pontos de interesse`;
 
       flight.poi.forEach((poi) => {
         const apiKey =
@@ -287,13 +332,36 @@ export function loadViews(flight) {
   mapLine();
 }
 
+export function calculateDuration(duration) {
+  const hours = Math.floor(duration / 60);
+  const minutes = duration % 60;
+  return `${hours}h${minutes}m`;
+}
+
+export function setFlightData(tripName, flightArray, originName, milesValue) {
+  let flightTexts = flightArray.map((li) => li.textContent.trim());
+
+  flightTexts.unshift(originName);
+
+  const tripData = {
+    name: tripName,
+    destinations: flightTexts,
+    miles: milesValue,
+  };
+
+  sessionStorage.setItem("tripData", JSON.stringify(tripData));
+}
+
+// Devolve o ID do tipo de turismo a partir do nome
 export function getTurismTypeId(tourismType) {
   let tourismTypesArray = JSON.parse(localStorage.getItem("tourismTypes"));
   for (const [id, type] of Object.entries(tourismTypesArray)) {
     if (tourismType === type) {
-      console.log(id);
-
       return id;
     }
   }
+}
+
+export function focusPoi() {
+  console.log(poi.name);
 }

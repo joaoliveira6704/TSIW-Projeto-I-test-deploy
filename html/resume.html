@@ -8,7 +8,7 @@
       href="../img/logos/logoDarkmode_logo darkmode.png"
       type="image/x-icon"
     />
-    <title>Seleção de Voos</title>
+    <title>Resumo da Viagem</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../css/tripBuilder.css" />
 
@@ -17,22 +17,17 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css"
       rel="stylesheet"
     />
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body class="h-screen cursor">
-    <section id="selectFlight" class="p-6">
-      <h2 class="text-xl sm:text-3xl font-bold mb-4">
-        Seleciona os teus voos!
-        <span id="flightName"></span>
-      </h2>
-
-      <section id="flightsSection"></section>
-    </section>
-
-    <!-- Flowbite JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <section
+      id="flightResume"
+      class="w-full max-w-3xl mx-auto pb-[70px] mt-10 px-3 md:px-0"
+    ></section>
 
     <!-- Views -->
-    <script type="module" src="../js/views/FlightView.js"></script>
+    <script type="module" src="../js/views/ResumeView.js"></script>
 
     <!-- Tradutor -->
     <script>

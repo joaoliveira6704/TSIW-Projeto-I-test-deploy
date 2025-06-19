@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Compass - Construtor de Viagens</title>
     <!-- CSS -->
     <link rel="stylesheet" href="../css/tripBuilder.css" />
-    <link rel="stylesheet" href="../css/style.css" />
 
     <!-- Tailwind CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -26,25 +25,28 @@
 
     <!-- sortableJS -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
-  <body class="dark:bg-gray-800 bg-none!">
-    <header class="top-0 left-0 w-full bg-transparent z-50">
-      <div
-        class="max-w-[1530px] mx-0 flex lg:mx-auto justify-between items-center py-4 px-6"
-      >
+  <body class="dark:bg-gray-800! bg-none! px-10 minw-[450px]">
+    <header class="pt-2 top-0 w-full bg-transparent z-50">
+      <div class="max-w-[1530px] flex gap-2 md:gap-10 items-center py-4">
         <!-- LightMode Logo -->
         <div id="logo" class="h-[60px] w-fit dark:hidden">
+          <button></button>
           <img
             id="logotypeLight"
             src="../img/logos/logo-11.png"
-            class="hidden lg:block h-[60px] w-auto"
+            class="hidden lg:block h-[60px] w-auto cursor-pointer"
             alt="Light mode logotype"
           />
           <img
             id="logoLight"
             src="../img/logos/logo-12.png"
-            class="block lg:hidden h-[60px] w-auto"
+            class="block lg:hidden h-[60px] w-auto cursor-pointer"
             alt="Light mode logo"
+            onClick="location.href='../index.html'"
           />
         </div>
 
@@ -53,23 +55,27 @@
           <img
             id="logotypeLight"
             src="../img/logos/logoDarkmode_logotipo darkmode.png"
-            class="hidden lg:block h-[60px] w-auto"
+            class="hidden lg:block h-[60px] cursor-pointer"
             alt="Darkmode logotype"
+            onClick="location.href='../index.html'"
           />
           <img
             id="logoLight"
             src="../img/logos/logoDarkmode_logo darkmode.png"
-            class="block lg:hidden h-[60px] w-auto"
+            class="block lg:hidden h-[60px] w-auto cursor-pointer"
             alt="Darkmode logo"
+            onClick="location.href='../index.html'"
           />
         </div>
+        <h1 id="pagetitle" class="text-4xl dark:text-white">
+          Cria a tua viagem
+        </h1>
       </div>
     </header>
     <main class="flex flex-col gap-2">
-      <div class="flex ml-20 items-center gap-7">
-        <h1 id="pagetitle">Build your Trip</h1>
-
-        <div class="p-1">
+      <!-- Search Options -->
+      <div class="flex gap-7 dark:text-white py-1 items-center">
+        <div class="p-1 lg:flex-row flex gap-2 min-w-fit">
           <button
             id="mapViewBtn"
             class="bg-blue-100 p-2 rounded-lg border-3 border-blue-600 cursor-pointer hover:bg-blue-100"
@@ -78,26 +84,72 @@
           </button>
           <button
             id="listViewBtn"
-            class="bg-white p-2 rounded-lg border-2 border-blue-600 cursor-pointer hover:bg-blue-100"
+            class="bg-white p-2 rounded-lg border-blue-600 cursor-pointer hover:bg-blue-100"
           >
             <img src="../img/icons/blue/menu.svg" alt="menuIcon" class="h-4" />
           </button>
+        </div>
+        <div
+          class="block space-y-3 md:space-y-0 justify-start items-center md:flex md:gap-5 w-full"
+        >
+          <div class="relative flex-col lg:mb-6 w-full md:w-fit lg:w-fit">
+            <label
+              for="steps-range"
+              class="block text-sm font-medium text-gray-900 dark:text-white"
+              >Preço máximo: <span id="maxPrice"></span>
+            </label>
+            <input
+              id="steps-range"
+              type="range"
+              min="100"
+              max="1000"
+              value="100"
+              step="50"
+              class="w-full md:w-70 lg:w-70 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            />
+            <span
+              class="hidden lg:flex text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6"
+              >Min (100€)</span
+            >
+            <span
+              class="hidden lg:flex text-sm text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6"
+              >Max (1000€)</span
+            >
+          </div>
+          <input
+            id="tripName"
+            type="text"
+            required
+            minlength="5"
+            maxlength="20"
+            class="flex lg:flex border-red-600 outline-offset-1 focus:invalid:outline-1 focus:invalid:outline-red-100 focus:outline-0 valid:border-green-600 border-1 h-10 w-full max-w-80 p-2 rounded-lg appearance-none"
+            placeholder="Editar nome da viagem"
+            required
+          />
         </div>
       </div>
 
       <!-- Main Grid -->
       <div
-        class="grid grid-cols-1 lg:grid-cols-[1fr_auto] lg:grid-rows-[3fr_auto] flex gap-x-4 gap-y-2 h-full px-10 lg:px-20 lg:w-auto"
+        class="grid grid-cols-1 lg:grid-cols-[1fr_auto] lg:grid-rows-[3fr_auto] flex gap-x-4 gap-y-2 h-full lg:w-auto"
       >
         <!-- map view -->
         <div
           id="map"
-          class="h-100 lg:h-full w-full rounded-lg lg:border-2 border-blue-900"
-        ></div>
+          class="h-75 lg:h-100 w-full rounded-lg lg:border-2 border-blue-900 overflow-show"
+        >
+          <div
+            id="outOfBoundsAlert"
+            class="hidden absolute left-1/2 -translate-x-1/2 top-4 z-[1000] bg-white py-2 px-4 rounded-md flex items-center gap-4"
+          >
+            <img src="/img/icons/blue/alert-triangle.svg" alt="alertIcon" />
+            <p>Zoom out / Pan para ver todos os destinos sugeridos</p>
+          </div>
+        </div>
         <!-- list view -->
         <div
           id="mapListView"
-          class="h-100 lg:h-full w-full rounded-lg border-1 border-blue-900 hidden bg-white overflow-y-auto"
+          class="h-75 lg:h-100 w-full rounded-lg border-1 border-blue-900 hidden bg-white overflow-y-auto"
         >
           <ul
             id="destinationSortableListView"
@@ -106,33 +158,36 @@
         </div>
 
         <!-- Trip Destination List -->
-        <div class="flex flex-col gap-3 h-full">
+        <div class="flex flex-col gap-3 max-h-100">
           <div
-            class="pr-10 pl-5 bg-[#39578A] focus:bg-[#6C6EA0] text-white h-20 w-full flex items-center gap-3 rounded-lg"
+            class="px-5 py-2 bg-[#39578A] focus:bg-[#6C6EA0] text-white h-10 lg:h-20 w-full flex items-center justify-between gap-3 rounded-lg"
           >
-            <img
-              src="../img/icons/white/plane.svg"
-              alt="startingPoint"
-              class="h-5"
-            />
-            <p id="origin">Start Point</p>
+            <div class="flex gap-3">
+              <img
+                src="../img/icons/white/plane.svg"
+                alt="startingPoint"
+                class="h-5"
+              />
+              <p id="origin">Start Point</p>
+            </div>
+            <img src="/img/icons/white/arrow.svg" alt="arrowIcon" />
           </div>
-
-          <div class="h-73">
+          <div class="flex flex-row lg:flex-col w-full gap-2">
             <ul
               id="destinationSortableList"
-              class="space-y-2 max-h-full min-h-full border-1 border-blue-200 p-2 rounded-lg overflow-y-auto bg-white"
+              class="flex flex-row lg:flex-col h-20 max-h-20 lg:h-70 lg:max-h-70 w-full border-1 border-blue-200 p-2 rounded-lg overflow-y-auto bg-white gap-2"
             ></ul>
+
+            <div
+              id="trashCan"
+              class="lg:w-full lg:h-10 w-20 h-20 border-1 border-red-600 p-2 rounded-lg bg-white flex justify-center items-center bg-[url(../img/icons/other/trashCanRed.png)] opacity-30 bg-no-repeat bg-center"
+            ></div>
           </div>
-          <div
-            id="trashCan"
-            class="h-10 border-1 border-red-600 p-2 rounded-lg bg-white flex justify-center items-center bg-[url(../img/icons/other/trashCanRed.png)] opacity-30 bg-no-repeat bg-center"
-          ></div>
         </div>
         <!-- Poi Cards -->
         <div id="poiSection" class="hidden lg:flex flex-col h-full gap-2">
-          <h2 id="poiTitle" class="flex h-fit w-fit">
-            Hover each pin to see it's Points of Interest
+          <h2 id="poiTitle" class="flex h-fit w-fit dark:text-white">
+            Passa o cursor pelos pins para revelar os pontos de interesse
           </h2>
           <div id="poiCards" class="overflow-x-auto flex gap-7">
             <img
@@ -151,29 +206,20 @@
         </div>
 
         <!-- Submit Panel -->
-        <div class="w-full h-full flex flex-col p-2 bg-white gap-2">
-          <div id="returnTripRadio" class="flex gap-3 w-full">
-            <div class="flex items-center gap-2">
-              <label for="return" class="select-none"> Return</label>
-              <input type="radio" id="return" name="tripRadio" />
-            </div>
-            <div class="flex items-center gap-2">
-              <label for="oneWay" class="select-none"> One way</label>
-              <input checked type="radio" id="oneWay" name="tripRadio" />
-            </div>
+        <div class="w-full h-full flex flex-col p-2 gap-4 dark:text-white">
+          <div class="flex flex-row lg:flex-col gap-10 lg:gap-5">
+            <p>Milhas: <span id="miles"></span></p>
           </div>
-          <p>Nº de Milhas: <span id="miles">****</span> mls</p>
-
           <div class="flex gap-3 my-auto">
             <button
               id="clearListBtn"
-              class="border-2 border-red-600 rounded-lg bg-white text-red-600 px-2 py-1 hover:bg-red-100"
+              class="disabled cursor-not-allowed border-2 rounded-lg bg-white text-red-600 px-2 py-1 hover:bg-red-100"
             >
               Limpar lista
             </button>
             <button
               id="submitBtn"
-              class="w-full h-full border-2 border-blue-600 rounded-lg text-blue-600 px-2 bg-blue-100 hover:bg-blue-600 hover:text-white"
+              class="disabled cursor-not-allowed w-full h-15 border-2 border-blue-600 rounded-lg text-blue-600 px-2 bg-blue-100 hover:bg-blue-600 hover:text-white"
             >
               Selecionar Voos
             </button>
@@ -181,8 +227,24 @@
         </div>
       </div>
     </main>
-    <footer></footer>
+    <!-- Model -->
     <script type="module" src="../js/models/flightModel.js"></script>
+
+    <!-- View -->
     <script type="module" src="../js/views/TripBuilderView.js"></script>
+
+    <!-- Tradutor -->
+    <script>
+      window.gtranslateSettings = {
+        default_language: "pt",
+        languages: ["en", "es", "fr", "de", "pt"],
+        wrapper_selector: ".gtranslate_wrapper",
+      };
+    </script>
+    <script
+      src="https://cdn.gtranslate.net/widgets/latest/float.js"
+      defer
+    ></script>
+    <div class="print:hidden gtranslate_wrapper"></div>
   </body>
 </html>

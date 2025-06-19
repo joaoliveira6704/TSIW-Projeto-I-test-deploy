@@ -34,3 +34,24 @@
   width: 100%;
   padding: 0 10px;
 }
+
+@media screen and (max-width: 500px) {
+  .swiper {
+    width: 240px;
+    height: 250px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .swiper {
+    width: 220px;
+    height: 230px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .swiper {
+    width: 200px;
+    height: 220px;
+  }
+}

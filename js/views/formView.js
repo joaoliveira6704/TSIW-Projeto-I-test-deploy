@@ -1,7 +1,7 @@
 import * as TourismTypes from "../models/TourismtypeModel.js";
 import * as Flights from "../models/flightModel.js";
 import * as User from "../models/UserModel.js";
-import * as Helper from "../models/ModelHelper.js"
+import * as Helper from "../models/ModelHelper.js";
 
 // Inicializa os dados de tipos de turismo, voos e utilizadores
 TourismTypes.init();
@@ -153,6 +153,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const footer = document.querySelector("footer");
   const logo = document.getElementById("logo");
   const logoImg = logo.querySelectorAll("img");
+  const mobileLogo = document.getElementById("mobileLogo");
+  const mobileLogoImg = mobileLogo.querySelectorAll("img");
   const tourismText = document.getElementById("tourismText");
   const originText = document.getElementById("originText");
   const header = document.querySelector("header");
@@ -160,6 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const passportText = header.querySelector("#passportText");
   const favoritesBtn = header.querySelector("#favoritesBtn");
   const passportBtn = header.querySelector("#passportBtn");
+  const openLoginModalBtn = header.querySelector("#openLoginModalBtn");
   const firstSection = sections[0];
 
   let currentSectionIndex = 0;
@@ -176,19 +179,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (entry.isIntersecting) {
         const index = Array.from(sections).indexOf(entry.target);
         currentSectionIndex = index;
+        const profileIcon = document.getElementById("profileIcon");
+        const walletIcon = document.getElementById("walletIcon");
+        const favoritesIcon = document.getElementById("favoritesIcon");
         if (currentSectionIndex === 0) {
           // Se está na primeira secção, mete o formulário no footer
-          if (!footer.contains(mainForm)) {
-            footer.appendChild(mainForm);
-          }
-
-          formNavContainer.classList.add("hidden");
-          passportText.classList.remove("hidden");
-          favoritesText.classList.remove("hidden");
-          favoritesBtn.classList.remove("p-3");
-          favoritesBtn.classList.add("px-4", "py-2");
-          passportBtn.classList.remove("p-3");
-          passportBtn.classList.add("px-4", "py-2");
           new Datepicker(datePicker, {
             autohide: true,
             format: "dd-mm-yyyy",
@@ -196,18 +191,67 @@ document.addEventListener("DOMContentLoaded", () => {
             orientation: "top",
             autoSelectToday: 1,
           });
+          if (!footer.contains(mainForm)) {
+            footer.appendChild(mainForm);
+          }
+          formNavContainer.classList.add("hidden");
+          passportText.classList.remove("hidden");
+          favoritesText.classList.remove("hidden");
+          favoritesBtn.classList.remove("p-3");
+          favoritesBtn.classList.add("px-4", "py-2");
+          passportBtn.classList.remove("p-3");
+          passportBtn.classList.add("px-4", "py-2");
+          passportBtn.classList.add("border-white");
+          favoritesBtn.classList.add("border-white");
+          openLoginModalBtn.classList.add("border-white");
+          passportBtn.classList.remove("border-[#39578a]");
+          favoritesBtn.classList.remove("border-[#39578a]");
+          openLoginModalBtn.classList.remove("border-[#39578a]");
+
           logoImg.forEach((img) => {
             img.src = "./img/logos/logoDarkmode_logotipo darkmode.png";
           });
+          mobileLogoImg.forEach((img) => {
+            img.src = "./img/logos/logoDarkmode_logo darkmode.png";
+          });
+          profileIcon.src = "./img/icons/white/profile.svg";
+          walletIcon.src = "./img/icons/white/wallet.svg";
+          favoritesIcon.src = "./img/icons/white/heart.svg";
         } else {
           if (currentSectionIndex === 1) {
             logoImg.forEach((img) => {
               img.src = "./img/logos/logo-12.png";
             });
+            mobileLogoImg.forEach((img) => {
+              img.src = "./img/logos/logo-12.png";
+            });
+            profileIcon.src = "./img/icons/blue/profile.svg";
+            walletIcon.src = "./img/icons/blue/wallet.svg";
+            favoritesIcon.src = "./img/icons/blue/heart.svg";
+
+            passportBtn.classList.remove("border-white");
+            favoritesBtn.classList.remove("border-white");
+            openLoginModalBtn.classList.remove("border-white");
+            passportBtn.classList.add("border-[#39578a]");
+            favoritesBtn.classList.add("border-[#39578a]");
+            openLoginModalBtn.classList.add("border-[#39578a]");
           } else {
             logoImg.forEach((img) => {
               img.src = "./img/logos/logoDarkmode_logo darkmode.png";
             });
+            mobileLogoImg.forEach((img) => {
+              img.src = "./img/logos/logoDarkmode_logo darkmode.png";
+            });
+            profileIcon.src = "./img/icons/white/profile.svg";
+            walletIcon.src = "./img/icons/white/wallet.svg";
+            favoritesIcon.src = "./img/icons/white/heart.svg";
+
+            passportBtn.classList.add("border-white");
+            favoritesBtn.classList.add("border-white");
+            openLoginModalBtn.classList.add("border-white");
+            passportBtn.classList.remove("border-[#39578a]");
+            favoritesBtn.classList.remove("border-[#39578a]");
+            openLoginModalBtn.classList.remove("border-[#39578a]");
           }
           // Nas outras secções, mete o formulário no topo e ajusta o header
           if (!formNavContainer.contains(mainForm)) {
@@ -249,12 +293,32 @@ window.addEventListener("resize", () => {
   }
 });
 
-
 const searchFlightBtn = document.getElementById("searchFlightBtn");
 
 // Só permite pesquisar voos se o utilizador estiver autenticado
 searchFlightBtn.addEventListener("click", () => {
-  User.isLogged() ? sendFormQuery() : false;
+  if (User.isLogged()) {
+    sendFormQuery();
+  } else {
+    let timerInterval;
+    Swal.fire({
+      title: "Sem sessão iniciada",
+      icon: "error",
+      html: "Para começares a construir a tua viagem, faz login ou cria uma conta.",
+      timer: 2000,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const timer = Swal.getPopup().querySelector("b");
+        timerInterval = setInterval(() => {
+          timer.textContent = `${Swal.getTimerLeft()}`;
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    });
+  }
 });
 
 // Envia os dados do formulário para a próxima página
@@ -265,6 +329,9 @@ function sendFormQuery(platform) {
   const passengerCounter = document.getElementById("counter-input");
   const passengersCount = passengerCounter.value;
 
+  if (!selectedDate || !origin) {
+    return;
+  }
   const typeOfTourism = tourismText.innerHTML;
   User.setUserQuery(selectedDate, origin, typeOfTourism, passengersCount);
   location.href = "./html/tripBuilder.html";

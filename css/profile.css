@@ -16,19 +16,6 @@ body {
   font-family: "Space Mono", sans-serif;
 }
 
-.btn-profile {
-  font-family: "Space Mono", monospace;
-  border: 1px solid #39578a;
-  border-radius: 6px;
-  padding: 10px 20px;
-  background-color: white;
-  color: #39578a;
-}
-
-.btn-profile:hover {
-  background-color: #f0f0f0;
-}
-
 section {
   border: 1px solid #39578a;
   border-radius: 8px;
