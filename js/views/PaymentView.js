@@ -61,7 +61,6 @@ if (!trip) {
 // Guarda os voos da viagem
 flightsTrip = Array.from(trip.flights);
 
-/* MOCK DATA */
 let finalPrice = trip.price;
 let acummulatingMiles = trip.miles;
 let tripName = trip.name;

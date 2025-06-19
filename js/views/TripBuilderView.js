@@ -3,41 +3,43 @@ import * as Flight from "../models/FlightModel.js";
 import * as Helper from "../models/ModelHelper.js";
 import * as User from "../models/UserModel.js";
 import * as Tourism from "../models/TourismtypeModel.js";
+import * as Trips from "../models/TripModel.js";
 
 // Inicializa os dados de voos, tipos de turismo e utilizadores
 Flight.init();
 Tourism.init();
 User.init();
+Trips.init();
 
 let oldTrip; // Guarda o estado anterior da lista de destinos
 
-/* Botões de alternância entre mapa e lista */
+// Botões para alternar entre vista de mapa e vista de lista
 const mapViewBtn = document.getElementById("mapViewBtn");
 const listViewBtn = document.getElementById("listViewBtn");
 const priceSlider = document.getElementById("steps-range");
 const maxPrice = document.getElementById("maxPrice");
 
-/* Células do grid */
+// Células do grid
 const mapCell = document.getElementById("map");
 const listViewCell = document.getElementById("mapListView");
 const poiCell = document.getElementById("poiCards");
 const poiDisplay = document.getElementById("poiTitle");
 
-/* Listas ordenáveis */
+// Listas ordenáveis
 const tripList = document.getElementById("destinationSortableList");
 const destinationList = document.getElementById("destinationSortableListView");
 const trashCan = document.getElementById("trashCan");
 const clearBtn = document.getElementById("clearListBtn");
 const submitBtn = document.getElementById("submitBtn");
 
-/* Texto das milhas */
+// Texto das milhas
 const milesText = document.getElementById("miles");
 
 const tripName = document.getElementById("tripName");
 
 let maxPriceValue;
 
-/* Ícones do mapa */
+// Variáveis para os ícones do mapa
 let iconGroup;
 let pathGroup;
 let poiGroup;
@@ -45,16 +47,16 @@ let poiGroup;
 let user = User.getUserLogged();
 let tourismTypeId;
 let departureDate;
-/* Objeto de origem */
+// Objeto de origem
 let originObj;
 let originName;
 
-/* Mapa */
+// Mapa
 var map;
 let outOfBounds = document.getElementById("outOfBoundsAlert");
 let iconArray = [];
 
-/* Definição dos ícones do mapa */
+// Definição dos ícones do mapa
 const mapOriginIcon = L.icon({
   iconUrl: "/img/icons/other/compassPin.png",
   iconSize: [32, 50],
@@ -86,7 +88,7 @@ const poiIcon = L.icon({
   iconAnchor: [10, 12.5],
 });
 
-/* Alternância entre vista de mapa e lista */
+// Alternância entre vista de mapa e lista
 let mapView = true;
 mapViewBtn.addEventListener("click", function () {
   if (!mapView) {
@@ -120,7 +122,7 @@ listViewBtn.addEventListener("click", function () {
   }
 });
 
-/* Configuração das listas ordenáveis com SortableJS */
+// Configuração das listas ordenáveis com SortableJS
 new Sortable(destinationList, {
   group: {
     name: "Map",
@@ -161,6 +163,7 @@ new Sortable(tripList, {
   dragClass: "tripGhost",
 
   onAdd: function (cell) {
+    // Ao adicionar um destino à lista, ajusta o aspeto e atualiza o mapa
     requestAnimationFrame(() => {
       let item = cell.item;
       let itemValue = item.getAttribute("value");
@@ -220,6 +223,7 @@ new Sortable(tripList, {
   },
 
   onSort: function () {
+    // Sempre que a lista é ordenada, atualiza o mapa
     updateMap();
   },
 
@@ -245,11 +249,9 @@ new Sortable(tripList, {
   },
 });
 
-/**
- * Função para simular a viagem e validar se todos os segmentos têm voos disponíveis.
- * Se não houver voo direto, tenta encontrar rota alternativa.
- * Se não encontrar, repõe a lista anterior.
- */
+// Função para simular a viagem e validar se todos os segmentos têm voos disponíveis.
+// Se não houver voo direto, tenta encontrar rota alternativa.
+// Se não encontrar, repõe a lista anterior.
 function simulateFlights(tripStrings) {
   // Primeiro, valida se todos os segmentos têm voos disponíveis
   for (let i = 0; i < tripStrings.length - 1; i++) {
@@ -272,9 +274,10 @@ function simulateFlights(tripStrings) {
       );
 
       if (newFlights && newFlights.length > 0) {
-        // Chama recursivamente com a nova rota (inclui pontos de ligação)
+        // Se encontrar rota alternativa, chama recursivamente com a nova rota
         return simulateFlights(newFlights);
       } else {
+        // Se não encontrar, repõe a lista anterior e mostra alerta
         restoreOldTrip();
         Swal.fire({
           icon: "error",
@@ -320,10 +323,8 @@ function simulateFlights(tripStrings) {
   return true; // Indica sucesso
 }
 
-/**
- * Função auxiliar para repor a viagem anterior se a validação falhar.
- * Remove duplicados com base no ID do elemento.
- */
+// Função auxiliar para repor a viagem anterior se a validação falhar.
+// Remove duplicados com base no ID do elemento.
 function restoreOldTrip() {
   if (oldTrip && oldTrip.length > 0) {
     tripList.innerHTML = "";
@@ -361,6 +362,7 @@ new Sortable(trashCan, {
     put: ["Trip"],
   },
   onAdd: function (event) {
+    // Guarda o estado anterior antes de remover
     oldTrip = Array.from(tripList.childNodes).map((node) =>
       node.cloneNode(true)
     );
@@ -377,7 +379,7 @@ new Sortable(trashCan, {
   emptyInsertThreshold: 0,
 });
 
-/* Ao carregar a página */
+// Ao carregar a página, inicializa o mapa e carrega os destinos
 document.addEventListener("DOMContentLoaded", () => {
   if (!sessionStorage.getItem("userQuery")) {
     location.href = "../index.html";
@@ -399,9 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("origin").textContent = userQuery.origin;
 });
 
-/**
- * Cria o mapa Leaflet e adiciona o marcador de origem.
- */
+// Cria o mapa Leaflet e adiciona o marcador de origem
 const createMap = function (origin) {
   map = L.map("map").setView([origin.originLat, origin.originLong], 5);
 
@@ -411,7 +411,7 @@ const createMap = function (origin) {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright"></a>',
   }).addTo(map);
 
-  /* Grupos de marcadores e polígonos */
+  // Grupos de marcadores e polígonos
   iconGroup = L.layerGroup().addTo(map);
   pathGroup = L.layerGroup().addTo(map);
   poiGroup = L.layerGroup().addTo(map);
@@ -423,7 +423,7 @@ const createMap = function (origin) {
     origin.poi
   );
 
-  /* Marcador de origem */
+  // Marcador de origem
   var originMarker = L.marker([origin.originLat, origin.originLong], {
     icon: mapOriginIcon,
     zIndexOffset: 1000,
@@ -432,9 +432,7 @@ const createMap = function (origin) {
   map.addEventListener("move", function () {});
 };
 
-/**
- * Carrega os destinos e pontos de interesse no mapa e na lista.
- */
+// Carrega os destinos e pontos de interesse no mapa e na lista
 function loadMap(origin) {
   iconArray = [];
   user = User.getUserLogged();
@@ -450,7 +448,7 @@ function loadMap(origin) {
   pathGroup.clearLayers();
   destinationList.innerHTML = "";
 
-  /* Ciclo para cada voo */
+  // Ciclo para cada voo
   flightList.forEach((flight) => {
     let favoriteSrc = user.favorites.includes(flight.destinationName)
       ? "../img/icons/blue/heartFilled.svg"
@@ -468,7 +466,7 @@ function loadMap(origin) {
       expression = departureDate < formatedDepartureTime && flight.price > 0;
     }
     if (expression) {
-      /* Preenche a lista de destinos */
+      // Preenche a lista de destinos
       destinationList.insertAdjacentHTML(
         "beforeend",
         `<li id="${flight.id}"class="flex items-center justify-between border-2 border-blue-800 bg-white px-4 py-2 rounded shadow-lg h-fit" value="${flight.destinationName}" id="${flight.id}">
@@ -486,7 +484,7 @@ function loadMap(origin) {
       </li>`
       );
 
-      /* Preenche o mapa com marcadores */
+      // Preenche o mapa com marcadores
       let pin = user.favorites.includes(flight.destinationName)
         ? favIcon
         : destinIcon;
@@ -659,8 +657,7 @@ function loadMap(origin) {
   });
 }
 
-//Adiciona um destino à lista de viagens
-
+// Adiciona um destino à lista de viagens
 function addToList(id) {
   const flight = Flight.getFlightById(id);
   const itemHTML = `
@@ -697,9 +694,7 @@ function addToList(id) {
   updateMap();
 }
 
-/**
- * Desenha as linhas e pontos da rota no mapa.
- */
+// Desenha as linhas e pontos da rota no mapa
 function mapLine() {
   const createMapPoints = function (obj, index, arrLeng) {
     if (index != 0) {
@@ -732,7 +727,7 @@ function mapLine() {
 
   pointsObjArray.push(originObj);
 
-  /* Cria objetos de destino */
+  // Cria objetos de destino
   liArray.forEach((element, index) => {
     let flight = Flight.getFlightById(parseInt(element.getAttribute("id")));
 
@@ -752,7 +747,7 @@ function mapLine() {
   });
 }
 
-// Calcula as milhas da viagem ativa.
+// Calcula as milhas da viagem ativa
 function calculateActiveTripMiles() {
   let tripItems = Array.from(tripList.getElementsByTagName("li"));
 
@@ -761,7 +756,7 @@ function calculateActiveTripMiles() {
   return totalMiles;
 }
 
-// Atualiza o mapa e o estado dos botões.
+// Atualiza o mapa e o estado dos botões
 function updateMap() {
   mapLine();
 
@@ -793,38 +788,60 @@ function updateMap() {
   }
 }
 
-//Função para guardar a lista de viagem.
+// Função para guardar a lista de viagem (pode ser expandida)
 const saveTripList = function () {
   let liArray = Array.from(tripList.getElementsByTagName("li"));
 };
 
-/* Botão para limpar a lista de viagem */
+// Botão para limpar a lista de viagem
 clearBtn.addEventListener("click", function () {
   tripList.innerHTML = "";
   updateMap();
 });
 
-/* Slider de preço máximo */
+// Slider de preço máximo
 priceSlider.addEventListener("input", function () {
   maxPrice.textContent = `${priceSlider.value}€`;
   maxPriceValue = parseInt(priceSlider.value);
   updateMap();
 });
 
-/* Validação do nome da viagem */
+// Validação do nome da viagem
 tripName.addEventListener("click", () => {
   if (tripName.classList.contains("border-4")) {
     tripName.classList.remove("border-4");
   }
 });
 
-/* Submissão da viagem */
+// Submissão da viagem
 submitBtn.addEventListener("click", () => {
   if (submitBtn.classList.contains("disabled")) {
     return;
   }
   if (!tripName.validity.valid || tripName.value.length < 5) {
     tripName.classList.add("border-4");
+    return;
+  }
+  if (Trips.tripNameExists(tripName.value, User.getUserLogged())) {
+    let timerInterval;
+    Swal.fire({
+      title: "Nome de Viagem já existente",
+      icon: "error",
+      html: "Parece que já tens uma viagem com este nome. Que tal outro nome?",
+      timer: 2300,
+      timerProgressBar: true,
+      didOpen: () => {
+        Swal.showLoading();
+        const timer = Swal.getPopup().querySelector("b");
+        timerInterval = setInterval(() => {
+          timer.textContent = `${Swal.getTimerLeft()}`;
+        }, 100);
+      },
+      willClose: () => {
+        clearInterval(timerInterval);
+      },
+    });
+
     return;
   }
   let flightArray = Array.from(tripList.getElementsByTagName("li"));

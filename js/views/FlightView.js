@@ -35,14 +35,6 @@ function populateView() {
   document.getElementById("flightName").innerHTML = " - " + name;
   const flightSections = [];
 
-  // Função auxiliar para obter a data de amanhã (à meia-noite)
-  function getTomorrow() {
-    const d = new Date();
-    d.setHours(0, 0, 0, 0);
-    d.setDate(d.getDate() + 1);
-    return d;
-  }
-
   // Para cada par de cidades, cria uma secção de voos
   for (let i = 0; i < destinations.length - 1; i++) {
     const from = destinations[i];
@@ -75,8 +67,8 @@ function populateView() {
       }
     });
 
-    // Só mostra datas a partir de amanhã
-    const tomorrow = getTomorrow();
+    // Só mostra datas a partir de um dia após
+    const tomorrow = Helper.getTomorrow();
     const dates = Object.keys(byDate)
       .filter((dateStr) => {
         return byDate[dateStr].dateObj >= tomorrow;

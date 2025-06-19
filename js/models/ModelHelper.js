@@ -23,6 +23,76 @@ export function formatDateToLabel(dateString) {
   }
 }
 
+// Função auxiliar para obter a data de amanhã (à meia-noite)
+export function getTomorrow() {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + 1);
+  return d;
+}
+
+// Validação dos dados do formulário de voo
+export function validateFormData(formData) {
+  const errors = [];
+
+  // Validação básica dos campos obrigatórios
+  if (!formData.origin || formData.origin.trim() === "") {
+    errors.push("Origem é obrigatória");
+  }
+
+  if (!formData.destination || formData.destination.trim() === "") {
+    errors.push("Destino é obrigatório");
+  }
+
+  if (!formData.price || formData.price <= 0)
+    errors.push("O preço deve ser maior que zero");
+
+  // Validação das datas
+  if (formData.departureTime && formData.arrivalTime) {
+    const departure = new Date(formData.departureTime);
+    const arrival = new Date(formData.arrivalTime);
+
+    if (arrival <= departure) {
+      errors.push("A data de chegada deve ser posterior à partida");
+    }
+  }
+
+  // Validação de coordenadas
+  const lat1 = parseFloat(formData.originLat);
+  const long1 = parseFloat(formData.originLong);
+  const lat2 = parseFloat(formData.destinLat);
+  const long2 = parseFloat(formData.destinLong);
+
+  if (lat1 < -90 || lat1 > 90)
+    errors.push("Latitude de origem inválida (-90 a 90)");
+  if (long1 < -180 || long1 > 180)
+    errors.push("Longitude de origem inválida (-180 a 180)");
+  if (lat2 < -90 || lat2 > 90)
+    errors.push("Latitude de destino inválida (-90 a 90)");
+  if (long2 < -180 || long2 > 180)
+    errors.push("Longitude de destino inválida (-180 a 180)");
+
+  // Validação das coordenadas dos POIs
+  if (formData.pois && Array.isArray(formData.pois)) {
+    formData.pois.forEach((poi, index) => {
+      const poiLat = parseFloat(poi.lat);
+      const poiLong = parseFloat(poi.long);
+
+      if (poiLat < -90 || poiLat > 90) {
+        errors.push(`POI ${index + 1}: Latitude inválida (-90 a 90)`);
+      }
+      if (poiLong < -180 || poiLong > 180) {
+        errors.push(`POI ${index + 1}: Longitude inválida (-180 a 180)`);
+      }
+      if (poi.name.trim() === "") {
+        errors.push(`POI ${index + 1}: Nome é obrigatório`);
+      }
+    });
+  }
+
+  return errors;
+}
+
 // Função para formatar hora (ex: "14:30")
 export function formatTime(dateString) {
   if (!dateString) return "";
@@ -64,7 +134,7 @@ export function getIata(company) {
   return IATA_CODES[company] || company;
 }
 
-// Formata uma data ISO para "dia mês" em português
+// Formata uma data ISO para "Dia mês"
 export function formatDate(isoString) {
   const date = new Date(isoString);
   return new Intl.DateTimeFormat("pt-PT", {
@@ -181,6 +251,7 @@ export function createDestinObj(destinName, latitude, longitude, poi) {
   return obj;
 }
 
+// Gera a quantidade de estrelas do rating (0-5)
 export function generateStars(rating) {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
@@ -224,14 +295,14 @@ export function formatFlightTime(dateString) {
 
 // Carrega as views de destinos e mapa (exemplo de integração com o mapa e lista)
 export function loadViews(flight) {
-  /* flight loop */
+  //Loop de voos
 
   let formatedDepartureTime = Date.parse(
     flight.departureTime.split("T")[0].split("-").join(",")
   );
 
   if (departureDate < formatedDepartureTime) {
-    /* Adiciona à lista de destinos */
+    // Adiciona à lista de destinos
     destinationList.insertAdjacentHTML(
       "beforeend",
       `<li id="${flight.id}"class="border-2 border-blue-800 bg-white p-4 rounded shadow-lg last" value="${flight.destinationName}" id="${flight.id}">
@@ -239,7 +310,7 @@ export function loadViews(flight) {
         </li>`
     );
 
-    /* Adiciona ao mapa */
+    // Adiciona ao mapa
     let pin = user.favorites.includes(flight.destinationName)
       ? favIcon
       : destinIcon;
@@ -288,14 +359,6 @@ export function loadViews(flight) {
           addToList(flightId);
         });
       }, 100);
-
-      /* flight.poi.forEach((poi) => {
-        const html = `<img />`;
-        const poiMarker = L.marker([poi.latitude, poi.long], {
-          icon: poiIcon,
-          zIndexOffset: 200,
-        }).addTo(poiGroup);
-      }); */
     });
 
     marker.on("mouseover", function () {
@@ -331,12 +394,14 @@ export function loadViews(flight) {
   mapLine();
 }
 
+// Calcula a duração a partir dos minutos (retorna hhmm)
 export function calculateDuration(duration) {
   const hours = Math.floor(duration / 60);
   const minutes = duration % 60;
   return `${hours}h${minutes}m`;
 }
 
+// Adiciona os dados do voo à sessionstorage para passar entre páginas
 export function setFlightData(tripName, flightArray, originName, milesValue) {
   let flightTexts = flightArray.map((li) => li.textContent.trim());
 

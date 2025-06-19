@@ -217,6 +217,7 @@ window.addEventListener("load", () => {
     });
   });
 
+  // Adiciona destinos random ao marquee em mobile
   let marquee1 = document.getElementById("marquee1");
   let marquee2 = document.getElementById("marquee2");
   let marquee3 = document.getElementById("marquee3");
@@ -430,7 +431,7 @@ function renderPassportGrid(continent = "") {
     userCountries = user.badges.map((c) => c.toLowerCase());
   }
 
-  // Filtra os países pelo continente selecionado (se houver)
+  // Filtra os países pelo continente selecionado
   const filteredCountries = allCountriesData.filter((country) => {
     const code = country.cca2?.toLowerCase();
     const countryContinents = country.continents || [];
@@ -517,7 +518,7 @@ const sc = new ScratchCard(scContainer, {
 
   htmlBackground: `<p class="flex text-black text-xl text-center items-center"><strong>Ganhaste ${milesWon} milhas!</strong></p>`,
   clearZoneRadius: 20,
-  percentToFinish: 30, // When the percent exceeds 40 on touchend event the callback will be exec.
+  percentToFinish: 30, // Quando a area raspada corresponde a 30%, o callback é acionado
   callback: function () {
     canApply = true;
   },

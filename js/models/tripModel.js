@@ -17,12 +17,17 @@ export function getAllNonPacks() {
   return trips.filter((trip) => !trip.isPack);
 }
 
+export function tripNameExists(tripName, user) {
+  const tripsCheck = getTripById(user.trips);
+  if (tripsCheck.find((trip) => trip.name === tripName.trim())) {
+    console.log("existe");
+    return true;
+  }
+  return false;
+}
+
 export function saveReview(id, newReview) {
   let trip = getSingleTripById(id);
-
-  if (!trip) {
-    throw new Error(`Trip with ID ${id} not found`);
-  }
   if (
     trip.reviews.find(
       (review) => review.userId && review.userId === newReview.userId
@@ -31,10 +36,10 @@ export function saveReview(id, newReview) {
     return false;
   }
 
-  // Add the new review to the trip
+  // Adicionar review à viagem
   trip.reviews.push(newReview);
 
-  // Save the updated trips array to localStorage
+  // Guarda as viagens na localstorage
   saveTrips(trips);
 
   return true;
@@ -115,10 +120,10 @@ export function getFilteredPacks(user) {
   let filteredPacks;
 
   if (user) {
-    filteredPacks = []; // Initialize as empty array
+    filteredPacks = []; 
     packs.forEach((pack) => {
       if (!user.trips.includes(pack.id)) {
-        filteredPacks.push(pack); // Push the full pack object, not just the ID
+        filteredPacks.push(pack); // Adiciona o objeto completo ao array
       }
     });
   } else {

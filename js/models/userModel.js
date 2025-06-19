@@ -25,7 +25,7 @@ export function userHasScratch(userCheck) {
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
   // Só pode raspar se já passou uma semana desde o último scratch
-  return oneWeekAgo.toISOString().split("T")[0] >= userCheck.lastScratch; // formato YYYY-MM-DD
+  return oneWeekAgo.toISOString().split("T")[0] >= userCheck.lastScratch; // formato AAAA-MM-DD
 }
 
 // Atualiza um utilizador pelo ID
@@ -291,6 +291,7 @@ export function addTripToUser(userId, tripId) {
   }
 }
 
+// Remove um destino da lista de favoritos do utilizador
 export function removeFavorite(destination) {
   let currentUser = getUserLogged();
   currentUser.favorites = currentUser.favorites.filter(
@@ -299,6 +300,7 @@ export function removeFavorite(destination) {
   updateUserByObject(currentUser);
 }
 
+// Retorna as viagens compradas de todos os utilizadores
 export function getSoldTrips() {
   let users = getAllUsers();
   let tripsArray = [];
@@ -309,12 +311,14 @@ export function getSoldTrips() {
   return tripsArray;
 }
 
+// Adiciona um destino aos favoritos do utilizador
 export function addFavorite(destination) {
   let currentUser = getUserLogged();
   currentUser.favorites.push(destination);
   updateUserByObject(currentUser);
 }
 
+// Remove ou adiciona favorito 
 export function toggleFavorite(destinName) {
   const user = getUserLogged();
   if (user.favorites.includes(destinName)) {
@@ -324,6 +328,7 @@ export function toggleFavorite(destinName) {
   }
 }
 
+//Adiciona ao utlizador, os badges das viagens (que não tem)
 export function addBadgestoUser(userId, flightBadges) {
   const user = getUserById(userId);
 

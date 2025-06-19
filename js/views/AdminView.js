@@ -3,7 +3,7 @@ import * as User from "../models/UserModel.js";
 import * as TourismTypes from "../models/TourismtypeModel.js";
 import * as Flights from "../models/FlightModel.js";
 import * as Trips from "../models/TripModel.js";
-
+import * as Helper from "../models/ModelHelper.js";
 // Inicializa os dados das várias entidades
 User.init();
 TourismTypes.init();
@@ -279,7 +279,7 @@ window.addEventListener("load", (event) => {
       <td>${flight.origin}</td>
       <td>${flight.destination}</td>
       <td>${flight.price}€</td>
-      <td>${formatDateToLabel(flight.departureTime)}</td>
+      <td>${Helper.formatDateToLabel(flight.departureTime)}</td>
       <td class="text-right">
         <button class="color-primary hover:opacity-60 cursor-pointer delete-btn" data-id="${
           flight.id
@@ -316,9 +316,9 @@ window.addEventListener("load", (event) => {
       <td>${pack.id}</td>
       <td>${pack.name}</td>
       <td>${pack.price}€</td>
-      <td>${formatDateToLabel(pack.startDate)} - ${formatDateToLabel(
-      pack.endDate
-    )}</td>
+      <td>${Helper.formatDateToLabel(
+        pack.startDate
+      )} - ${Helper.formatDateToLabel(pack.endDate)}</td>
       <td class="text-right">
         <div class="inline-flex gap-4">
           <button class="color-primary hover:opacity-60 cursor-pointer delete-btn" data-id="${
@@ -344,19 +344,6 @@ window.addEventListener("load", (event) => {
     }
   });
 });
-
-// Função para formatar datas para o formato dd/mm ou dd/mm/aaaa
-function formatDateToLabel(dateString) {
-  const [datePart] = dateString.split("T");
-  const [year, month, day] = datePart.split("-");
-  const currentYear = new Date().getFullYear().toString();
-
-  if (year === currentYear) {
-    return `${day}/${month}`;
-  } else {
-    return `${day}/${month}/${year}`;
-  }
-}
 
 // Adicionar utilizador
 const addUserBtn = document.getElementById("addUserBtn");
@@ -680,68 +667,6 @@ function getPoisFromForm() {
   return pois;
 }
 
-// Validação dos dados do formulário de voo
-function validateFormData(formData) {
-  const errors = [];
-
-  // Validação básica dos campos obrigatórios
-  if (!formData.origin || formData.origin.trim() === "") {
-    errors.push("Origem é obrigatória");
-  }
-
-  if (!formData.destination || formData.destination.trim() === "") {
-    errors.push("Destino é obrigatório");
-  }
-
-  if (!formData.price || formData.price <= 0)
-    errors.push("O preço deve ser maior que zero");
-
-  // Validação das datas
-  if (formData.departureTime && formData.arrivalTime) {
-    const departure = new Date(formData.departureTime);
-    const arrival = new Date(formData.arrivalTime);
-
-    if (arrival <= departure) {
-      errors.push("A data de chegada deve ser posterior à partida");
-    }
-  }
-
-  // Validação de coordenadas
-  const lat1 = parseFloat(formData.originLat);
-  const long1 = parseFloat(formData.originLong);
-  const lat2 = parseFloat(formData.destinLat);
-  const long2 = parseFloat(formData.destinLong);
-
-  if (lat1 < -90 || lat1 > 90)
-    errors.push("Latitude de origem inválida (-90 a 90)");
-  if (long1 < -180 || long1 > 180)
-    errors.push("Longitude de origem inválida (-180 a 180)");
-  if (lat2 < -90 || lat2 > 90)
-    errors.push("Latitude de destino inválida (-90 a 90)");
-  if (long2 < -180 || long2 > 180)
-    errors.push("Longitude de destino inválida (-180 a 180)");
-
-  // Validação das coordenadas dos POIs
-  if (formData.pois && Array.isArray(formData.pois)) {
-    formData.pois.forEach((poi, index) => {
-      const poiLat = parseFloat(poi.lat);
-      const poiLong = parseFloat(poi.long);
-
-      if (poiLat < -90 || poiLat > 90) {
-        errors.push(`POI ${index + 1}: Latitude inválida (-90 a 90)`);
-      }
-      if (poiLong < -180 || poiLong > 180) {
-        errors.push(`POI ${index + 1}: Longitude inválida (-180 a 180)`);
-      }
-      if (poi.name.trim() === "") {
-        errors.push(`POI ${index + 1}: Nome é obrigatório`);
-      }
-    });
-  }
-
-  return errors;
-}
-
 // Dá reset ao formulário e fecha o modal
 function resetFormAndCloseModal() {
   // Fecha o modal de adicionar voo
@@ -779,7 +704,7 @@ function handleFormSubmission(e) {
     const formData = extractFormData();
 
     // Valida os dados
-    const validationErrors = validateFormData(formData);
+    const validationErrors = Helper.validateFormData(formData);
 
     if (validationErrors.length > 0) {
       displayMessage(flightForm, validationErrors, "flight");

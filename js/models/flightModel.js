@@ -111,16 +111,19 @@ export function getAllUniqueOrigins() {
   return uniqueOrigins;
 }
 
+// Devolve todos os destinos unicos (iata)
 export function getAllUniqueDestins() {
   const flights = getAllFlights();
 
   const destins = flights.map((flight) => flight.destination);
 
+  // Remove os duplicados
   const uniqueDestins = [...new Set(destins)];
 
   return uniqueDestins;
 }
 
+// Devolve o nome dos destinos
 export function getAllUniqueDestinationNames() {
   const flights = getAllFlights();
 
@@ -182,12 +185,9 @@ export function extractTripDataFromFlights(flightIds) {
   };
 }
 
-// Importa o próprio modelo de voos para funções auxiliares
-import * as Flights from "./FlightModel.js";
-
 // Função auxiliar para obter voos por IDs
-export function getFlightsByIds(flightIds) {
-  const allFlights = Flights.getAllFlights();
+export function getFlightsByIds(flightIds, allFlights) {
+  const allFlights = getAllFlights();
   return allFlights.filter((flight) => flightIds.includes(flight.id));
 }
 
@@ -202,6 +202,7 @@ export function getFlightsByOrigin(originGet) {
   return filteredFlights;
 }
 
+// Retorna os badges dos voos
 export function getFlightBadges(flightObjects) {
   let badges = [];
 
@@ -209,9 +210,11 @@ export function getFlightBadges(flightObjects) {
     badges.push(flight.badge);
   });
 
+  // Remove os duplicados
   return [...new Set(badges)];
 }
 
+// Calcula a duração em minutos de um voo
 export function calculateDurationInMinutes(departureTime, arrivalTime) {
   const departure = new Date(departureTime);
   const arrival = new Date(arrivalTime);
@@ -222,7 +225,8 @@ export function calculateDurationInMinutes(departureTime, arrivalTime) {
 
   return durationMinutes;
 }
-// FUNÇÃO DE MODELO: Cria um voo a partir dos dados do formulário
+
+// Cria um voo a partir dos dados do formulário
 export function createFlightFromFormData(formData) {
   const flightData = {
     id: Date.now(),
@@ -290,7 +294,7 @@ export function calculateMiles(tripList) {
   return totalMiles;
 }
 
-// FUNÇÃO DE MODELO: Guarda o voo criado a partir dos dados do formulário
+// Guarda o voo criado a partir dos dados do formulário
 export function saveFlightFromData(formData) {
   const flight = createFlightFromFormData(formData);
   addFlight(flight);
