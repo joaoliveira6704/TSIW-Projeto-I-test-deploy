@@ -89,12 +89,23 @@ async function populateData() {
 async function processFlightCard(flight, index) {
   let flightData = Flights.getFlightById(flight); // Dados do voo atual
 
+  // Verifica se existem dados para o voo atual
+  if (!flightData) {
+    return;
+  }
+
   // Pega o próximo voo, se existir, para calcular a data de chegada
   let nextFlightData = null;
   let arrivalDate = "";
   if (index < flightsTrip.length - 1) {
     nextFlightData = Flights.getFlightById(flightsTrip[index + 1]);
-    arrivalDate = Helper.formatDate(nextFlightData.departureTime);
+
+    // Verifica se o próximo voo existe
+    if (nextFlightData && nextFlightData.departureTime) {
+      arrivalDate = Helper.formatDate(nextFlightData.departureTime);
+    } else {
+      arrivalDate = Helper.formatDate(flightData.departureTime);
+    }
   } else {
     // Se for o último voo, usa a data de partida dele próprio
     arrivalDate = Helper.formatDate(flightData.departureTime);
@@ -276,11 +287,13 @@ function addActionButtons() {
     );
   }
 
-  flightResume.insertAdjacentHTML(
-    "beforeend",
-    `<h3 class="text-xl mt-10 mb-4 font-bold print:hidden">Reviews</h3><div id="reviewSection" class="print:hidden"></div>`
-  );
-  renderReviews();
+  if (trip.id) {
+    flightResume.insertAdjacentHTML(
+      "beforeend",
+      `<h3 class="text-xl mt-10 mb-4 font-bold print:hidden">Reviews</h3><div id="reviewSection" class="print:hidden"></div>`
+    );
+    renderReviews();
+  }
 }
 
 // Função que retorna ambos os nomes dos aeroportos usando Promise.all

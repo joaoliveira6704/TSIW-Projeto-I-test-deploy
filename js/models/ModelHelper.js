@@ -67,7 +67,6 @@ export function getIata(company) {
 // Formata uma data ISO para "dia mês" em português
 export function formatDate(isoString) {
   const date = new Date(isoString);
-
   return new Intl.DateTimeFormat("pt-PT", {
     day: "numeric",
     month: "long",

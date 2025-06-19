@@ -134,7 +134,7 @@ export function add(name, email, password, passwordConfirm) {
   return hashPassword(password).then((hashedPassword) => {
     const id = Date.now();
     users.push(
-      new User(id, name, email, hashedPassword, false, "", 0, [], [], [], "")
+      new User(id, name, email, hashedPassword, false, 0, "", [], [], "")
     );
     localStorage.setItem("users", JSON.stringify(users));
     return true;
@@ -355,7 +355,6 @@ class User {
   email = "";
   password = "";
   isAdmin = false;
-  homeAirport = "";
   miles = { available: 0, total: 0 };
   badges = [];
   favorites = [];
@@ -368,7 +367,6 @@ class User {
     email,
     password,
     isAdmin,
-    homeAirport,
     miles,
     badges,
     favorites,
@@ -380,7 +378,6 @@ class User {
     this.email = email;
     this.password = password;
     this.isAdmin = isAdmin;
-    this.homeAirport = homeAirport;
     this.miles = miles;
     this.badges = badges;
     this.favorites = favorites;

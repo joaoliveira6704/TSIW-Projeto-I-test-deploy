@@ -185,7 +185,8 @@ export function addTrip(flightObjects, flightsTrip, tripName, miles) {
       endDate,
       false,
       flightsTrip,
-      miles
+      miles,
+      []
     );
 
     // Vai buscar as viagens atuais do storage
