@@ -294,6 +294,23 @@ function addActionButtons() {
     );
     renderReviews();
   }
+
+  flightResume.insertAdjacentHTML(
+    "afterbegin",
+    `<button id="backBtn" class="print:hidden btn-std mb-5">Voltar</button>`
+  );
+  const backBtn = document.getElementById("backBtn");
+
+  backBtn.addEventListener("click", () => {
+    if (id) {
+      location.href = "./profile.html";
+    } else if (trip.id) {
+      location.href = "../index.html";
+      sessionStorage.removeItem("currentTrip");
+    } else {
+      location.href = "./select-flight.html";
+    }
+  });
 }
 
 // Função que retorna ambos os nomes dos aeroportos usando Promise.all

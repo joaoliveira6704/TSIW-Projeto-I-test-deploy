@@ -375,7 +375,7 @@ function renderFavoritesGrid() {
             </button>
           </div>`
         );
-      })
+      });
   });
 }
 // Evento para remover um favorito do utilizador ao clicar no botão de remover
@@ -532,8 +532,6 @@ sc.init().then(() => {
 const contactForm = document.getElementById("contactForm");
 
 contactForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
   Swal.fire({
     title: "Mensagem Enviada",
 

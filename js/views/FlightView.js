@@ -265,7 +265,7 @@ function populateView() {
     `<div class="flex flex-col sm:flex-row justify-end items-center mt-6 gap-4">
       <p class="text-xl font-semibold total-price">Valor Total: €0</p>
       <div class="flex items-center space-x-4">
-        <button class="w-fit cursor-pointer btn-std font-bold border-2 border-[#D12127] text-[#D12127] hover:bg-[#D12127] hover:bg-opacity-10">
+        <button id="cancelBtn" class="w-fit cursor-pointer btn-std font-bold border-2 border-[#D12127] text-[#D12127] hover:bg-[#D12127] hover:bg-opacity-10">
           Cancelar
         </button>
         <button id="resume-btn" class="w-fit btn-std font-bold border-2 border-gray-600 cursor-not-allowed opacity-50 text-gray-600 px-4 py-2 rounded flex items-center" disabled>
@@ -275,6 +275,11 @@ function populateView() {
       </div>
     </div>`
   );
+
+  const cancelBtn = document.getElementById("cancelBtn");
+  cancelBtn.addEventListener("click", () => {
+    location.href = "./tripBuilder.html";
+  });
 
   // Adiciona o event listener ao botão de pagamento
   const resumeBtn = document.getElementById("resume-btn");
