@@ -1,8 +1,8 @@
 // Importa os módulos necessários
-import * as Flights from "../models/flightModel.js";
+import * as Flights from "../models/FlightModel.js";
 import * as Helper from "../models/ModelHelper.js";
-import * as Trips from "../models/tripModel.js";
-import * as Users from "../models/userModel.js";
+import * as Trips from "../models/TripModel.js";
+import * as Users from "../models/UserModel.js";
 
 // Inicializa os dados de voos e viagens
 Flights.init();

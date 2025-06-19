@@ -1,6 +1,6 @@
 import * as User from "../models/UserModel.js";
 import * as TourismTypes from "../models/TourismtypeModel.js";
-import * as Flights from "../models/flightModel.js";
+import * as Flights from "../models/FlightModel.js";
 
 TourismTypes.init();
 Flights.init();

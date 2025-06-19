@@ -1,7 +1,7 @@
 import * as Trips from "../models/TripModel.js";
 import * as Helper from "../models/modelHelper.js";
 import * as User from "../models/UserModel.js";
-import * as Flights from "../models/flightModel.js";
+import * as Flights from "../models/FlightModel.js";
 
 // Inicializa os dados de packs de viagens e utilizadores
 Trips.init();

@@ -1,7 +1,7 @@
 // Importa os módulos necessários para gerir utilizadores, tipos de turismo, voos e viagens
 import * as User from "../models/UserModel.js";
 import * as TourismTypes from "../models/TourismtypeModel.js";
-import * as Flights from "../models/flightModel.js";
+import * as Flights from "../models/FlightModel.js";
 import * as Trips from "../models/TripModel.js";
 
 // Inicializa os dados das várias entidades

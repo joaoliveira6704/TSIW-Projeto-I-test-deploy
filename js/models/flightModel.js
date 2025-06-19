@@ -183,7 +183,7 @@ export function extractTripDataFromFlights(flightIds) {
 }
 
 // Importa o próprio modelo de voos para funções auxiliares
-import * as Flights from "./flightModel.js";
+import * as Flights from "./FlightModel.js";
 
 // Função auxiliar para obter voos por IDs
 export function getFlightsByIds(flightIds) {

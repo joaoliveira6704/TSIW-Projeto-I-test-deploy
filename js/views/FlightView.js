@@ -1,6 +1,6 @@
 import * as Flights from "../models/FlightModel.js";
 import * as Helper from "../models/ModelHelper.js";
-import * as Users from "../models/userModel.js";
+import * as Users from "../models/UserModel.js";
 // Inicializa os dados de voos no localStorage, se necessário
 Flights.init();
 

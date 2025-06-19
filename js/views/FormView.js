@@ -1,5 +1,5 @@
 import * as TourismTypes from "../models/TourismtypeModel.js";
-import * as Flights from "../models/flightModel.js";
+import * as Flights from "../models/FlightModel.js";
 import * as User from "../models/UserModel.js";
 import * as Helper from "../models/ModelHelper.js";
 
