@@ -459,11 +459,15 @@ function loadMap(origin) {
     let formatedDepartureTime = Date.parse(
       flight.departureTime.split("T")[0].split("-").join(",")
     );
-
-    if (
-      departureDate < formatedDepartureTime &&
-      flight.price <= maxPriceValue
-    ) {
+    let expression;
+    if (maxPriceValue < 1000) {
+      expression =
+        departureDate < formatedDepartureTime && flight.price <= maxPriceValue;
+    } else {
+      document.getElementById("maxPrice").innerText = "1000€ +";
+      expression = departureDate < formatedDepartureTime && flight.price > 0;
+    }
+    if (expression) {
       /* Preenche a lista de destinos */
       destinationList.insertAdjacentHTML(
         "beforeend",
@@ -802,7 +806,7 @@ clearBtn.addEventListener("click", function () {
 
 /* Slider de preço máximo */
 priceSlider.addEventListener("input", function () {
-  maxPrice.textContent = `${priceSlider.value} €`;
+  maxPrice.textContent = `${priceSlider.value}€`;
   maxPriceValue = parseInt(priceSlider.value);
   updateMap();
 });

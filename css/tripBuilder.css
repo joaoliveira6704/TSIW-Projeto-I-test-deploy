@@ -15,7 +15,8 @@ h1 {
   font-family: "Typo Hoop";
 }
 
-body {
+body,
+#outOfBoundsAlert {
   font-family: "Space Mono", sans-serif;
 }
 

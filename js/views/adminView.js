@@ -627,7 +627,7 @@ function extractFormData() {
     destinLat: document.getElementById("destLat").value,
     destinLong: document.getElementById("destLong").value,
     tourismTypes: getTourismTypesFromForm(),
-    pois: getPoisFromForm(),
+    poi: getPoisFromForm(),
     badge: document.getElementById("badge").value,
   };
 
@@ -671,7 +671,7 @@ function getPoisFromForm() {
     ) {
       pois.push({
         name: nameInput.value.trim(),
-        lat: parseFloat(latInput.value),
+        latitude: parseFloat(latInput.value),
         long: parseFloat(longInput.value),
       });
     }

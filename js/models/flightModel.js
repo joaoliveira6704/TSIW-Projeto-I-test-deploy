@@ -240,7 +240,7 @@ export function createFlightFromFormData(formData) {
     originLong: parseFloat(formData.originLong) || 0,
     destinationLat: parseFloat(formData.destinLat) || 0,
     destinationLong: parseFloat(formData.destinLong) || 0,
-    poi: formData.pois || [],
+    poi: formData.poi || [],
     tourismTypes: formData.tourismTypes || [],
     badge: formData.badge.toLowerCase(),
   };

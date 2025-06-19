@@ -363,7 +363,7 @@ function renderFavoritesGrid() {
               />
             </div>
             <div class="w-3/5 p-3 flex flex-col justify-center">
-              <p class="font-bold text-gray-800">${favorite}</p>
+              <p class="font-bold text-sm md:text-base text-gray-800">${favorite}</p>
             </div>
             <button 
               class="absolute cursor-pointer top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-30 group-hover:opacity-100 transition-opacity duration-200"
