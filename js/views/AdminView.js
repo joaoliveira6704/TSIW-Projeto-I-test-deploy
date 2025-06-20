@@ -21,6 +21,9 @@ const packsTableList = document.getElementById("packsTableList");
 // Ao carregar a página, verifica se o utilizador é admin e preenche as tabelas
 window.addEventListener("load", (event) => {
   setupFlightFormView();
+  if (!User.getUserLogged()) {
+    location.href = "../index.html";
+  }
   const isAdmin = User.isAdmin(User.getUserLogged());
   if (!isAdmin) {
     // Se não for admin, redireciona para o index
