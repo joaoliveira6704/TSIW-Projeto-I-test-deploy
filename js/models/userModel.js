@@ -134,7 +134,7 @@ export function add(name, email, password, passwordConfirm) {
   return hashPassword(password).then((hashedPassword) => {
     const id = Date.now();
     users.push(
-      new User(id, name, email, hashedPassword, false, 0, "", [], [], "")
+      new User(id, name, email, hashedPassword, false, 0, [], [], [], "")
     );
     localStorage.setItem("users", JSON.stringify(users));
     return true;

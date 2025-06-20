@@ -145,8 +145,8 @@ export function formatDate(isoString) {
 
 // Calcula desconto: para cada 200 milhas, desconta 5€ do preço final. Devolve 0 se o preço final for negativo
 export function calculateDiscount(miles, finalPrice) {
-  if (finalPrice - Math.floor(miles / 200) * 5 > 0) {
-    return finalPrice - Math.floor(miles / 200) * 5;
+  if (finalPrice - (miles / 200) * 5 > 0) {
+    return finalPrice - (miles / 200) * 5;
   } else {
     return 0;
   }
@@ -219,10 +219,10 @@ export function dispatchEvent(el, evt) {
 
 export function formatDateTimeToLabel(dateTimeString) {
   const date = new Date(dateTimeString);
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const year = date.getFullYear().toString().slice(-2);
-  
+
   return `${day}/${month}/${year}`;
 }
 
