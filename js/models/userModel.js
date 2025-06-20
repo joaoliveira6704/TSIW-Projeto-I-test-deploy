@@ -44,7 +44,7 @@ export function updateUser(id, { name, email, password, isAdmin }) {
 
   user.name = name;
   user.email = email;
-  user.isAdmin = isAdmin === true;
+  user.isAdmin = isAdmin;
 
   // Se for fornecida nova password, faz hash e atualiza
   if (password !== "") {

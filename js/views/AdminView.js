@@ -197,7 +197,7 @@ window.addEventListener("load", (event) => {
             name: document.getElementById("editName").value,
             email: document.getElementById("editEmail").value,
             password: document.getElementById("editPassword").value,
-            isAdmin: document.getElementById("editIsAdmin").value,
+            isAdmin: JSON.parse(document.getElementById("editIsAdmin").value),
           };
 
           try {
