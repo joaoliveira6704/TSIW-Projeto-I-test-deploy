@@ -217,6 +217,15 @@ export function dispatchEvent(el, evt) {
   return evt;
 }
 
+export function formatDateTimeToLabel(dateTimeString) {
+  const date = new Date(dateTimeString);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear().toString().slice(-2);
+  
+  return `${day}/${month}/${year}`;
+}
+
 // Vai buscar o nome do aeroporto a uma API externa
 export function fetchAirportName(iataCode) {
   const url = `https://airport-info.p.rapidapi.com/airport?iata=${iataCode}`;

@@ -216,12 +216,20 @@ export function getUserLogged() {
 // Apaga um utilizador pelo ID
 export function deleteUser(id) {
   const numId = typeof id === "string" ? Number(id) : id;
+  const currentUserId = getUserLogged().id;
+
+  if (numId === currentUserId) {
+    throw new Error("Cannot delete currently logged in user");
+  }
+
   const index = users.findIndex((user) => user.id === numId);
 
   if (index !== -1) {
     users.splice(index, 1);
     localStorage.setItem("users", JSON.stringify(users));
+    return true;
   }
+  return false;
 }
 
 // Remove um pack das viagens do utilizador
@@ -318,7 +326,7 @@ export function addFavorite(destination) {
   updateUserByObject(currentUser);
 }
 
-// Remove ou adiciona favorito 
+// Remove ou adiciona favorito
 export function toggleFavorite(destinName) {
   const user = getUserLogged();
   if (user.favorites.includes(destinName)) {

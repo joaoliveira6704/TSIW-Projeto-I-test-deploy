@@ -58,19 +58,24 @@ Foi construída com foco em responsividade, experiência de utilizador e tecnolo
 1. Clonar o repositório:
 
 ```bash
-git clone https://github.com/teu-utilizador/compass-viagens.git
-cd compass-viagens
+git clone https://github.com/migueljc-neto/TSIW-Projeto-I
 ```
 
 2. Abrir com liveServer:
 
 ```bash
-127.0.0.1:5500
+http://127.0.0.1:5500
 ```
 
 ---
 
 ## ▶️ Utilização
+
+### Exemplo de Contas para Teste
+
+- 1 | Email: bob@compass.com - Password: bob1234 - Tipo: Admin
+
+- 2 | Email: alice@compass.com - Password: alice1234 - Tipo: Utilizador Regular
 
 ### Páginas principais
 
@@ -130,4 +135,4 @@ cd compass-viagens
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a Licença MIT. Consulta o ficheiro LICENSE.md para mais detalhes.
+Este projeto está licenciado sob a Licença GPL-3.0. Consulta o ficheiro LICENSE.md para mais detalhes.

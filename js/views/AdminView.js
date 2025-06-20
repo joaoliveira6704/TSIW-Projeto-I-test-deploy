@@ -214,8 +214,28 @@ window.addEventListener("load", (event) => {
     if (deleteBtn) {
       const id = deleteBtn.dataset.id;
       displayConfirmation(() => {
-        User.deleteUser(id);
-        location.reload();
+        try {
+          const deleted = User.deleteUser(id);
+          if (deleted) {
+            location.reload();
+          } else {
+            Swal.fire({
+              title: "Utilizador não encontrado!",
+              icon: "warning",
+              timer: 2000,
+              timerProgressBar: true,
+            });
+          }
+        } catch (e) {
+          Swal.fire({
+            title: "Ação Impossível!",
+            icon: "error",
+            html: "Não te podes apagar a ti próprio!",
+            timer: 2000,
+            timerProgressBar: true,
+            showLoading: true,
+          });
+        }
       });
     }
   });
@@ -279,7 +299,7 @@ window.addEventListener("load", (event) => {
       <td>${flight.origin}</td>
       <td>${flight.destination}</td>
       <td>${flight.price}€</td>
-      <td>${Helper.formatDateToLabel(flight.departureTime)}</td>
+      <td>${Helper.formatDateTimeToLabel(flight.departureTime)}</td>
       <td class="text-right">
         <button class="color-primary hover:opacity-60 cursor-pointer delete-btn" data-id="${
           flight.id
