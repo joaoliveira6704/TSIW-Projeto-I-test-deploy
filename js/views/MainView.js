@@ -55,7 +55,7 @@ window.addEventListener("load", () => {
           data.photos[0]?.src.medium || "../img/images/fallback.jpg";
 
         let ratingValue = Trips.calculateRating(pack.id);
-        let rating = generateStars(ratingValue);
+        let rating = Helper.generateStars(ratingValue);
         // Adiciona o slide ao swiper mobile
         swiperPacks.insertAdjacentHTML(
           "beforeend",
@@ -73,7 +73,7 @@ window.addEventListener("load", () => {
         )}<br/>${Helper.formatDateToLabel(pack.endDate)}</p>
         
       </div>
-      <p>${rating}</p>
+      <p class="text-xl">${rating}</p>
       <div class="color-primary font-light">${pack.price}€</div>
     </div>
   </div>`
@@ -93,7 +93,7 @@ window.addEventListener("load", () => {
                     <p class="font-space font-light text-sm">${Helper.formatDateToLabel(
                       pack.startDate
                     )} - ${Helper.formatDateToLabel(pack.endDate)}</p>
-                    <p>${rating}</p>
+                    <p class="text-2xl">${rating}</p>
                   </div>
                   <div class="text-sm font-light">
                     <ul id="locationCardText-${pack.id}">
@@ -206,11 +206,11 @@ window.addEventListener("load", () => {
       },
       breakpoints: {
         800: {
-          spaceBetween: 55,
+          spaceBetween: 35,
           slidesPerView: 2,
         },
         1024: {
-          spaceBetween: 55,
+          spaceBetween: 40,
           slidesPerView: 3,
         },
       },
@@ -286,30 +286,7 @@ window.addEventListener("load", () => {
     );
   });
 });
-// Função para gerar estrelas de avaliação
-function generateStars(rating) {
-  const fullStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 !== 0;
-  let stars = "";
 
-  // Estrelas cheias
-  for (let i = 0; i < fullStars; i++) {
-    stars += '<span class="text-yellow-400">★</span>';
-  }
-
-  // Meia estrela
-  if (hasHalfStar) {
-    stars += '<span class="text-yellow-400">☆</span>';
-  }
-
-  // Estrelas vazias
-  const emptyStars = 5 - Math.ceil(rating);
-  for (let i = 0; i < emptyStars; i++) {
-    stars += '<span class="text-gray-300">★</span>';
-  }
-
-  return stars;
-}
 // Função para renderizar o grid de favoritos no modal
 function renderFavoritesGrid() {
   const favoritesModalGrid = document.getElementById("favoritesModalGrid");
